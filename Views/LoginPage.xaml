@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="StockApp.Views.LoginPage"
+             Title="Connection">
+    <ScrollView>
+        <VerticalStackLayout Padding="24" Spacing="16">
+
+            <Label Text="Bienvenue" FontSize="24" HorizontalOptions="Center"/>
+
+            <Entry Placeholder="Pseudo" Text="{Binding Username}" />
+            <Entry Placeholder="Mot de passe" IsPassword="True" Text="{Binding Password}" />
+
+            <Label Text="{Binding Error}" TextColor="Red" IsVisible="{Binding Error, Converter={StaticResource StringNotEmptyConverter}}" />
+
+            <Button Text="Se connecter" Command="{Binding LoginCommand}" />
+            <Button Text="Register" Command="{Binding GoRegisterCommand}" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

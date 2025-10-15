@@ -4,11 +4,12 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:StockApp"
+    xmlns:views="clr-namespace:StockApp.Views"
     Title="StockApp">
 
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+    <!--ShellContent Title="Home" ContentTemplate="{DataTemplate local:MainPage}" Route="MainPage" /-->
+    
+    <ShellContent Route="LoginPage" ContentTemplate="{DataTemplate views:LoginPage}" />
+    <ShellContent Route="HomePage"  ContentTemplate="{DataTemplate views:HomePage}" />
 
 </Shell>
