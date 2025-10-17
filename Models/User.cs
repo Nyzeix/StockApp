@@ -9,7 +9,10 @@ namespace StockApp.Models
 
 public class User
     {
-        public string Username { get; set; } = "";
-        public string PasswordHash { get; set; } = "";
-        public string Salt { get; set; } = "";
+    public string Username { get; set; } = "";
+    public string PasswordHash { get; set; } = "";
+    public string Salt { get; set; } = "";
+    public bool IsAdmin { get; set; } = false;
+    public int CreatedAt { get; set; } = 0;
+
     }
