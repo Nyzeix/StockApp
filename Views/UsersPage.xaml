@@ -2,11 +2,64 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="StockApp.Views.UsersPage"
+             xmlns:models="clr-namespace:StockApp.Models"
+             xmlns:conv="clr-namespace:StockApp.Converters"
              Title="UsersPage">
     <VerticalStackLayout>
-        <Label 
-            Text="Welcome to User Page"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+        <Label Text="Welcome to User Page"
+               VerticalOptions="Center" 
+               HorizontalOptions="Center" />
+        <CollectionView x:Name="UserCollectionView"
+                        ItemsSource="{Binding ExampleUsers}"
+                        Margin="8"
+                        SelectionMode="Single"
+                        SelectionChanged="TODO">
+            <!-- Applique un espace entre chaque Item -->
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical" ItemSpacing="6"/>
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:User">
+                    <Border
+                            Stroke="LightSlateGrey"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 12"
+                            BackgroundColor="LightGray"
+                            Padding="12"
+                            Margin="8">
+
+                        <Border.Shadow>
+                            <Shadow Brush="Black"
+                                    Offset="5,5"
+                                    Radius="8"
+                                    Opacity="0.25" />
+                        </Border.Shadow>
+
+                        <!-- Grille de positionnement -->
+                        <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,Auto">
+                            <Label Grid.Row="0" Grid.Column="0"
+                                Text="{Binding Username}"
+                                FontSize="20"
+                                FontAttributes="Bold"
+                                TextColor="Black"/>
+                            <Label Grid.Row="0" Grid.Column="1"
+                                Text="{Binding CreatedAt}"
+                                   FontSize="14"
+                                   HorizontalTextAlignment="End"
+                                   TextColor="DarkRed"
+                                   Margin="20,0,0,0"/>
+                            <!-- TODO: Fonction de convertion boolean IsAdmin -> "Standard" ou "Admin" -->
+                            <Label Grid.Row="1" 
+                                   Grid.Column="0"
+                                   FontSize="14"
+                                   TextColor="Black"
+                                   Text="{Binding IsAdmin, Converter={StaticResource BooleanToTextConverter}, ConverterParameter='Admin;Standard'}">
+                            </Label> 
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
     </VerticalStackLayout>
 </ContentPage>
