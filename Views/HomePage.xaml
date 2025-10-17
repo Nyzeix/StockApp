@@ -6,7 +6,6 @@
              BackgroundColor="{DynamicResource PageBackgroundColor}">
 
     <ContentPage.ToolbarItems>
-        
         <!-- TODO: Ajouter image -->
         <ToolbarItem Text="Déconnexion"
                      IconImageSource="icon_logout.png"
@@ -20,16 +19,42 @@
             x:Name="MainLayout"
             VerticalOptions="Center"
             HorizontalOptions="Center"
-            Spacing="30"
-            Padding="20">
+            Spacing="30">
 
             <!-- Première carte -->
             <Border
-                x:Name="UsersCard"
-                Stroke="LightGray"
+                x:Name="StockCard"
+                Stroke="White"
                 StrokeThickness="1"
                 StrokeShape="RoundRectangle 16"
-                BackgroundColor="White"
+                BackgroundColor="LightGrey"
+                Padding="20"
+                HorizontalOptions="Center">
+                <VerticalStackLayout
+                    Spacing="8"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center">
+                    <Image Source="icon_stock.png"
+                       WidthRequest="48"
+                       HeightRequest="48" />
+                    <Label Text="Stock Produits"
+                           FontAttributes="Bold"
+                           TextColor="Black"
+                           FontSize="Medium"
+                           HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnTapStockPage" />
+                </Border.GestureRecognizers>
+            </Border>
+            
+            <!-- Deuxième carte -->
+            <Border
+                x:Name="UsersCard"
+                Stroke="White"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 16"
+                BackgroundColor="LightGrey"
                 Padding="20"
                 HorizontalOptions="Center">
                 <VerticalStackLayout
@@ -41,6 +66,7 @@
                            HeightRequest="48" />
                     <Label Text="Utilisateurs"
                            FontAttributes="Bold"
+                           TextColor="Black"
                            FontSize="Medium"
                            HorizontalOptions="Center" />
                 </VerticalStackLayout>
@@ -49,31 +75,7 @@
                 </Border.GestureRecognizers>
             </Border>
 
-            <!-- Deuxième carte -->
-            <Border
-                x:Name="StockCard"
-                Stroke="LightGray"
-                StrokeThickness="1"
-                StrokeShape="RoundRectangle 16"
-                BackgroundColor="White"
-                Padding="20"
-                HorizontalOptions="Center">
-                <VerticalStackLayout
-                    Spacing="8"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Center">
-                    <Image Source="icon_stock.png"
-                           WidthRequest="48"
-                           HeightRequest="48" />
-                    <Label Text="Stock Produits"
-                           FontAttributes="Bold"
-                           FontSize="Medium"
-                           HorizontalOptions="Center" />
-                </VerticalStackLayout>
-                <Border.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="OnTapStockPage" />
-                </Border.GestureRecognizers>
-            </Border>
+            
 
         </VerticalStackLayout>
     </ScrollView>

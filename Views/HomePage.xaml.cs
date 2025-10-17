@@ -17,12 +17,12 @@ public partial class HomePage : ContentPage
         base.OnSizeAllocated(width, height);
 
         // Ajuste la taille des cartes en fonction de la largeur de l’écran
-        double targetWidth = width * 0.7;   // 60% de la largeur de l’écran
+        double targetWidth = width * 0.7;   // 70% de la largeur de l’écran
         double targetHeight = height * 0.40; // 40% de la hauteur de l’écran
 
-        // Minimum et maximum pour éviter des tailles absurdes
-        targetWidth = Math.Clamp(targetWidth, 50, 80000);
-        targetHeight = Math.Clamp(targetHeight, 50, 800000);
+        // Min et Max
+        targetWidth = Math.Clamp(targetWidth, 50, 800);
+        targetHeight = Math.Clamp(targetHeight, 50, 800);
 
         UsersCard.WidthRequest = targetWidth;
         UsersCard.HeightRequest = targetHeight;
@@ -31,13 +31,7 @@ public partial class HomePage : ContentPage
         StockCard.HeightRequest = targetHeight;
     }
 
-    /* Fonction Logout dans le XAML
-     <VerticalStackLayout Padding="24" Spacing="16">
-        <Label Text="Vous êtes connecté" FontSize="18"/>
-        <BoxView BackgroundColor="LightCyan" HeightRequest="200" WidthRequest="300" HorizontalOptions="Center"/>
-        <Button Text="Se déconnecter" Clicked="OnLogoutClicked"/>
-    </VerticalStackLayout>
-     */
+
     private async void OnLogoutClicked(object sender, EventArgs e)
     {
         _auth.Logout();
