@@ -14,7 +14,7 @@
             <Label Text="{Binding Error}" TextColor="Red" IsVisible="{Binding Error, Converter={StaticResource StringNotEmptyConverter}}" />
 
             <Button Text="Se connecter" Command="{Binding LoginCommand}" />
-            <Button Text="Register" Command="{Binding GoRegisterCommand}" />
+            <!--Button Text="Register" Command="{Binding GoRegisterCommand}" /-->
 
         </VerticalStackLayout>
     </ScrollView>
