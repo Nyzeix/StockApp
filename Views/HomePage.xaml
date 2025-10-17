@@ -5,11 +5,21 @@
              Title="Accueil"
              BackgroundColor="{DynamicResource PageBackgroundColor}">
 
+    <ContentPage.ToolbarItems>
+        
+        <!-- TODO: Ajouter image -->
+        <ToolbarItem Text="Déconnexion"
+                     IconImageSource="icon_logout.png"
+                     Order="Primary"
+                     Priority="0"
+                     Clicked="OnLogoutClicked" />
+
+    </ContentPage.ToolbarItems>
     <ScrollView>
         <VerticalStackLayout
             x:Name="MainLayout"
-            VerticalOptions="CenterAndExpand"
-            HorizontalOptions="CenterAndExpand"
+            VerticalOptions="Center"
+            HorizontalOptions="Center"
             Spacing="30"
             Padding="20">
 
