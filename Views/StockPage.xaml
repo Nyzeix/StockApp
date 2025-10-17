@@ -2,11 +2,81 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="StockApp.Views.StockPage"
+             xmlns:models="clr-namespace:StockApp.Models"
              Title="StockPage">
     <VerticalStackLayout>
         <Label 
             Text="Welcome to Stock Page"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
+        
+        
+        <CollectionView x:Name="StockCollectionView"
+                ItemsSource="{Binding StockItems}"
+                SelectionMode="Single"
+                SelectionChanged="OnItemSelected">
+            <!-- Applique un espace entre chaque Item -->
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical" ItemSpacing="6"/>
+            </CollectionView.ItemsLayout>
+<CollectionView.ItemTemplate>
+    <DataTemplate x:DataType="models:Product">
+        <Border
+            Stroke="LightSlateGrey"
+            StrokeThickness="1"
+            StrokeShape="RoundRectangle 12"
+            BackgroundColor="LightGray"
+            Padding="12"
+            Margin="8">
+
+            <Border.Shadow>
+                <Shadow Brush="Black"
+                        Offset="5,5"
+                        Radius="8"
+                        Opacity="0.25" />
+            </Border.Shadow>
+
+            <!-- Grille de positionnement -->
+            <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,Auto">
+
+                <!-- Nom -->
+                <Label Grid.Row="0" Grid.Column="0"
+                       Text="{Binding Name}"
+                       FontSize="20"
+                       FontAttributes="Bold"
+                       TextColor="Black"/>
+
+                <!-- Date de péremption -->
+                <Label Grid.Row="1" Grid.Column="0"
+                       Text="{Binding ExpirationDate, StringFormat='Expires: {0:dd/MM/yyyy}'}"
+                       FontSize="14"
+                       TextColor="DarkRed"/>
+
+                <!-- Couleur  -->
+                <Label Grid.Row="0" Grid.Column="1"
+                       Text="{Binding Color}"
+                       FontSize="14"
+                       TextColor="Black"/>
+
+                <!-- Origine -->
+                <Label Grid.Row="1" Grid.Column="1"
+                       Text="{Binding Origin}"
+                       FontSize="14"
+                       TextColor="Gray"
+                       HorizontalOptions="End"/>
+
+                <!-- Quantité -->
+                <Label Grid.Row="2" Grid.Column="0"
+                       Text="{Binding Quantity, StringFormat='Qty: {0}'}"
+                       FontSize="16"
+                       FontAttributes="Bold"
+                       TextColor="Blue"/>
+            </Grid>
+
+        </Border>
+    </DataTemplate>
+</CollectionView.ItemTemplate>
+
+        </CollectionView>
     </VerticalStackLayout>
 </ContentPage>
