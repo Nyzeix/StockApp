@@ -39,7 +39,7 @@ namespace StockApp.Views
             }
         }
 
-        // Affiche / masque le formulaire d'ajout
+        // Affiche / masque le formulaire d’ajout
         private void OnAddButtonClicked(object sender, EventArgs e)
         {
             AddUserForm.IsVisible = !AddUserForm.IsVisible;
@@ -54,26 +54,36 @@ namespace StockApp.Views
                 return;
             }
 
+            if (string.IsNullOrWhiteSpace(PasswordEntry.Text))
+            {
+                await DisplayAlert("Erreur", "Le mot de passe est obligatoire.", "OK");
+                return;
+            }
+
             var newUser = new User
             {
                 Username = UsernameEntry.Text.Trim(),
+                PasswordHash = PasswordEntry.Text.Trim(), // 🔹 ajout du mot de passe
                 IsAdmin = IsAdminSwitch.IsToggled,
             };
 
             ViewModel?.ExampleUsers.Add(newUser);
             allUsers.Add(newUser); // ajoute aussi à la liste complète
 
+            // Réinitialiser le formulaire
             UsernameEntry.Text = string.Empty;
+            PasswordEntry.Text = string.Empty;
             IsAdminSwitch.IsToggled = false;
             AddUserForm.IsVisible = false;
 
             await DisplayAlert("Succès", "Utilisateur ajouté avec succès.", "OK");
         }
 
-        // Annuler l'ajout et réinitialiser le formulaire
+        // Annuler l’ajout et réinitialiser le formulaire
         private void OnCancelUserClicked(object sender, EventArgs e)
         {
             UsernameEntry.Text = string.Empty;
+            PasswordEntry.Text = string.Empty; // 🔹 reset aussi le mot de passe
             IsAdminSwitch.IsToggled = false;
             AddUserForm.IsVisible = false;
         }

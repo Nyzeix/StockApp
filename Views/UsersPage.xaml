@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="StockApp.Views.UsersPage"
@@ -29,11 +30,20 @@
                        TextColor="Black"
                        HorizontalOptions="Center" />
 
+                <!-- Nom d'utilisateur -->
                 <Entry x:Name="UsernameEntry"
                        Placeholder="Nom d'utilisateur"
                        PlaceholderColor="#555"
                        TextColor="Black" />
 
+                <!-- Mot de passe -->
+                <Entry x:Name="PasswordEntry"
+                       Placeholder="Mot de passe"
+                       PlaceholderColor="#555"
+                       TextColor="Black"
+                       IsPassword="True" />
+
+                <!-- Admin switch -->
                 <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
                     <Label Text="Admin ?"
                            FontSize="14"
@@ -42,6 +52,7 @@
                     <Switch x:Name="IsAdminSwitch"/>
                 </HorizontalStackLayout>
 
+                <!-- Boutons -->
                 <HorizontalStackLayout HorizontalOptions="Center" Spacing="15">
                     <Button Text="Enregistrer"
                             BackgroundColor="#2E86DE"
