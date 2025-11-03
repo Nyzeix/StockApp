@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xaml-comp compile="true" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+    <Color x:Key="LightTextColor50">#f8f9eb</Color>
+    <Color x:Key="LightTextColor100">#f2f3d8</Color>
+    <Color x:Key="LightTextColor200">#e5e8b0</Color>
+    <Color x:Key="LightTextColor300">#d8dc89</Color>
+    <Color x:Key="LightTextColor400">#cbd062</Color>
+    <Color x:Key="LightTextColor500">#bdc43b</Color>
+    <Color x:Key="LightTextColor600">#989d2f</Color>
+    <Color x:Key="LightTextColor700">#727623</Color>
+    <Color x:Key="LightTextColor800">#4c4f17</Color>
+    <Color x:Key="LightTextColor900">#26270c</Color>
+    <Color x:Key="LightTextColor950">#131406</Color>
+
+    <Color x:Key="LightBackgroundColor50">#f0f0f0</Color>
+    <Color x:Key="LightBackgroundColor100">#ebebeb</Color>
+    <Color x:Key="LightBackgroundColor200">#e4e4b4</Color>
+    <Color x:Key="LightBackgroundColor300">#d6d68f</Color>
+    <Color x:Key="LightBackgroundColor400">#c9c969</Color>
+    <Color x:Key="LightBackgroundColor500">#bbbb44</Color>
+    <Color x:Key="LightBackgroundColor600">#969636</Color>
+    <Color x:Key="LightBackgroundColor700">#707029</Color>
+    <Color x:Key="LightBackgroundColor800">#4b4b1b</Color>
+    <Color x:Key="LightBackgroundColor900">#25250e</Color>
+    <Color x:Key="LightBackgroundColor950">#131307</Color>
+
+    <Color x:Key="LightPrimaryColor50">#f9f9eb</Color>
+    <Color x:Key="LightPrimaryColor100">#f3f3d8</Color>
+    <Color x:Key="LightPrimaryColor200">#e7e8b0</Color>
+    <Color x:Key="LightPrimaryColor300">#dadc89</Color>
+    <Color x:Key="LightPrimaryColor400">#ced062</Color>
+    <Color x:Key="LightPrimaryColor500">#c2c43b</Color>
+    <Color x:Key="LightPrimaryColor600">#9b9d2f</Color>
+    <Color x:Key="LightPrimaryColor700">#747623</Color>
+    <Color x:Key="LightPrimaryColor800">#4e4f17</Color>
+    <Color x:Key="LightPrimaryColor900">#27270c</Color>
+    <Color x:Key="LightPrimaryColor950">#131406</Color>
+
+    <Color x:Key="LightSecondaryColor50">#ebf2f9</Color>
+    <Color x:Key="LightSecondaryColor100">#d8e5f3</Color>
+    <Color x:Key="LightSecondaryColor200">#b0cae8</Color>
+    <Color x:Key="LightSecondaryColor300">#89b0dc</Color>
+    <Color x:Key="LightSecondaryColor400">#6295d0</Color>
+    <Color x:Key="LightSecondaryColor500">#3b7bc4</Color>
+    <Color x:Key="LightSecondaryColor600">#2f629d</Color>
+    <Color x:Key="LightSecondaryColor700">#234a76</Color>
+    <Color x:Key="LightSecondaryColor800">#17314f</Color>
+    <Color x:Key="LightSecondaryColor900">#0c1927</Color>
+    <Color x:Key="LightSecondaryColor950">#060c14</Color>
+
+    <Color x:Key="LightAccentColor50">#f1ebf9</Color>
+    <Color x:Key="LightAccentColor100">#e3d8f3</Color>
+    <Color x:Key="LightAccentColor200">#c6b0e8</Color>
+    <Color x:Key="LightAccentColor300">#aa89dc</Color>
+    <Color x:Key="LightAccentColor400">#8e62d0</Color>
+    <Color x:Key="LightAccentColor500">#723bc4</Color>
+    <Color x:Key="LightAccentColor600">#5b2f9d</Color>
+    <Color x:Key="LightAccentColor700">#442376</Color>
+    <Color x:Key="LightAccentColor800">#2d174f</Color>
+    <Color x:Key="LightAccentColor900">#170c27</Color>
+    <Color x:Key="LightAccentColor950">#0b0614</Color>
+
+</ResourceDictionary>

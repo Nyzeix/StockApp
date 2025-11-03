@@ -31,14 +31,11 @@
                    Margin="0,5,0,0" />
 
         <!-- Formulaire d’ajout utilisateur -->
-        <Frame x:Name="AddUserForm"
+        <Border x:Name="AddUserForm"
                IsVisible="False"
                BackgroundColor="White"
-               BorderColor="#E0E0E0"
-               CornerRadius="12"
                Padding="15"
-               Margin="0,10,0,10"
-               HasShadow="True">
+               Margin="0,10,0,10">
 
             <VerticalStackLayout Spacing="10">
                 <Label Text="Ajouter un utilisateur"
@@ -48,23 +45,23 @@
                        HorizontalOptions="Center" />
 
                 <!-- Nom d'utilisateur -->
-                <Frame BackgroundColor="#F2F2F2" Padding="10" CornerRadius="8">
+                <Border BackgroundColor="#F2F2F2" Padding="10">
                     <Entry x:Name="UsernameEntry"
                            Placeholder="Nom d'utilisateur"
                            PlaceholderColor="#888"
                            TextColor="#111"
                            BackgroundColor="Transparent" />
-                </Frame>
+                </Border>
 
                 <!-- Mot de passe -->
-                <Frame BackgroundColor="#F2F2F2" Padding="10" CornerRadius="8">
+                <Border BackgroundColor="#F2F2F2" Padding="10" >
                     <Entry x:Name="PasswordEntry"
                            Placeholder="Mot de passe"
                            PlaceholderColor="#888"
                            TextColor="#111"
                            IsPassword="True"
                            BackgroundColor="Transparent" />
-                </Frame>
+                </Border>
 
                 <!-- Admin switch -->
                 <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
@@ -93,7 +90,7 @@
                             Clicked="OnCancelUserClicked" />
                 </HorizontalStackLayout>
             </VerticalStackLayout>
-        </Frame>
+        </Border>
 
         <!-- Liste des utilisateurs -->
         <CollectionView x:Name="UserCollectionView"
@@ -108,11 +105,8 @@
 
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:User">
-                    <Frame BackgroundColor="White"
-                           BorderColor="#E0E0E0"
-                           CornerRadius="12"
-                           Padding="15"
-                           HasShadow="True">
+                    <Border BackgroundColor="White"
+                           Padding="15">
 
                         <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto">
                             <!-- Nom d'utilisateur -->
@@ -139,7 +133,7 @@
                                     Clicked="OnDeleteUserClicked"
                                     VerticalOptions="Center"/>
                         </Grid>
-                    </Frame>
+                    </Border>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>

@@ -3,8 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="StockApp.Views.HomePage"
              Title="Accueil"
-             BackgroundColor="#F7F8FA">
+             BackgroundColor="{AppThemeBinding Light={DynamicResource PageBackgroundColor}, Dark={DynamicResource DarkPageBackgroundColor}}">
 
+    <ContentPage.Resources>
+        <Style x:Key="labelStyle" TargetType="Label">
+            <Setter Property="TextColor" Value="{AppThemeBinding Light={DynamicResource LightTextColor100}, Dark={DynamicResource LightTextColor100}}"/>
+        </Style>
+    </ContentPage.Resources>
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Déconnexion"
                      IconImageSource="icon_logout.png"
@@ -22,11 +27,11 @@
 
             <!-- Carte Stock Produits -->
             <Border
+                BackgroundColor="{AppThemeBinding Light={DynamicResource LightPrimaryColor100}, Dark={DynamicResource DarkPrimaryColor400}}"
+                Stroke="{AppThemeBinding Light={DynamicResource LightSecondaryColor100}, Dark={DynamicResource DarkSecondaryColor300}}"
                 x:Name="StockCard"
-                Stroke="White"
                 StrokeThickness="1"
                 StrokeShape="RoundRectangle 16"
-                BackgroundColor="LightGrey"
                 Padding="20"
                 WidthRequest="250"
                 HeightRequest="150"
@@ -41,7 +46,6 @@
                            HorizontalOptions="Center"/>
                     <Label Text="Stock Produits"
                            FontAttributes="Bold"
-                           TextColor="Black"
                            FontSize="Medium"
                            HorizontalOptions="Center"
                            VerticalOptions="Center"/>
@@ -53,11 +57,11 @@
 
             <!-- Carte Utilisateurs -->
             <Border
+                BackgroundColor="{AppThemeBinding Light={DynamicResource LightSecondaryColor100}, Dark={DynamicResource DarkSecondaryColor800}}"
+                Stroke="{AppThemeBinding Light={DynamicResource LightSecondaryColor200}, Dark={DynamicResource DarkSecondaryColor800}}"
                 x:Name="UsersCard"
-                Stroke="White"
                 StrokeThickness="1"
                 StrokeShape="RoundRectangle 16"
-                BackgroundColor="LightGrey"
                 Padding="20"
                 WidthRequest="250"
                 HeightRequest="150"
@@ -72,7 +76,6 @@
                            HorizontalOptions="Center"/>
                     <Label Text="Utilisateurs"
                            FontAttributes="Bold"
-                           TextColor="Black"
                            FontSize="Medium"
                            HorizontalOptions="Center"
                            VerticalOptions="Center"/>

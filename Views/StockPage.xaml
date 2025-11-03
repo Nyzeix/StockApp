@@ -53,14 +53,11 @@
         </HorizontalStackLayout>
 
         <!-- Formulaire d’ajout -->
-        <Frame x:Name="AddProductForm"
+        <Border x:Name="AddProductForm"
                IsVisible="False"
                BackgroundColor="White"
-               BorderColor="#E0E0E0"
-               CornerRadius="12"
                Padding="15"
-               Margin="0,10,0,10"
-               HasShadow="True">
+               Margin="0,10,0,10">
 
             <VerticalStackLayout Spacing="10">
                 <Label Text="Ajouter un produit"
@@ -70,49 +67,49 @@
                        HorizontalOptions="Center" />
 
                 <!-- Nom -->
-                <Frame BackgroundColor="#F2F2F2" Padding="10" CornerRadius="8">
+                <Border BackgroundColor="#F2F2F2" Padding="10" >
                     <Entry x:Name="NameEntry"
                            Placeholder="Nom du produit"
                            PlaceholderColor="#888"
                            TextColor="#111"
                            BackgroundColor="Transparent" />
-                </Frame>
+                </Border>
 
                 <!-- Quantité -->
-                <Frame BackgroundColor="#F2F2F2" Padding="10" CornerRadius="8">
+                <Border BackgroundColor="#F2F2F2" Padding="10" >
                     <Entry x:Name="QuantityEntry"
                            Placeholder="Quantité"
                            PlaceholderColor="#888"
                            TextColor="#111"
                            Keyboard="Numeric"
                            BackgroundColor="Transparent" />
-                </Frame>
+                </Border>
 
                 <!-- Couleur -->
-                <Frame BackgroundColor="#F2F2F2" Padding="10" CornerRadius="8">
+                <Border BackgroundColor="#F2F2F2" Padding="10" >
                     <Entry x:Name="ColorEntry"
                            Placeholder="Couleur"
                            PlaceholderColor="#888"
                            TextColor="#111"
                            BackgroundColor="Transparent" />
-                </Frame>
+                </Border>
 
                 <!-- Origine -->
-                <Frame BackgroundColor="#F2F2F2" Padding="10" CornerRadius="8">
+                <Border BackgroundColor="#F2F2F2" Padding="10">
                     <Entry x:Name="OriginEntry"
                            Placeholder="Origine"
                            PlaceholderColor="#888"
                            TextColor="#111"
                            BackgroundColor="Transparent" />
-                </Frame>
+                </Border>
 
                 <!-- Date de péremption -->
                 <Label Text="Date de péremption :" FontSize="14" TextColor="#444" />
-                <Frame BackgroundColor="#F2F2F2" Padding="5" CornerRadius="8">
+                <Border BackgroundColor="#F2F2F2" Padding="5" >
                     <DatePicker x:Name="ExpirationDatePicker"
                                 TextColor="#111"
                                 BackgroundColor="Transparent" />
-                </Frame>
+                </Border>
 
                 <HorizontalStackLayout HorizontalOptions="Center" Spacing="15">
                     <Button Text="💾 Enregistrer"
@@ -133,7 +130,7 @@
                             Clicked="OnCancelClicked" />
                 </HorizontalStackLayout>
             </VerticalStackLayout>
-        </Frame>
+        </Border>
 
         <!-- Liste des produits -->
         <CollectionView x:Name="StockCollectionView"
@@ -148,11 +145,8 @@
 
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:Product">
-                    <Frame BackgroundColor="White"
-                           BorderColor="#E0E0E0"
-                           CornerRadius="12"
-                           Padding="15"
-                           HasShadow="True">
+                    <Border BackgroundColor="White"
+                           Padding="15">
 
                         <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,Auto">
 
@@ -184,7 +178,7 @@
                                    FontSize="14"
                                    TextColor="#666" />
                         </Grid>
-                    </Frame>
+                    </Border>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>

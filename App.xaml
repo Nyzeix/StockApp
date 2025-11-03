@@ -9,6 +9,8 @@
             <converters:StringNotEmptyConverter x:Key="StringNotEmptyConverter"/>
             <converters:BooleanToTextConverter x:Key="BooleanToTextConverter"/>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Styles/LightTheme.xaml"/>
+                <ResourceDictionary Source="Resources/Styles/DarkTheme.xaml"/>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
