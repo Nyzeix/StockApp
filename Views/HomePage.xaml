@@ -3,11 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="StockApp.Views.HomePage"
              Title="Accueil"
-             BackgroundColor="{AppThemeBinding Light={DynamicResource PageBackgroundColor}, Dark={DynamicResource DarkPageBackgroundColor}}">
+             BackgroundColor="{AppThemeBinding Light={DynamicResource WhiteBrush}, Dark={DynamicResource BlackBrush}}">
 
     <ContentPage.Resources>
         <Style x:Key="labelStyle" TargetType="Label">
-            <Setter Property="TextColor" Value="{AppThemeBinding Light={DynamicResource LightTextColor100}, Dark={DynamicResource LightTextColor100}}"/>
+            <Setter Property="TextColor" Value="{AppThemeBinding Light={DynamicResource LightTextColor-100}, Dark={DynamicResource DarkTextColor-100}}"/>
         </Style>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
@@ -27,8 +27,8 @@
 
             <!-- Carte Stock Produits -->
             <Border
-                BackgroundColor="{AppThemeBinding Light={DynamicResource LightPrimaryColor100}, Dark={DynamicResource DarkPrimaryColor400}}"
-                Stroke="{AppThemeBinding Light={DynamicResource LightSecondaryColor100}, Dark={DynamicResource DarkSecondaryColor300}}"
+                BackgroundColor="{AppThemeBinding Light={DynamicResource LightPrimaryColor-400}, Dark={DynamicResource DarkPrimaryColor-400}}"
+                Stroke="{AppThemeBinding Light={DynamicResource LightSecondaryColor-100}, Dark={DynamicResource DarkSecondaryColor-300}}"
                 x:Name="StockCard"
                 StrokeThickness="1"
                 StrokeShape="RoundRectangle 16"
@@ -57,8 +57,8 @@
 
             <!-- Carte Utilisateurs -->
             <Border
-                BackgroundColor="{AppThemeBinding Light={DynamicResource LightSecondaryColor100}, Dark={DynamicResource DarkSecondaryColor800}}"
-                Stroke="{AppThemeBinding Light={DynamicResource LightSecondaryColor200}, Dark={DynamicResource DarkSecondaryColor800}}"
+                BackgroundColor="{AppThemeBinding Light={DynamicResource LightSecondaryColor-200}, Dark={DynamicResource DarkSecondaryColor-200}}"
+                Stroke="{AppThemeBinding Light={DynamicResource LightSecondaryColor-100}, Dark={DynamicResource DarkSecondaryColor-300}}"
                 x:Name="UsersCard"
                 StrokeThickness="1"
                 StrokeShape="RoundRectangle 16"

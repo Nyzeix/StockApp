@@ -5,7 +5,7 @@
              xmlns:conv="clr-namespace:StockApp.Converters"
              x:Class="StockApp.Views.UsersPage"
              Title="👥 Gestion des utilisateurs"
-             BackgroundColor="#F7F8FA">
+             BackgroundColor="{AppThemeBinding Light={DynamicResource WhiteBrush}, Dark={DynamicResource BlackBrush}}">
     <ScrollView>
     <VerticalStackLayout Padding="15" Spacing="15">
 
