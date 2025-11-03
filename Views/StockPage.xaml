@@ -3,94 +3,133 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="StockApp.Views.StockPage"
              xmlns:models="clr-namespace:StockApp.Models"
-             Title="StockPage">
+             Title="📦 Gestion du stock"
+             BackgroundColor="#F7F8FA">
 
-    <VerticalStackLayout Padding="10" Spacing="10">
+    <ScrollView>
+
+        <VerticalStackLayout Padding="15" Spacing="15">
 
         <!-- Bouton Ajouter -->
-        <Button Text="Ajouter"
+        <Button Text="➕ Ajouter un produit"
                 x:Name="AddButton"
-                HorizontalOptions="Start"
+                BackgroundColor="#0078D7"
+                TextColor="White"
+                FontAttributes="Bold"
+                CornerRadius="10"
+                HeightRequest="50"
                 Clicked="OnAddButtonClicked" />
 
+        <!-- Barre de recherche -->
         <SearchBar x:Name="ProductSearchBar"
-           Placeholder="Rechercher un produit"
-           HorizontalOptions="FillAndExpand"
-           FontSize="16"
-           HeightRequest="50"
-           TextChanged="OnSearchBarTextChanged" />
+                   Placeholder="Rechercher un produit..."
+                   PlaceholderColor="#888"
+                   FontSize="16"
+                   HeightRequest="50"
+                   TextChanged="OnSearchBarTextChanged"
+                   BackgroundColor="White"
+                   TextColor="Black"
+                   Margin="0,5,0,0" />
 
         <!-- Ligne des filtres -->
         <HorizontalStackLayout Spacing="10" HorizontalOptions="FillAndExpand">
+                <Picker x:Name="QuantitePicker"
+                        Title="Quantité"
+                        FontSize="16"
+                        HorizontalOptions="FillAndExpand"
+                        BackgroundColor="White"
+                        TextColor="Black"
+                        HeightRequest="65"/>
 
-            <!-- Picker gauche -->
-            <Picker x:Name="LeftPicker"
-                Title="Filtrer gauche"
-                HorizontalOptions="FillAndExpand"
-                VerticalOptions="FillAndExpand"
-                FontSize="16" />
-
-            <!-- Picker origine -->
-            <Picker x:Name="OriginPicker"
+                <Picker x:Name="OriginPicker"
                     Title="Origine"
-                    HorizontalOptions="FillAndExpand"
                     FontSize="16"
+                    HorizontalOptions="FillAndExpand"
+                    BackgroundColor="White"
+                    TextColor="Black"
+                    HeightRequest="65"  
                     ItemsSource="{Binding Origins}"
                     SelectedIndexChanged="OriginPicker_SelectedIndexChanged" />
         </HorizontalStackLayout>
-        <!-- Formulaire d’ajout de produit -->
+
+        <!-- Formulaire d’ajout -->
         <Frame x:Name="AddProductForm"
                IsVisible="False"
-               BackgroundColor="#EFEFEF"
-               BorderColor="LightGray"
-               CornerRadius="8"
+               BackgroundColor="White"
+               BorderColor="#E0E0E0"
+               CornerRadius="12"
                Padding="15"
-               Margin="0,5,0,10">
+               Margin="0,10,0,10"
+               HasShadow="True">
 
             <VerticalStackLayout Spacing="10">
                 <Label Text="Ajouter un produit"
-                       FontSize="18"
+                       FontSize="20"
                        FontAttributes="Bold"
-                       TextColor="Black"
+                       TextColor="#222"
                        HorizontalOptions="Center" />
 
-                <Entry x:Name="NameEntry"
-                       Placeholder="Nom du produit"
-                       PlaceholderColor="#555"
-                       TextColor="Black" />
+                <!-- Nom -->
+                <Frame BackgroundColor="#F2F2F2" Padding="10" CornerRadius="8">
+                    <Entry x:Name="NameEntry"
+                           Placeholder="Nom du produit"
+                           PlaceholderColor="#888"
+                           TextColor="#111"
+                           BackgroundColor="Transparent" />
+                </Frame>
 
-                <Entry x:Name="QuantityEntry"
-                       Placeholder="Quantité"
-                       PlaceholderColor="#555"
-                       TextColor="Black"
-                       Keyboard="Numeric" />
+                <!-- Quantité -->
+                <Frame BackgroundColor="#F2F2F2" Padding="10" CornerRadius="8">
+                    <Entry x:Name="QuantityEntry"
+                           Placeholder="Quantité"
+                           PlaceholderColor="#888"
+                           TextColor="#111"
+                           Keyboard="Numeric"
+                           BackgroundColor="Transparent" />
+                </Frame>
 
-                <Entry x:Name="ColorEntry"
-                       Placeholder="Couleur"
-                       PlaceholderColor="#555"
-                       TextColor="Black" />
+                <!-- Couleur -->
+                <Frame BackgroundColor="#F2F2F2" Padding="10" CornerRadius="8">
+                    <Entry x:Name="ColorEntry"
+                           Placeholder="Couleur"
+                           PlaceholderColor="#888"
+                           TextColor="#111"
+                           BackgroundColor="Transparent" />
+                </Frame>
 
-                <Entry x:Name="OriginEntry"
-                       Placeholder="Origine"
-                       PlaceholderColor="#555"
-                       TextColor="Black" />
+                <!-- Origine -->
+                <Frame BackgroundColor="#F2F2F2" Padding="10" CornerRadius="8">
+                    <Entry x:Name="OriginEntry"
+                           Placeholder="Origine"
+                           PlaceholderColor="#888"
+                           TextColor="#111"
+                           BackgroundColor="Transparent" />
+                </Frame>
 
-                <Label Text="Date de péremption :"
-                       FontSize="14"
-                       TextColor="Black" />
-                <DatePicker x:Name="ExpirationDatePicker"
-                            TextColor="Black" />
+                <!-- Date de péremption -->
+                <Label Text="Date de péremption :" FontSize="14" TextColor="#444" />
+                <Frame BackgroundColor="#F2F2F2" Padding="5" CornerRadius="8">
+                    <DatePicker x:Name="ExpirationDatePicker"
+                                TextColor="#111"
+                                BackgroundColor="Transparent" />
+                </Frame>
 
                 <HorizontalStackLayout HorizontalOptions="Center" Spacing="15">
-                    <Button Text="Enregistrer"
+                    <Button Text="💾 Enregistrer"
                             x:Name="SaveButton"
-                            BackgroundColor="#2E86DE"
+                            BackgroundColor="#0078D7"
                             TextColor="White"
+                            FontAttributes="Bold"
+                            CornerRadius="10"
+                            HeightRequest="45"
                             Clicked="OnSaveProductClicked" />
-                    <Button Text="Annuler"
+                    <Button Text="❌ Annuler"
                             x:Name="CancelButton"
-                            BackgroundColor="Gray"
+                            BackgroundColor="#AAAAAA"
                             TextColor="White"
+                            FontAttributes="Bold"
+                            CornerRadius="10"
+                            HeightRequest="45"
                             Clicked="OnCancelClicked" />
                 </HorizontalStackLayout>
             </VerticalStackLayout>
@@ -99,71 +138,57 @@
         <!-- Liste des produits -->
         <CollectionView x:Name="StockCollectionView"
                         ItemsSource="{Binding StockItems}"
-                        Margin="8"
+                        Margin="0,10,0,0"
                         SelectionMode="Single"
                         SelectionChanged="OnItemSelected">
 
             <CollectionView.ItemsLayout>
-                <LinearItemsLayout Orientation="Vertical" ItemSpacing="6" />
+                <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
             </CollectionView.ItemsLayout>
 
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:Product">
-                    <Border
-                        Stroke="LightSlateGrey"
-                        StrokeThickness="1"
-                        StrokeShape="RoundRectangle 12"
-                        BackgroundColor="LightGray"
-                        Padding="12"
-                        Margin="8">
-
-                        <Border.Shadow>
-                            <Shadow Brush="Black"
-                                    Offset="5,5"
-                                    Radius="8"
-                                    Opacity="0.25" />
-                        </Border.Shadow>
+                    <Frame BackgroundColor="White"
+                           BorderColor="#E0E0E0"
+                           CornerRadius="12"
+                           Padding="15"
+                           HasShadow="True">
 
                         <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,Auto">
 
-                            <!-- Nom -->
                             <Label Grid.Row="0" Grid.Column="0"
                                    Text="{Binding Name}"
                                    FontSize="20"
                                    FontAttributes="Bold"
-                                   TextColor="Black" />
+                                   TextColor="#222" />
 
-                            <!-- Date de péremption -->
-                            <Label Grid.Row="1" Grid.Column="0"
-                                   Text="{Binding ExpirationDate, StringFormat='Expires: {0:dd/MM/yyyy}'}"
-                                   FontSize="14"
-                                   TextColor="DarkRed" />
-
-                            <!-- Couleur -->
-                            <Label Grid.Row="2" Grid.Column="1"
-                                   Text="{Binding Color}"
-                                   HorizontalTextAlignment="End"
-                                   FontSize="14"
-                                   TextColor="Black" />
-
-                            <!-- Origine -->
                             <Label Grid.Row="0" Grid.Column="1"
-                                   Text="{Binding Origin, StringFormat='ORG: {0}'}"
-                                   HorizontalTextAlignment="End"
-                                   FontSize="18"
-                                   TextColor="Black"
-                                   HorizontalOptions="End" />
-
-                            <!-- Quantité -->
-                            <Label Grid.Row="2" Grid.Column="0"
-                                   Text="{Binding Quantity, StringFormat='Qty: {0}'}"
+                                   Text="{Binding Origin, StringFormat='Origine : {0}'}"
                                    FontSize="16"
-                                   FontAttributes="Bold"
-                                   TextColor="Blue" />
+                                   HorizontalTextAlignment="End"
+                                   TextColor="#555" />
+
+                            <Label Grid.Row="1" Grid.Column="0"
+                                   Text="{Binding Quantity, StringFormat='Quantité : {0}'}"
+                                   FontSize="16"
+                                   TextColor="#0078D7" />
+
+                            <Label Grid.Row="1" Grid.Column="1"
+                                   Text="{Binding ExpirationDate, StringFormat='Péremption : {0:dd/MM/yyyy}'}"
+                                   FontSize="14"
+                                   HorizontalTextAlignment="End"
+                                   TextColor="#D9534F" />
+
+                            <Label Grid.Row="2" Grid.Column="0"
+                                   Text="{Binding Color, StringFormat='Couleur : {0}'}"
+                                   FontSize="14"
+                                   TextColor="#666" />
                         </Grid>
-                    </Border>
+                    </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-    </VerticalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

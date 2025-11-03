@@ -2,19 +2,74 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="StockApp.Views.LoginPage"
-             Title="Connexion">
+             Title="Connexion"
+             BackgroundColor="#F7F8FA">
+
     <ScrollView>
-        <VerticalStackLayout Padding="24" Spacing="16">
+        <VerticalStackLayout Padding="24" Spacing="20" HorizontalOptions="Center">
 
-            <Label Text="Bienvenue" FontSize="24" HorizontalOptions="Center"/>
+            <Label Text="Bienvenue dans votre application gestion de stock"
+                   FontSize="25"
+                   FontAttributes="Bold"
+                   TextColor="#222"
+                   HorizontalOptions="Center" />
 
-            <Entry Placeholder="Pseudo" Text="{Binding Username}" />
-            <Entry Placeholder="Mot de passe" IsPassword="True" Text="{Binding Password}" />
+            <!-- Bloc connexion -->
+            <Frame BackgroundColor="White"
+                   CornerRadius="12"
+                   Padding="20"
+                   HasShadow="True"
+                   WidthRequest="300">
 
-            <Label Text="{Binding Error}" TextColor="Red" IsVisible="{Binding Error, Converter={StaticResource StringNotEmptyConverter}}" />
+                <VerticalStackLayout Spacing="16">
 
-            <Button Text="Se connecter" Command="{Binding LoginCommand}" />
-            <Button Text="Register" Command="{Binding GoRegisterCommand}" />
+                    <!-- Pseudo -->
+                    <Frame BackgroundColor="#F2F2F2" Padding="10" CornerRadius="8">
+                        <Entry Placeholder="Pseudo"
+                               Text="{Binding Username}"
+                               BackgroundColor="Transparent"
+                               TextColor="#111" />
+                    </Frame>
+
+                    <!-- Mot de passe -->
+                    <Frame BackgroundColor="#F2F2F2" Padding="10" CornerRadius="8">
+                        <Entry Placeholder="Mot de passe"
+                               IsPassword="True"
+                               Text="{Binding Password}"
+                               BackgroundColor="Transparent"
+                               TextColor="#111" />
+                    </Frame>
+
+                    <!-- Message d'erreur -->
+                    <Label Text="{Binding Error}"
+                           TextColor="Red"
+                           IsVisible="{Binding Error, Converter={StaticResource StringNotEmptyConverter}}"
+                           FontSize="14"
+                           HorizontalOptions="Center" />
+
+                    <!-- Boutons -->
+                    <VerticalStackLayout Spacing="12">
+
+                        <Button Text="Se connecter"
+                                BackgroundColor="#0078D7"
+                                TextColor="White"
+                                FontAttributes="Bold"
+                                CornerRadius="10"
+                                HeightRequest="45"
+                                Command="{Binding LoginCommand}" />
+
+                        <Button Text="S'inscrire"
+                                BackgroundColor="#AAAAAA"
+                                TextColor="White"
+                                FontAttributes="Bold"
+                                CornerRadius="10"
+                                HeightRequest="45"
+                                Command="{Binding GoRegisterCommand}" />
+
+                    </VerticalStackLayout>
+
+                </VerticalStackLayout>
+            </Frame>
 
         </VerticalStackLayout>
     </ScrollView>

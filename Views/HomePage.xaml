@@ -3,17 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="StockApp.Views.HomePage"
              Title="Accueil"
-             BackgroundColor="{DynamicResource PageBackgroundColor}">
+             BackgroundColor="#F7F8FA">
 
     <ContentPage.ToolbarItems>
-        <!-- TODO: Ajouter image -->
         <ToolbarItem Text="Déconnexion"
                      IconImageSource="icon_logout.png"
                      Order="Primary"
                      Priority="0"
                      Clicked="OnLogoutClicked" />
-
     </ContentPage.ToolbarItems>
+
     <ScrollView>
         <VerticalStackLayout
             x:Name="MainLayout"
@@ -21,7 +20,7 @@
             HorizontalOptions="Center"
             Spacing="30">
 
-            <!-- Première carte -->
+            <!-- Carte Stock Produits -->
             <Border
                 x:Name="StockCard"
                 Stroke="White"
@@ -29,26 +28,30 @@
                 StrokeShape="RoundRectangle 16"
                 BackgroundColor="LightGrey"
                 Padding="20"
-                HorizontalOptions="Center">
-                <VerticalStackLayout
-                    Spacing="8"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Center">
+                WidthRequest="250"
+                HeightRequest="150"
+                HorizontalOptions="Center"
+                VerticalOptions="Center">
+                <VerticalStackLayout Spacing="8"
+                                     HorizontalOptions="Center"
+                                     VerticalOptions="CenterAndExpand">
                     <Image Source="icon_stock.png"
-                       WidthRequest="48"
-                       HeightRequest="48" />
+                           WidthRequest="48"
+                           HeightRequest="48"
+                           HorizontalOptions="Center"/>
                     <Label Text="Stock Produits"
                            FontAttributes="Bold"
                            TextColor="Black"
                            FontSize="Medium"
-                           HorizontalOptions="Center"/>
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"/>
                 </VerticalStackLayout>
                 <Border.GestureRecognizers>
                     <TapGestureRecognizer Tapped="OnTapStockPage" />
                 </Border.GestureRecognizers>
             </Border>
-            
-            <!-- Deuxième carte -->
+
+            <!-- Carte Utilisateurs -->
             <Border
                 x:Name="UsersCard"
                 Stroke="White"
@@ -56,26 +59,28 @@
                 StrokeShape="RoundRectangle 16"
                 BackgroundColor="LightGrey"
                 Padding="20"
-                HorizontalOptions="Center">
-                <VerticalStackLayout
-                    Spacing="8"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Center">
+                WidthRequest="250"
+                HeightRequest="150"
+                HorizontalOptions="Center"
+                VerticalOptions="Center">
+                <VerticalStackLayout Spacing="8"
+                                     HorizontalOptions="Center"
+                                     VerticalOptions="CenterAndExpand">
                     <Image Source="icon_users.png"
                            WidthRequest="48"
-                           HeightRequest="48" />
+                           HeightRequest="48"
+                           HorizontalOptions="Center"/>
                     <Label Text="Utilisateurs"
                            FontAttributes="Bold"
                            TextColor="Black"
                            FontSize="Medium"
-                           HorizontalOptions="Center" />
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"/>
                 </VerticalStackLayout>
                 <Border.GestureRecognizers>
                     <TapGestureRecognizer Tapped="OnTapUsersPage" />
                 </Border.GestureRecognizers>
             </Border>
-
-            
 
         </VerticalStackLayout>
     </ScrollView>

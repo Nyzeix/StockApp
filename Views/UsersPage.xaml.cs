@@ -27,13 +27,17 @@ namespace StockApp.Views
         }
 
         // Gestion de la sélection d'un utilisateur dans le CollectionView
-        public void TODO(object sender, SelectionChangedEventArgs e)
+        public async void TODO(object sender, SelectionChangedEventArgs e)
         {
             var selected = e.CurrentSelection?.FirstOrDefault() as User;
             if (selected != null)
             {
-                DisplayAlert("Utilisateur sélectionné", $"Nom : {selected.Username}", "OK");
+                // 🔹 Afficher le mot de passe à la place
+                string passwordToShow = string.IsNullOrEmpty(selected.PasswordHash) ? "(aucun mot de passe)" : selected.PasswordHash;
 
+                await DisplayAlert("Utilisateur sélectionné", $"Nom : {selected.Username}\nMot de passe : {passwordToShow}", "OK");
+
+                // Désélection pour pouvoir recliquer
                 if (sender is CollectionView cv)
                     cv.SelectedItem = null;
             }

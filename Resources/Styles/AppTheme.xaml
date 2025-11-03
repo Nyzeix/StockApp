@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    x:Class="StockApp.Resources.Styles.AppTheme">
+
+    <!-- 🎨 PALETTE DE COULEURS -->
+    <!-- Couleurs principales -->
+    <Color x:Key="PrimaryColorLight">#2E86DE</Color>
+    <Color x:Key="PrimaryColorDark">#1B4F72</Color>
+
+    <Color x:Key="SecondaryColorLight">#48C9B0</Color>
+    <Color x:Key="SecondaryColorDark">#16A085</Color>
+
+    <!-- Fonds -->
+    <Color x:Key="BackgroundLight">#F7F9FC</Color>
+    <Color x:Key="BackgroundDark">#1E1E2F</Color>
+
+    <Color x:Key="CardBackgroundLight">#FFFFFF</Color>
+    <Color x:Key="CardBackgroundDark">#2B2B3C</Color>
+
+    <!-- Texte -->
+    <Color x:Key="TextPrimaryLight">#2C3E50</Color>
+    <Color x:Key="TextPrimaryDark">#F5F6FA</Color>
+
+    <Color x:Key="TextSecondaryLight">#5D6D7E</Color>
+    <Color x:Key="TextSecondaryDark">#BDC3C7</Color>
+
+    <!-- États / Alertes -->
+    <Color x:Key="DangerColor">#E74C3C</Color>
+    <Color x:Key="SuccessColor">#27AE60</Color>
+
+    <!-- 🎨 THEMES LUMINEUX / SOMBRES -->
+    <Style x:Key="PageStyle" TargetType="ContentPage">
+        <Setter Property="BackgroundColor"
+                Value="{AppThemeBinding Light={StaticResource BackgroundLight},
+                                      Dark={StaticResource BackgroundDark}}" />
+    </Style>
+
+    <Style x:Key="FrameCardStyle" TargetType="Frame">
+        <Setter Property="BackgroundColor"
+                Value="{AppThemeBinding Light={StaticResource CardBackgroundLight},
+                                      Dark={StaticResource CardBackgroundDark}}" />
+        <Setter Property="HasShadow" Value="True" />
+        <Setter Property="CornerRadius" Value="12" />
+        <Setter Property="Padding" Value="15" />
+    </Style>
+
+    <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+        <Setter Property="BackgroundColor"
+                Value="{AppThemeBinding Light={StaticResource PrimaryColorLight},
+                                      Dark={StaticResource PrimaryColorDark}}" />
+        <Setter Property="TextColor" Value="White" />
+        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="HeightRequest" Value="45" />
+        <Setter Property="Margin" Value="5,0" />
+    </Style>
+
+    <Style x:Key="DangerButtonStyle" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{StaticResource DangerColor}" />
+        <Setter Property="TextColor" Value="White" />
+        <Setter Property="CornerRadius" Value="10" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="HeightRequest" Value="45" />
+    </Style>
+
+    <Style x:Key="EntryStyle" TargetType="Entry">
+        <Setter Property="BackgroundColor"
+                Value="{AppThemeBinding Light={StaticResource CardBackgroundLight},
+                                      Dark={StaticResource CardBackgroundDark}}" />
+        <Setter Property="TextColor"
+                Value="{AppThemeBinding Light={StaticResource TextPrimaryLight},
+                                      Dark={StaticResource TextPrimaryDark}}" />
+        <Setter Property="PlaceholderColor"
+                Value="{AppThemeBinding Light={StaticResource TextSecondaryLight},
+                                      Dark={StaticResource TextSecondaryDark}}" />
+        <Setter Property="HeightRequest" Value="45" />
+        <Setter Property="CornerRadius" Value="8" />
+    </Style>
+
+    <Style x:Key="LabelTitleStyle" TargetType="Label">
+        <Setter Property="FontSize" Value="18" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="TextColor"
+                Value="{AppThemeBinding Light={StaticResource TextPrimaryLight},
+                                      Dark={StaticResource TextPrimaryDark}}" />
+        <Setter Property="HorizontalOptions" Value="Center" />
+    </Style>
+
+</ResourceDictionary>

@@ -1,148 +1,149 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="StockApp.Views.UsersPage"
              xmlns:models="clr-namespace:StockApp.Models"
              xmlns:conv="clr-namespace:StockApp.Converters"
-             Title="UsersPage">
-
-    <VerticalStackLayout Padding="10" Spacing="10">
+             x:Class="StockApp.Views.UsersPage"
+             Title="👥 Gestion des utilisateurs"
+             BackgroundColor="#F7F8FA">
+    <ScrollView>
+    <VerticalStackLayout Padding="15" Spacing="15">
 
         <!-- Bouton Ajouter -->
-        <Button Text="Ajouter"
-                HorizontalOptions="Start"
+        <Button Text="➕ Ajouter un utilisateur"
+                x:Name="AddButton"
+                BackgroundColor="#0078D7"
+                TextColor="White"
+                FontAttributes="Bold"
+                CornerRadius="10"
+                HeightRequest="50"
                 Clicked="OnAddButtonClicked" />
 
-        <!-- Formulaire d’ajout utilisateur (caché par défaut) -->
+        <!-- Barre de recherche -->
+        <SearchBar x:Name="UserSearchBar"
+                   Placeholder="Rechercher un utilisateur..."
+                   PlaceholderColor="#888"
+                   FontSize="16"
+                   HeightRequest="50"
+                   TextChanged="OnSearchBarTextChanged"
+                   BackgroundColor="White"
+                   TextColor="Black"
+                   Margin="0,5,0,0" />
+
+        <!-- Formulaire d’ajout utilisateur -->
         <Frame x:Name="AddUserForm"
                IsVisible="False"
-               BackgroundColor="#EFEFEF"
-               BorderColor="LightGray"
-               CornerRadius="8"
+               BackgroundColor="White"
+               BorderColor="#E0E0E0"
+               CornerRadius="12"
                Padding="15"
-               Margin="0,5,0,10">
+               Margin="0,10,0,10"
+               HasShadow="True">
 
             <VerticalStackLayout Spacing="10">
-
                 <Label Text="Ajouter un utilisateur"
-                       FontSize="18"
+                       FontSize="20"
                        FontAttributes="Bold"
-                       TextColor="Black"
+                       TextColor="#222"
                        HorizontalOptions="Center" />
 
                 <!-- Nom d'utilisateur -->
-                <Entry x:Name="UsernameEntry"
-                       Placeholder="Nom d'utilisateur"
-                       PlaceholderColor="#555"
-                       TextColor="Black" />
+                <Frame BackgroundColor="#F2F2F2" Padding="10" CornerRadius="8">
+                    <Entry x:Name="UsernameEntry"
+                           Placeholder="Nom d'utilisateur"
+                           PlaceholderColor="#888"
+                           TextColor="#111"
+                           BackgroundColor="Transparent" />
+                </Frame>
 
                 <!-- Mot de passe -->
-                <Entry x:Name="PasswordEntry"
-                       Placeholder="Mot de passe"
-                       PlaceholderColor="#555"
-                       TextColor="Black"
-                       IsPassword="True" />
+                <Frame BackgroundColor="#F2F2F2" Padding="10" CornerRadius="8">
+                    <Entry x:Name="PasswordEntry"
+                           Placeholder="Mot de passe"
+                           PlaceholderColor="#888"
+                           TextColor="#111"
+                           IsPassword="True"
+                           BackgroundColor="Transparent" />
+                </Frame>
 
                 <!-- Admin switch -->
                 <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
                     <Label Text="Admin ?"
                            FontSize="14"
-                           TextColor="Black"
+                           TextColor="#222"
                            VerticalOptions="Center"/>
                     <Switch x:Name="IsAdminSwitch"/>
                 </HorizontalStackLayout>
 
                 <!-- Boutons -->
                 <HorizontalStackLayout HorizontalOptions="Center" Spacing="15">
-                    <Button Text="Enregistrer"
-                            BackgroundColor="#2E86DE"
+                    <Button Text="💾 Enregistrer"
+                            BackgroundColor="#0078D7"
                             TextColor="White"
+                            FontAttributes="Bold"
+                            CornerRadius="10"
+                            HeightRequest="45"
                             Clicked="OnSaveUserClicked" />
-                    <Button Text="Annuler"
-                            BackgroundColor="Gray"
+                    <Button Text="❌ Annuler"
+                            BackgroundColor="#AAAAAA"
                             TextColor="White"
+                            FontAttributes="Bold"
+                            CornerRadius="10"
+                            HeightRequest="45"
                             Clicked="OnCancelUserClicked" />
                 </HorizontalStackLayout>
-
             </VerticalStackLayout>
         </Frame>
-
-        <!-- Barre de recherche -->
-        <SearchBar x:Name="UserSearchBar"
-                   Placeholder="Rechercher un utilisateur"
-                   HorizontalOptions="FillAndExpand"
-                   TextChanged="OnSearchBarTextChanged"
-                   FontSize="16"
-                   HeightRequest="50"/>
-
-        <Label Text="Liste des utilisateurs"
-               VerticalOptions="Center"
-               HorizontalOptions="Center"
-               TextColor="Black" />
 
         <!-- Liste des utilisateurs -->
         <CollectionView x:Name="UserCollectionView"
                         ItemsSource="{Binding ExampleUsers}"
-                        Margin="8"
+                        Margin="0,10,0,0"
                         SelectionMode="Single"
                         SelectionChanged="TODO">
 
             <CollectionView.ItemsLayout>
-                <LinearItemsLayout Orientation="Vertical" ItemSpacing="6"/>
+                <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
             </CollectionView.ItemsLayout>
 
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:User">
-                    <Border Stroke="LightSlateGrey"
-                            StrokeThickness="1"
-                            StrokeShape="RoundRectangle 12"
-                            BackgroundColor="LightGray"
-                            Padding="12"
-                            Margin="8">
+                    <Frame BackgroundColor="White"
+                           BorderColor="#E0E0E0"
+                           CornerRadius="12"
+                           Padding="15"
+                           HasShadow="True">
 
-                        <Border.Shadow>
-                            <Shadow Brush="Black"
-                                    Offset="5,5"
-                                    Radius="8"
-                                    Opacity="0.25" />
-                        </Border.Shadow>
-
-                        <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
-
-                            <!-- Nom -->
+                        <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto">
+                            <!-- Nom d'utilisateur -->
                             <Label Grid.Row="0" Grid.Column="0"
                                    Text="{Binding Username}"
                                    FontSize="20"
                                    FontAttributes="Bold"
-                                   TextColor="Black"/>
-
-                            <!-- Date de création -->
-                            <Label Grid.Row="0" Grid.Column="1"
-                                   Text="{Binding CreatedAt}"
-                                   FontSize="14"
-                                   HorizontalTextAlignment="End"
-                                   TextColor="DarkRed"
-                                   Margin="20,0,0,0"/>
+                                   TextColor="#222" />
 
                             <!-- Type d'utilisateur -->
                             <Label Grid.Row="1" Grid.Column="0"
-                                   FontSize="14"
-                                   TextColor="Black"
-                                   Text="{Binding IsAdmin, Converter={StaticResource BooleanToTextConverter}, ConverterParameter='Admin;Standard'}"/>
+                                   Text="{Binding IsAdmin, Converter={StaticResource BooleanToTextConverter}, ConverterParameter='Admin;Standard'}"
+                                   FontSize="16"
+                                   TextColor="#0078D7" />
 
                             <!-- Bouton Supprimer -->
-                            <Button Grid.Row="0" Grid.Column="2" 
-                                    Text="Supprimer"
-                                    BackgroundColor="Red"
+                            <Button Grid.Row="0" Grid.Column="1"
+                                    Text="❌ Supprimer"
+                                    BackgroundColor="#960018"
                                     TextColor="White"
+                                    FontAttributes="Bold"
+                                    CornerRadius="8"
+                                    HeightRequest="40"
                                     Clicked="OnDeleteUserClicked"
                                     VerticalOptions="Center"/>
                         </Grid>
-                    </Border>
+                    </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
-
         </CollectionView>
 
     </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

@@ -30,9 +30,9 @@ namespace StockApp.ViewModels
         private void LoadExampleUsers()
         {
             // Exemple de données statiques
-            ExampleUsers.Add(new User { Username = "Pommes", IsAdmin = false });
-            ExampleUsers.Add(new User { Username = "A", IsAdmin = true });
-            ExampleUsers.Add(new User { Username = "X", IsAdmin = true });
+            ExampleUsers.Add(new User { Username = "Roger", PasswordHash = "test", IsAdmin = false });
+            ExampleUsers.Add(new User { Username = "Didier", PasswordHash = "motdepasse", IsAdmin = true });
+            ExampleUsers.Add(new User { Username = "Patoche", PasswordHash = "1234", IsAdmin = true });
         }
 
         // Appelle la vue si une propriété évolue
