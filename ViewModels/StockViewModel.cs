@@ -30,9 +30,9 @@ namespace StockApp.ViewModels
         private void LoadStockItems()
         {
             // Exemple de données statiques
-            StockItems.Add(new Product { Name = "Pommes", Quantity = 50, ExpirationDate = 1, Origin = "France", Color = "Rouge", CreatedAt = (int)DateTimeOffset.Now.ToUnixTimeSeconds() });
-            StockItems.Add(new Product { Name = "Bananes", Quantity = 30, ExpirationDate = 1, Origin = "Equateur", Color = "Jaune", CreatedAt = (int)DateTimeOffset.Now.ToUnixTimeSeconds() });
-            StockItems.Add(new Product { Name = "Oranges", Quantity = 20, ExpirationDate = 1, Origin = "Espagne", Color = "Orange", CreatedAt = (int)DateTimeOffset.Now.ToUnixTimeSeconds() });
+            StockItems.Add(new Product { Name = "Pommes", Quantity = 50, Origin = "France", Color = "Rouge", CreatedAt = (int)DateTimeOffset.Now.ToUnixTimeSeconds() });
+            StockItems.Add(new Product { Name = "Bananes", Quantity = 30, Origin = "Equateur", Color = "Jaune", CreatedAt = (int)DateTimeOffset.Now.ToUnixTimeSeconds() });
+            StockItems.Add(new Product { Name = "Oranges", Quantity = 20, Origin = "Espagne", Color = "Orange", CreatedAt = (int)DateTimeOffset.Now.ToUnixTimeSeconds() });
         }
 
         // Appelle la vue si une propriété évolue

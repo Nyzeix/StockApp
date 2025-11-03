@@ -10,7 +10,7 @@ namespace StockApp.Models
     {
         public string Name { get; set; } = "";
         public int Quantity { get; set; } = 0;
-        public int ExpirationDate { get; set; } = 0;
+        public DateTime ExpirationDate { get; set; }
         public string? Origin { get; set; } = null;
         public string? Color { get; set; } = null;
         public int CreatedAt { get; set; } = 0;

@@ -1,28 +1,88 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="StockApp.Views.UsersPage"
              xmlns:models="clr-namespace:StockApp.Models"
              xmlns:conv="clr-namespace:StockApp.Converters"
              Title="UsersPage">
-    <VerticalStackLayout>
-        <Label Text="Welcome to User Page"
-               VerticalOptions="Center" 
-               HorizontalOptions="Center" />
+
+    <VerticalStackLayout Padding="10" Spacing="10">
+
+        <!-- Bouton Ajouter -->
+        <Button Text="Ajouter"
+                HorizontalOptions="Start"
+                Clicked="OnAddButtonClicked" />
+
+        <!-- Formulaire d’ajout utilisateur (caché par défaut) -->
+        <Frame x:Name="AddUserForm"
+               IsVisible="False"
+               BackgroundColor="#EFEFEF"
+               BorderColor="LightGray"
+               CornerRadius="8"
+               Padding="15"
+               Margin="0,5,0,10">
+
+            <VerticalStackLayout Spacing="10">
+
+                <Label Text="Ajouter un utilisateur"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       TextColor="Black"
+                       HorizontalOptions="Center" />
+
+                <Entry x:Name="UsernameEntry"
+                       Placeholder="Nom d'utilisateur"
+                       PlaceholderColor="#555"
+                       TextColor="Black" />
+
+                <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
+                    <Label Text="Admin ?"
+                           FontSize="14"
+                           TextColor="Black"
+                           VerticalOptions="Center"/>
+                    <Switch x:Name="IsAdminSwitch"/>
+                </HorizontalStackLayout>
+
+                <HorizontalStackLayout HorizontalOptions="Center" Spacing="15">
+                    <Button Text="Enregistrer"
+                            BackgroundColor="#2E86DE"
+                            TextColor="White"
+                            Clicked="OnSaveUserClicked" />
+                    <Button Text="Annuler"
+                            BackgroundColor="Gray"
+                            TextColor="White"
+                            Clicked="OnCancelUserClicked" />
+                </HorizontalStackLayout>
+
+            </VerticalStackLayout>
+        </Frame>
+
+        <!-- Barre de recherche -->
+        <SearchBar x:Name="UserSearchBar"
+                   Placeholder="Rechercher un utilisateur"
+                   HorizontalOptions="FillAndExpand"
+                   TextChanged="OnSearchBarTextChanged"
+                   FontSize="16"
+                   HeightRequest="50"/>
+
+        <Label Text="Liste des utilisateurs"
+               VerticalOptions="Center"
+               HorizontalOptions="Center"
+               TextColor="Black" />
+
+        <!-- Liste des utilisateurs -->
         <CollectionView x:Name="UserCollectionView"
                         ItemsSource="{Binding ExampleUsers}"
                         Margin="8"
                         SelectionMode="Single"
                         SelectionChanged="TODO">
-            <!-- Applique un espace entre chaque Item -->
+
             <CollectionView.ItemsLayout>
                 <LinearItemsLayout Orientation="Vertical" ItemSpacing="6"/>
             </CollectionView.ItemsLayout>
 
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:User">
-                    <Border
-                            Stroke="LightSlateGrey"
+                    <Border Stroke="LightSlateGrey"
                             StrokeThickness="1"
                             StrokeShape="RoundRectangle 12"
                             BackgroundColor="LightGray"
@@ -36,30 +96,42 @@
                                     Opacity="0.25" />
                         </Border.Shadow>
 
-                        <!-- Grille de positionnement -->
-                        <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,Auto">
+                        <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
+
+                            <!-- Nom -->
                             <Label Grid.Row="0" Grid.Column="0"
-                                Text="{Binding Username}"
-                                FontSize="20"
-                                FontAttributes="Bold"
-                                TextColor="Black"/>
+                                   Text="{Binding Username}"
+                                   FontSize="20"
+                                   FontAttributes="Bold"
+                                   TextColor="Black"/>
+
+                            <!-- Date de création -->
                             <Label Grid.Row="0" Grid.Column="1"
-                                Text="{Binding CreatedAt}"
+                                   Text="{Binding CreatedAt}"
                                    FontSize="14"
                                    HorizontalTextAlignment="End"
                                    TextColor="DarkRed"
                                    Margin="20,0,0,0"/>
-                            <!-- TODO: Fonction de convertion boolean IsAdmin -> "Standard" ou "Admin" -->
-                            <Label Grid.Row="1" 
-                                   Grid.Column="0"
+
+                            <!-- Type d'utilisateur -->
+                            <Label Grid.Row="1" Grid.Column="0"
                                    FontSize="14"
                                    TextColor="Black"
-                                   Text="{Binding IsAdmin, Converter={StaticResource BooleanToTextConverter}, ConverterParameter='Admin;Standard'}">
-                            </Label> 
+                                   Text="{Binding IsAdmin, Converter={StaticResource BooleanToTextConverter}, ConverterParameter='Admin;Standard'}"/>
+
+                            <!-- Bouton Supprimer -->
+                            <Button Grid.Row="0" Grid.Column="2" 
+                                    Text="Supprimer"
+                                    BackgroundColor="Red"
+                                    TextColor="White"
+                                    Clicked="OnDeleteUserClicked"
+                                    VerticalOptions="Center"/>
                         </Grid>
                     </Border>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
+
         </CollectionView>
+
     </VerticalStackLayout>
 </ContentPage>
