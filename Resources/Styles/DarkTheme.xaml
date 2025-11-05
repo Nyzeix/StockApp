@@ -3,13 +3,15 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 	<Color x:Key="DarkTextColor">#ffffff</Color>
-	<Color x:Key="DarkBackgroundColor">#000000</Color>
-	<Color x:Key="DarkBlockBackgroundColor">#000000</Color>
-	<Color x:Key="DarkPrimaryColor">#000000</Color>
-	<Color x:Key="DarkSecondaryColor">#000000</Color>
-	<Color x:Key="DarkButtonColor">#000000</Color>
+    <Color x:Key="DarkBackgroundColor">#212227</Color>
+    <Color x:Key="DarkBlockBackgroundColor">#637074</Color>
+    <Color x:Key="DarkPrimaryColor">#9cd4f9</Color>
+    <Color x:Key="DarkSecondaryColor">#aab9cf</Color>
+    <Color x:Key="DarkPrimaryButtonColor">#68bfd3</Color>
+    <Color x:Key="DarkSecondaryButtonColor">#8693ab</Color>
 	<Color x:Key="DarkColor">#000000</Color>
-	
+
+
     <!-- Dark Theme Colors -->
     <Color x:Key="DarkTextColor-50">#011819</Color>
     <Color x:Key="DarkTextColor-100">#012f32</Color>

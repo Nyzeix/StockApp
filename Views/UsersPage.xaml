@@ -12,28 +12,28 @@
         <!-- Bouton Ajouter -->
         <Button Text="➕ Ajouter un utilisateur"
                 x:Name="AddButton"
-                BackgroundColor="#0078D7"
-                TextColor="White"
                 FontAttributes="Bold"
                 CornerRadius="10"
                 HeightRequest="50"
+                BackgroundColor="{AppThemeBinding Light={DynamicResource LightPrimaryButtonColor}, Dark={DynamicResource DarkPrimaryButtonColor}}"
+                TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
                 Clicked="OnAddButtonClicked" />
 
         <!-- Barre de recherche -->
         <SearchBar x:Name="UserSearchBar"
                    Placeholder="Rechercher un utilisateur..."
-                   PlaceholderColor="#888"
                    FontSize="16"
                    HeightRequest="50"
                    TextChanged="OnSearchBarTextChanged"
-                   BackgroundColor="White"
-                   TextColor="Black"
+                   BackgroundColor="{AppThemeBinding Light={DynamicResource LightBlockBackgroundColor}, Dark={DynamicResource DarkBlockBackgroundColor}}"
+                   TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
+                   PlaceholderColor="{AppThemeBinding Light={DynamicResource LightPrimaryColor}, Dark={DynamicResource DarkPrimaryColor}}"
                    Margin="0,5,0,0" />
 
         <!-- Formulaire d’ajout utilisateur -->
         <Border x:Name="AddUserForm"
                IsVisible="False"
-               BackgroundColor="White"
+               BackgroundColor="{AppThemeBinding Light={DynamicResource LightBackgroundColor}, Dark={DynamicResource DarkBackgroundColor}}"
                Padding="15"
                Margin="0,10,0,10">
 
@@ -41,24 +41,28 @@
                 <Label Text="Ajouter un utilisateur"
                        FontSize="20"
                        FontAttributes="Bold"
-                       TextColor="#222"
+                       TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
                        HorizontalOptions="Center" />
 
                 <!-- Nom d'utilisateur -->
-                <Border BackgroundColor="#F2F2F2" Padding="10">
-                    <Entry x:Name="UsernameEntry"
+                    <Border  Padding="10"
+                             BackgroundColor="{AppThemeBinding Light={DynamicResource LightBlockgroundColor}, Dark={DynamicResource DarkBlockBackgroundColor}}"
+                             Stroke="{AppThemeBinding Light={DynamicResource LightSecondaryColor}, Dark={DynamicResource DarkSecondaryColor}}">
+                        <Entry x:Name="UsernameEntry"
                            Placeholder="Nom d'utilisateur"
-                           PlaceholderColor="#888"
-                           TextColor="#111"
+                           PlaceholderColor="{AppThemeBinding Light={DynamicResource LightPrimaryColor}, Dark={DynamicResource DarkPrimaryColor}}"
+                           TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
                            BackgroundColor="Transparent" />
                 </Border>
 
                 <!-- Mot de passe -->
-                <Border BackgroundColor="#F2F2F2" Padding="10" >
-                    <Entry x:Name="PasswordEntry"
+                    <Border Padding="10" 
+                            BackgroundColor="{AppThemeBinding Light={DynamicResource LightBlockgroundColor}, Dark={DynamicResource DarkBlockBackgroundColor}}"
+                            Stroke="{AppThemeBinding Light={DynamicResource LightSecondaryColor}, Dark={DynamicResource DarkSecondaryColor}}">
+                        <Entry x:Name="PasswordEntry"
                            Placeholder="Mot de passe"
-                           PlaceholderColor="#888"
-                           TextColor="#111"
+                           TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
+                           PlaceholderColor="{AppThemeBinding Light={DynamicResource LightPrimaryColor}, Dark={DynamicResource DarkPrimaryColor}}"
                            IsPassword="True"
                            BackgroundColor="Transparent" />
                 </Border>
@@ -67,7 +71,7 @@
                 <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
                     <Label Text="Admin ?"
                            FontSize="14"
-                           TextColor="#222"
+                           TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
                            VerticalOptions="Center"/>
                     <Switch x:Name="IsAdminSwitch"/>
                 </HorizontalStackLayout>
@@ -75,15 +79,16 @@
                 <!-- Boutons -->
                 <HorizontalStackLayout HorizontalOptions="Center" Spacing="15">
                     <Button Text="💾 Enregistrer"
-                            BackgroundColor="#0078D7"
-                            TextColor="White"
+                            TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
+                            BackgroundColor="{AppThemeBinding Light={DynamicResource LightPrimaryButtonColor}, Dark={DynamicResource DarkPrimaryButtonColor}}"
                             FontAttributes="Bold"
                             CornerRadius="10"
                             HeightRequest="45"
                             Clicked="OnSaveUserClicked" />
-                    <Button Text="❌ Annuler"
-                            BackgroundColor="#AAAAAA"
-                            TextColor="White"
+
+                        <Button Text="❌ Annuler"
+                                TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
+                                BackgroundColor="{AppThemeBinding Light={DynamicResource LightSecondaryButtonColor}, Dark={DynamicResource DarkSecondaryButtonColor}}"
                             FontAttributes="Bold"
                             CornerRadius="10"
                             HeightRequest="45"
@@ -105,8 +110,8 @@
 
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:User">
-                    <Border BackgroundColor="White"
-                           Padding="15">
+                        <Border BackgroundColor="{AppThemeBinding Light={DynamicResource LightAccentColor}, Dark={DynamicResource DarkAccentColor}}"
+                                Padding="15">
 
                         <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto">
                             <!-- Nom d'utilisateur -->
@@ -114,19 +119,19 @@
                                    Text="{Binding Username}"
                                    FontSize="20"
                                    FontAttributes="Bold"
-                                   TextColor="#222" />
+                                   TextColor="{AppThemeBinding Light={DynamicResource BlackBrush}, Dark={DynamicResource WhiteBrush}}"/>
 
                             <!-- Type d'utilisateur -->
-                            <Label Grid.Row="1" Grid.Column="0"
+                                <Label Grid.Row="1" Grid.Column="0"
                                    Text="{Binding IsAdmin, Converter={StaticResource BooleanToTextConverter}, ConverterParameter='Admin;Standard'}"
                                    FontSize="16"
-                                   TextColor="#0078D7" />
+                                   TextColor="{AppThemeBinding Light={DynamicResource BlackBrush}, Dark={DynamicResource WhiteBrush}}"/>
 
-                            <!-- Bouton Supprimer -->
+                                <!-- Bouton Supprimer -->
                             <Button Grid.Row="0" Grid.Column="1"
                                     Text="❌ Supprimer"
-                                    BackgroundColor="#960018"
-                                    TextColor="White"
+                                    BackgroundColor="{AppThemeBinding Light={DynamicResource LightBlockBackgroundColor}, Dark={DynamicResource DarkBlockBackgroundColor}}"
+                                    TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
                                     FontAttributes="Bold"
                                     CornerRadius="8"
                                     HeightRequest="40"

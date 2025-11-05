@@ -3,12 +3,13 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 	<Color x:Key="LightTextColor">#000000</Color>
-	<Color x:Key="LightBackgroundColor">#000000</Color>
-	<Color x:Key="LightBlockgroundColor">#000000</Color>
-	<Color x:Key="LightPrimaryColor">#000000</Color>
-	<Color x:Key="LightSecondaryColor">#000000</Color>
-	<Color x:Key="LightButtonColor">#000000</Color>
-	<Color x:Key="LightColor">#000000</Color>
+    <Color x:Key="LightBackgroundColor">#F1F7FF</Color>
+    <Color x:Key="LightBlockBackgroundColor">#C0D8E9</Color>
+    <Color x:Key="LightPrimaryColor">#5F97F9</Color>
+    <Color x:Key="LightSecondaryColor">#CED2FF</Color>
+    <Color x:Key="LightPrimaryButtonColor">#3BF2FF</Color>
+    <Color x:Key="LightSecondaryButtonColor">#8693ab</Color>
+    <Color x:Key="LightColor">#000000</Color>
 	
 	
     <Color x:Key="LightTextColor-50">#e6fdfe</Color>

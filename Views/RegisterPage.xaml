@@ -26,9 +26,9 @@
                     <Border>
                         <Entry Placeholder="Pseudo"
                                Text="{Binding Username}"
-                               BackgroundColor="{AppThemeBinding Light={DynamicResource LightBackgroundColor}, Dark={DynamicResource DarkBackgroundColor}}"
+                               BackgroundColor="{AppThemeBinding Light={DynamicResource LightBlockBackgroundColor}, Dark={DynamicResource DarkBlockBackgroundColor}}"
                                TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
-                               PlaceholderColor="{AppThemeBinding Light={DynamicResource DarkTextColor}, Dark={DynamicResource DarkAccentColor}}" />
+                               PlaceholderColor="{AppThemeBinding Light={DynamicResource LightPrimaryColor}, Dark={DynamicResource DarkPrimaryColor}}" />
                     </Border>
 
                     <!-- Mot de passe -->
@@ -36,9 +36,9 @@
                         <Entry Placeholder="Mot de passe"
                                IsPassword="True"
                                Text="{Binding Password}"
-                               BackgroundColor="{AppThemeBinding Light={DynamicResource LightBackgroundColor}, Dark={DynamicResource DarkBackgroundColor}}"
+                               BackgroundColor="{AppThemeBinding Light={DynamicResource LightBlockBackgroundColor}, Dark={DynamicResource DarkBlockBackgroundColor}}"
                                TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
-                               PlaceholderColor="{AppThemeBinding Light={DynamicResource DarkTextColor}, Dark={DynamicResource DarkAccentColor}}"
+                               PlaceholderColor="{AppThemeBinding Light={DynamicResource LightPrimaryColor}, Dark={DynamicResource DarkPrimaryColor}}"
                                />
                     </Border>
 
@@ -47,9 +47,9 @@
                         <Entry Placeholder="Confirmer mot de passe"
                                IsPassword="True"
                                Text="{Binding Password2}"
-                               BackgroundColor="{AppThemeBinding Light={DynamicResource LightBackgroundColor}, Dark={DynamicResource DarkBackgroundColor}}"
+                               BackgroundColor="{AppThemeBinding Light={DynamicResource LightBlockBackgroundColor}, Dark={DynamicResource DarkBlockBackgroundColor}}"
                                TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
-                               PlaceholderColor="{AppThemeBinding Light={DynamicResource DarkTextColor}, Dark={DynamicResource DarkAccentColor}}"
+                               PlaceholderColor="{AppThemeBinding Light={DynamicResource LightPrimaryColor}, Dark={DynamicResource DarkPrimaryColor}}"
                                />
                     </Border>
 
@@ -62,24 +62,21 @@
 
                     <!-- Boutons -->
                     <VerticalStackLayout Spacing="12">
-
                         <Button Text="Créer le compte"
                                 FontAttributes="Bold"
                                 CornerRadius="10"
                                 HeightRequest="45"
                                 Command="{Binding RegisterCommand}"
                                 TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
-                                BackgroundColor="{AppThemeBinding Light={DynamicResource LightBackgroundColor}, Dark={DynamicResource DarkBackgroundColor}}"/>
+                                BackgroundColor="{AppThemeBinding Light={DynamicResource LightPrimaryButtonColor}, Dark={DynamicResource DarkPrimaryButtonColor}}"/>
                         <Button Text="Retour"
                                 FontAttributes="Bold"
                                 CornerRadius="10"
                                 HeightRequest="45"
                                 Command="{Binding BackToLoginCommand}"
                                 TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
-                                BackgroundColor="{AppThemeBinding Light={DynamicResource LightSecondaryColor}, Dark={DynamicResource DarkBackgroundColor}}"/>
-
+                                BackgroundColor="{AppThemeBinding Light={DynamicResource LightSecondaryButtonColor}, Dark={DynamicResource DarkSecondaryButtonColor}}"/>
                     </VerticalStackLayout>
-
                 </VerticalStackLayout>
             </Border>
         </VerticalStackLayout>
