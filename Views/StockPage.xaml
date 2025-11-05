@@ -16,8 +16,8 @@
                 FontAttributes="Bold"
                 CornerRadius="10"
                 HeightRequest="50"
-                BackgroundColor="{AppThemeBinding Light={DynamicResource LightAccentColor-100}, Dark={DynamicResource DarkAccentColor-100}}"
-                TextColor="{AppThemeBinding Light={DynamicResource LightTextColor-900}, Dark={DynamicResource DarkTextColor-900}}"
+                BackgroundColor="{AppThemeBinding Light={DynamicResource LightAccentColor}, Dark={DynamicResource DarkAccentColor}}"
+                TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
                 Clicked="OnAddButtonClicked" />
 
         <!-- Barre de recherche -->
@@ -27,9 +27,9 @@
                    HeightRequest="50"
                    TextChanged="OnSearchBarTextChanged"
                    Margin="0,5,0,0"
-                   BackgroundColor="{AppThemeBinding Light={DynamicResource LightBackgroundColor-50}, Dark={DynamicResource DarkBackgroundColor-900}}"
-                   TextColor="{AppThemeBinding Light={DynamicResource LightTextColor-900}, Dark={DynamicResource DarkTextColor-50}}"
-                   PlaceholderColor="{AppThemeBinding Light={DynamicResource DarkTextColor-50}, Dark={DynamicResource DarkAccentColor-200}}"/>
+                   BackgroundColor="{AppThemeBinding Light={DynamicResource LightBackgroundColor}, Dark={DynamicResource DarkBackgroundColor}}"
+                   TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
+                   PlaceholderColor="{AppThemeBinding Light={DynamicResource DarkTextColor}, Dark={DynamicResource DarkAccentColor}}"/>
 
         <!-- Ligne des filtres -->
         <HorizontalStackLayout Spacing="10" HorizontalOptions="FillAndExpand">
@@ -37,16 +37,16 @@
                         Title="Quantité"
                         FontSize="16"
                         HorizontalOptions="FillAndExpand"
-                        BackgroundColor="{AppThemeBinding Light={DynamicResource LightBackgroundColor-50}, Dark={DynamicResource DarkBackgroundColor-900}}"
-                        TextColor="{AppThemeBinding Light={DynamicResource LightTextColor-900}, Dark={DynamicResource DarkTextColor-50}}"
+                        BackgroundColor="{AppThemeBinding Light={DynamicResource LightBackgroundColor}, Dark={DynamicResource DarkBackgroundColor}}"
+                        TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
                         HeightRequest="65"/>
 
                 <Picker x:Name="OriginPicker"
                     Title="Origine"
                     FontSize="16"
                     HorizontalOptions="FillAndExpand"
-                    BackgroundColor="{AppThemeBinding Light={DynamicResource LightBackgroundColor-50}, Dark={DynamicResource DarkBackgroundColor-900}}"
-                    TextColor="{AppThemeBinding Light={DynamicResource LightTextColor-900}, Dark={DynamicResource DarkTextColor-50}}"
+                    BackgroundColor="{AppThemeBinding Light={DynamicResource LightBackgroundColor}, Dark={DynamicResource DarkBackgroundColor}}"
+                    TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
                     HeightRequest="65"  
                     ItemsSource="{Binding Origins}"
                     SelectedIndexChanged="OriginPicker_SelectedIndexChanged" />
@@ -55,7 +55,7 @@
         <!-- Formulaire d’ajout -->
         <Border x:Name="AddProductForm"
                IsVisible="False"
-               BackgroundColor="{AppThemeBinding Light={DynamicResource LightTextColor-50}, Dark={DynamicResource DarkTextColor-50}}"
+               BackgroundColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
                Padding="15"
                Margin="0,10,0,10">
 
@@ -63,77 +63,77 @@
                 <Label Text="Ajouter un produit"
                        FontSize="20"
                        FontAttributes="Bold"
-                       TextColor="{AppThemeBinding Light={DynamicResource LightTextColor900}, Dark={DynamicResource DarkTextColor900}}"
+                       TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
                        HorizontalOptions="Center" />
 
                 <!-- Nom -->
                 <Border Padding="10" 
-                        BackgroundColor="{AppThemeBinding Light={DynamicResource LightTextColor-100}, Dark={DynamicResource DarkTextColor-100}}"
-                        Stroke="{AppThemeBinding Light={DynamicResource LightTextColor-200}, Dark={DynamicResource DarkTextColor-200}}">
+                        BackgroundColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
+                        Stroke="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}">
                     <Entry x:Name="NameEntry"
                            Placeholder="Nom du produit"
                            BackgroundColor="Transparent"
-                           TextColor="{AppThemeBinding Light={DynamicResource LightTextColor-900}, Dark={DynamicResource DarkTextColor-900}}"
-                           PlaceholderColor="{AppThemeBinding Light={DynamicResource DarkTextColor-50}, Dark={DynamicResource LightTextColor-50}}"/>
+                           TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
+                           PlaceholderColor="{AppThemeBinding Light={DynamicResource DarkTextColor}, Dark={DynamicResource LightTextColor}}"/>
                 </Border>
 
                 <!-- Quantité -->
                 <Border Padding="10"
-                        BackgroundColor="{AppThemeBinding Light={DynamicResource LightTextColor-100}, Dark={DynamicResource DarkTextColor-100}}"
-                        Stroke="{AppThemeBinding Light={DynamicResource LightTextColor-200}, Dark={DynamicResource DarkTextColor-200}}">
+                        BackgroundColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
+                        Stroke="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}">
                     <Entry x:Name="QuantityEntry"
                            Placeholder="Quantité"
                            Keyboard="Numeric"
                            BackgroundColor="Transparent"
-                           TextColor="{AppThemeBinding Light={DynamicResource LightTextColor-900}, Dark={DynamicResource DarkTextColor-900}}"
-                           PlaceholderColor="{AppThemeBinding Light={DynamicResource DarkTextColor-50}, Dark={DynamicResource LightTextColor-50}}" />
+                           TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
+                           PlaceholderColor="{AppThemeBinding Light={DynamicResource DarkTextColor}, Dark={DynamicResource LightTextColor}}" />
                 </Border>
 
                 <!-- Couleur -->
                 <Border Padding="10" 
-                        BackgroundColor="{AppThemeBinding Light={DynamicResource LightTextColor-100}, Dark={DynamicResource DarkTextColor-100}}"
-                        Stroke="{AppThemeBinding Light={DynamicResource LightTextColor-200}, Dark={DynamicResource DarkTextColor-200}}">
+                        BackgroundColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
+                        Stroke="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}">
                     <Entry x:Name="ColorEntry"
                            Placeholder="Couleur"
                            BackgroundColor="Transparent"
-                           TextColor="{AppThemeBinding Light={DynamicResource LightTextColor-900}, Dark={DynamicResource DarkTextColor-900}}"
-                           PlaceholderColor="{AppThemeBinding Light={DynamicResource DarkTextColor-50}, Dark={DynamicResource LightTextColor-50}}" />
+                           TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
+                           PlaceholderColor="{AppThemeBinding Light={DynamicResource DarkTextColor}, Dark={DynamicResource LightTextColor}}" />
                 </Border>
 
                 <!-- Origine -->
                 <Border Padding="10"
-                        BackgroundColor="{AppThemeBinding Light={DynamicResource LightTextColor-100}, Dark={DynamicResource DarkTextColor-100}}"
-                        Stroke="{AppThemeBinding Light={DynamicResource LightTextColor-200}, Dark={DynamicResource DarkTextColor-200}}">
+                        BackgroundColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
+                        Stroke="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}">
                     <Entry x:Name="OriginEntry"
                            Placeholder="Origine"
                            BackgroundColor="Transparent"
-                           TextColor="{AppThemeBinding Light={DynamicResource LightTextColor-900}, Dark={DynamicResource DarkTextColor-900}}"
-                           PlaceholderColor="{AppThemeBinding Light={DynamicResource DarkTextColor-50}, Dark={DynamicResource LightTextColor-50}}"/>
+                           TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
+                           PlaceholderColor="{AppThemeBinding Light={DynamicResource DarkTextColor}, Dark={DynamicResource LightTextColor}}"/>
                 </Border>
 
                 <!-- Date de péremption -->
                 <Label Text="Date de péremption :" FontSize="14" TextColor="#444" />
                 <Border Padding="5"
-                        BackgroundColor="{AppThemeBinding Light={DynamicResource LightTextColor-100}, Dark={DynamicResource DarkTextColor-100}}"
-                        Stroke="{AppThemeBinding Light={DynamicResource LightTextColor-200}, Dark={DynamicResource DarkTextColor-200}}">
+                        BackgroundColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
+                        Stroke="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}">
                     <DatePicker x:Name="ExpirationDatePicker"
-                                TextColor="{AppThemeBinding Light={DynamicResource LightTextColor-100}, Dark={DynamicResource DarkTextColor-100}}"
-                                BackgroundColor="{AppThemeBinding Light={DynamicResource DarkTextColor-100}, Dark={DynamicResource LightTextColor-100}}" />
+                                TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
+                                BackgroundColor="{AppThemeBinding Light={DynamicResource DarkTextColor}, Dark={DynamicResource LightTextColor}}" />
                 </Border>
 
                 <HorizontalStackLayout HorizontalOptions="Center" Spacing="15">
                     <Button Text="💾 Enregistrer"
                             x:Name="SaveButton"
-                            TextColor="{AppThemeBinding Light={DynamicResource LightTextColor-900}, Dark={DynamicResource DarkTextColor-900}}"
-                            BackgroundColor="{AppThemeBinding Light={DynamicResource LightBackgroundColor-700}, Dark={DynamicResource DarkBackgroundColor-300}}"
+                            TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
+                            BackgroundColor="{AppThemeBinding Light={DynamicResource LightBackgroundColor}, Dark={DynamicResource DarkBackgroundColor}}"
                             FontAttributes="Bold"
                             CornerRadius="10"
                             HeightRequest="45"
                             Clicked="OnSaveProductClicked" />
                     <Button Text="❌ Annuler"
                             x:Name="CancelButton"
-                            TextColor="{AppThemeBinding Light={DynamicResource LightTextColor-900}, Dark={DynamicResource DarkTextColor-900}}"
-                            BackgroundColor="{AppThemeBinding Light={DynamicResource LightSecondaryColor-50}, Dark={DynamicResource DarkBackgroundColor-50}}"
+                            TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
+                            BackgroundColor="{AppThemeBinding Light={DynamicResource LightSecondaryColor}, Dark={DynamicResource DarkBackgroundColor}}"
                             FontAttributes="Bold"
                             CornerRadius="10"
                             HeightRequest="45"
@@ -156,7 +156,7 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:Product">
                     <Border 
-                        BackgroundColor="{AppThemeBinding Light={DynamicResource LightAccentColor-900}, Dark={DynamicResource DarkAccentColor-900}}"
+                        BackgroundColor="{AppThemeBinding Light={DynamicResource LightAccentColor}, Dark={DynamicResource DarkAccentColor}}"
                         Padding="15">
 
                         <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,Auto">

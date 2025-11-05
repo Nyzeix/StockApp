@@ -2,7 +2,14 @@
 <?xaml-comp compile="true" ?>
 <ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
-
+	<Color x:Key="DarkTextColor">#ffffff</Color>
+	<Color x:Key="DarkBackgroundColor">#000000</Color>
+	<Color x:Key="DarkBlockBackgroundColor">#000000</Color>
+	<Color x:Key="DarkPrimaryColor">#000000</Color>
+	<Color x:Key="DarkSecondaryColor">#000000</Color>
+	<Color x:Key="DarkButtonColor">#000000</Color>
+	<Color x:Key="DarkColor">#000000</Color>
+	
     <!-- Dark Theme Colors -->
     <Color x:Key="DarkTextColor-50">#011819</Color>
     <Color x:Key="DarkTextColor-100">#012f32</Color>
