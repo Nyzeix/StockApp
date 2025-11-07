@@ -22,14 +22,14 @@
 
             <!-- Barre de recherche -->
             <Entry x:Name="SupplierSearchBar"
-                       Placeholder="Rechercher un fournisseur..."
-                       Text="{Binding SearchText}"
-                       FontSize="16"
-                       HeightRequest="50"
-                       Margin="0,5,0,0"
-                       BackgroundColor="{AppThemeBinding Light={DynamicResource LightBlockBackgroundColor}, Dark={DynamicResource DarkBlockBackgroundColor}}"
-                       TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
-                       PlaceholderColor="{AppThemeBinding Light={DynamicResource LightPrimaryColor}, Dark={DynamicResource DarkPrimaryColor}}"/>
+                   Placeholder="Rechercher un fournisseur..."
+                   Text="{Binding SearchText}"
+                   FontSize="16"
+                   HeightRequest="50"
+                   Margin="0,5,0,0"
+                   BackgroundColor="{AppThemeBinding Light={DynamicResource LightBlockBackgroundColor}, Dark={DynamicResource DarkBlockBackgroundColor}}"
+                   TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
+                   PlaceholderColor="{AppThemeBinding Light={DynamicResource LightPrimaryColor}, Dark={DynamicResource DarkPrimaryColor}}"/>
 
             <!-- Ligne des filtres -->
             <HorizontalStackLayout Spacing="10" HorizontalOptions="FillAndExpand">
@@ -102,7 +102,7 @@
             </Border>
 
             <!-- Liste des produits -->
-            <CollectionView x:Name="StockCollectionView"
+            <CollectionView x:Name="SupplierCollectionView"
                             ItemsSource="{Binding Suppliers}"
                             Margin="0,10,0,0"
                             SelectionMode="Single"
