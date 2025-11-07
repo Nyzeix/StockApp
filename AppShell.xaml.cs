@@ -11,6 +11,8 @@ public partial class AppShell : Shell
             Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));
             Routing.RegisterRoute(nameof(UsersPage), typeof(UsersPage));
             Routing.RegisterRoute(nameof(StockPage), typeof(StockPage));
+            Routing.RegisterRoute(nameof(SuppliersPage), typeof(SuppliersPage));
+
 
         // Démarrage sur Login
         //GoToAsync($"//{nameof(LoginPage)}");

@@ -41,6 +41,9 @@ public partial class HomePage : ContentPage
     private async void OnTapUsersPage(object sender, TappedEventArgs e)
         => await Shell.Current.GoToAsync(nameof(UsersPage));
 
+    private async void OnTapSuppliersPage(object sender, TappedEventArgs e)
+        => await Shell.Current.GoToAsync(nameof(SuppliersPage));
+
     private async void OnTapStockPage(object sender, TappedEventArgs e)
         => await Shell.Current.GoToAsync(nameof(StockPage));
 

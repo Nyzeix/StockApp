@@ -55,6 +55,37 @@
                 </Border.GestureRecognizers>
             </Border>
 
+            <!-- Carte Fournisseurs -->
+            <Border
+                BackgroundColor="{AppThemeBinding Light={DynamicResource LightPrimaryColor}, Dark={DynamicResource DarkPrimaryColor}}"
+                Stroke="{AppThemeBinding Light={DynamicResource LightSecondaryColor}, Dark={DynamicResource DarkSecondaryColor}}"
+                x:Name="SuppliersCard"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 16"
+                Padding="20"
+                WidthRequest="250"
+                HeightRequest="150"
+                HorizontalOptions="Center"
+                VerticalOptions="Center">
+                <VerticalStackLayout Spacing="8"
+                                     HorizontalOptions="Center"
+                                     VerticalOptions="CenterAndExpand">
+                    <Image Source="icon_suppliers.png"
+                           WidthRequest="48"
+                           HeightRequest="48"
+                           HorizontalOptions="Center"/>
+                    <Label Text="Gestion des fournisseurs"
+                           FontAttributes="Bold"
+                           FontSize="Medium"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"/>
+                </VerticalStackLayout>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnTapSuppliersPage" />
+                </Border.GestureRecognizers>
+            </Border>
+            
+
             <!-- Carte Utilisateurs -->
             <Border
                 BackgroundColor="{AppThemeBinding Light={DynamicResource LightSecondaryColor}, Dark={DynamicResource DarkSecondaryColor}}"
