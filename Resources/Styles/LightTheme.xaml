@@ -4,6 +4,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 	<Color x:Key="LightTextColor">#000000</Color>
     <Color x:Key="LightBackgroundColor">#F1F7FF</Color>
+    <Color x:Key="LightSecondaryBackgroundColor">#F1F7FF</Color>
     <Color x:Key="LightBlockBackgroundColor">#C0D8E9</Color>
     <Color x:Key="LightPrimaryColor">#5F97F9</Color>
     <Color x:Key="LightSecondaryColor">#CED2FF</Color>
