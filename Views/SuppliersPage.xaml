@@ -40,7 +40,8 @@
                         BackgroundColor="{AppThemeBinding Light={DynamicResource LightBlockBackgroundColor}, Dark={DynamicResource DarkBlockBackgroundColor}}"
                         TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
                         HeightRequest="65"
-                        ItemsSource="{Binding TypeList}"/>
+                        ItemsSource="{Binding TypeList}"
+                        SelectedItem="{Binding SelectedType}"/>
             </HorizontalStackLayout>
 
             <!-- Formulaire d’ajout -->

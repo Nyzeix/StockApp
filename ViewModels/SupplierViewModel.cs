@@ -40,6 +40,19 @@ namespace StockApp.ViewModels
                 }
             }
         }
+        public string SelectedType
+        {
+            get => selectedType;
+            set
+            {
+                if (selectedType != value)
+                {
+                    selectedType = value;
+                    OnPropertyChanged();
+                    ApplyFilters();
+                }
+            }
+        }
 
 
         public SupplierViewModel()
@@ -48,7 +61,17 @@ namespace StockApp.ViewModels
             LoadTemplateSuppliersItems();
 
             // Initialisation de la liste des types pour le filtre
-            TypeList = allSuppliers.Select(s => s.Type).Distinct().OrderBy(t => t).ToList();
+            TypeList.Add("All");
+
+            //TypeList = allSuppliers.Select(s => s.Type).Distinct().OrderBy(t => t).ToList();
+
+            foreach (var supplier in allSuppliers)
+            {
+                if (!TypeList.Contains(supplier.Type))
+                {
+                    TypeList.Add(supplier.Type);
+                }
+            }
 
             ApplyFilters();
         }
