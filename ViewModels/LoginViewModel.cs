@@ -3,43 +3,44 @@ using StockApp.Views;
 using StockApp.ViewModels;
 using System.Windows.Input;
 
-namespace StockApp.ViewModels;
-
-public class LoginViewModel : BaseViewModel
+namespace StockApp.ViewModels
 {
-    private readonly IAuthService _auth;
-
-    private string _username = "";
-    public string Username { get => _username; set => Set(ref _username, value); }
-
-    private string _password = "";
-    public string Password { get => _password; set => Set(ref _password, value); }
-
-    private string _error = "";
-    public string Error { get => _error; set => Set(ref _error, value); }
-
-    public ICommand LoginCommand { get; }
-    public ICommand GoRegisterCommand { get; }
-
-    public LoginViewModel(IAuthService auth)
+    public class LoginViewModel : BaseViewModel
     {
-        _auth = auth;
-        LoginCommand = new Command(async () => await OnLoginAsync());
-        GoRegisterCommand = new Command(async () => await Shell.Current.GoToAsync(nameof(RegisterPage)));
-    }
+        private readonly IAuthService _auth;
 
-    private async Task OnLoginAsync()
-    {
-        Error = "";
-        var ok = await _auth.LoginAsync(Username, Password);
-        if (ok)
+        private string _username = "";
+        public string Username { get => _username; set => Set(ref _username, value); }
+
+        private string _password = "";
+        public string Password { get => _password; set => Set(ref _password, value); }
+
+        private string _error = "";
+        public string Error { get => _error; set => Set(ref _error, value); }
+
+        public ICommand LoginCommand { get; }
+        public ICommand GoRegisterCommand { get; }
+
+        public LoginViewModel(IAuthService auth)
         {
-            await Shell.Current.GoToAsync($"//{nameof(HomePage)}"); // nav root vers Home
-            Username = Password = "";
+            _auth = auth;
+            LoginCommand = new Command(async () => await OnLoginAsync());
+            GoRegisterCommand = new Command(async () => await Shell.Current.GoToAsync(nameof(RegisterPage)));
         }
-        else
+
+        private async Task OnLoginAsync()
         {
-            Error = "Identifiants invalides.";
+            Error = "";
+            var ok = await _auth.LoginAsync(Username, Password);
+            if (ok)
+            {
+                await Shell.Current.GoToAsync($"//{nameof(HomePage)}"); // nav root vers Home
+                Username = Password = "";
+            }
+            else
+            {
+                Error = "Identifiants invalides.";
+            }
         }
     }
 }
