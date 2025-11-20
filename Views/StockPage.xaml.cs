@@ -28,8 +28,20 @@ namespace StockApp.Views
             else
                 allProducts = new ObservableCollection<Product>();
 
+            setupPickers();
+            OriginPicker.SelectedIndex = 0;
+            QuantityPicker.SelectedIndex = 0;
+        }
+
+        private void setupPickers()
+        {
             // Remplir le Picker Origine
-            OriginPicker.ItemsSource = allProducts.Select(p => p.Origin).Distinct().OrderBy(o => o).ToList();
+            List<String> tmpOriginPickerData = [.. allProducts.Select(p => p.Origin).Distinct().OrderBy(o => o)];
+            tmpOriginPickerData.Insert(0, "Tous");
+            OriginPicker.ItemsSource = tmpOriginPickerData;
+
+            // Remplir le Picker Quantity
+            QuantityPicker.ItemsSource = new List<string> { "Tous", "0-10", "11-50", "51-100", "101+" };
         }
 
         // SelectionChanged - signature correcte
@@ -77,8 +89,8 @@ namespace StockApp.Views
             allProducts.Add(newProduct); // ajoute également à la liste complète
 
             // Mise à jour du Picker Origine
-            OriginPicker.ItemsSource = allProducts.Select(p => p.Origin).Distinct().OrderBy(o => o).ToList();
-
+            setupPickers();
+            
             // Reset formulaire
             NameEntry.Text = string.Empty;
             QuantityEntry.Text = string.Empty;
@@ -107,10 +119,23 @@ namespace StockApp.Views
         {
             string searchText = ProductSearchBar.Text?.ToLower() ?? string.Empty;
             string selectedOrigin = OriginPicker.SelectedItem as string;
+            string selectedQuantity = QuantityPicker.SelectedItem as string;
 
             var filtered = allProducts.Where(p =>
-                (string.IsNullOrWhiteSpace(searchText) || (p.Name?.ToLower().Contains(searchText) ?? false)) &&
-                (string.IsNullOrWhiteSpace(selectedOrigin) || p.Origin == selectedOrigin)
+                (string.IsNullOrWhiteSpace(searchText)
+                    || (p.Name?.ToLower().Contains(searchText.ToLower()) ?? false))
+                &&
+                (selectedOrigin == "Tous"
+                    || string.IsNullOrWhiteSpace(selectedOrigin)
+                    || p.Origin == selectedOrigin)
+                &&
+                (selectedQuantity == "Tous"
+                    || string.IsNullOrWhiteSpace(selectedQuantity)
+                    || (selectedQuantity == "0-10" && (p.Quantity >= 0 && p.Quantity <= 10))
+                    || (selectedQuantity == "11-50" && (p.Quantity >= 11 && p.Quantity <= 50))
+                    || (selectedQuantity == "51-100" && (p.Quantity >= 51 && p.Quantity <= 100))
+                    || (selectedQuantity == "101+" && p.Quantity >= 101)
+                    )
             ).ToList();
 
             ViewModel.StockItems.Clear();
@@ -126,6 +151,11 @@ namespace StockApp.Views
 
         // Picker Origine
         private void OriginPicker_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            FilterProducts();
+        }
+
+        private void QuantityPicker_SelectedIndexChanged(object sender, EventArgs e)
         {
             FilterProducts();
         }

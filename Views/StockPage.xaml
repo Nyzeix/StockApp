@@ -33,13 +33,15 @@
 
         <!-- Ligne des filtres -->
         <HorizontalStackLayout Spacing="10" HorizontalOptions="FillAndExpand">
-                <Picker x:Name="QuantitePicker"
+                <Picker x:Name="QuantityPicker"
                         Title="Quantité"
                         FontSize="16"
                         HorizontalOptions="FillAndExpand"
                         BackgroundColor="{AppThemeBinding Light={DynamicResource LightBlockBackgroundColor}, Dark={DynamicResource DarkBlockBackgroundColor}}"
                         TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
-                        HeightRequest="65"/>
+                        HeightRequest="65"
+                        ItemsSource="{Binding Quantity}"
+                        SelectedIndexChanged="QuantityPicker_SelectedIndexChanged"/>
 
                 <Picker x:Name="OriginPicker"
                     Title="Origine"
@@ -77,7 +79,16 @@
                            PlaceholderColor="{AppThemeBinding Light={DynamicResource LightPrimaryColor}, Dark={DynamicResource DarkPrimaryColor}}"/>
                 </Border>
 
-                <!-- Quantité -->
+                    <Picker
+                        x:Name="SupplierPicker"
+                        Title="Fournisseur"
+                        FontSize="16"
+                        HorizontalOptions="FillAndExpand"
+                        BackgroundColor="{AppThemeBinding Light={DynamicResource LightBlockBackgroundColor}, Dark={DynamicResource DarkBlockBackgroundColor}}"
+                        TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
+                        HeightRequest="65"/>
+
+                    <!-- Quantité -->
                 <Border Padding="10"
                         BackgroundColor="{AppThemeBinding Light={DynamicResource LightBlockgroundColor}, Dark={DynamicResource DarkBlockBackgroundColor}}"
                         Stroke="{AppThemeBinding Light={DynamicResource LightSecondaryColor}, Dark={DynamicResource DarkSecondaryColor}}">
