@@ -11,6 +11,9 @@ namespace StockApp.Views
     {
         private StockViewModel ViewModel => BindingContext as StockViewModel;
 
+        // Read-Only
+        internal SupplierViewModel SuppliersVM { get; }
+
         // Liste complète pour filtrage
         private ObservableCollection<Product> allProducts;
 
@@ -18,6 +21,7 @@ namespace StockApp.Views
         {
             InitializeComponent();
             BindingContext = new StockViewModel();
+            SuppliersVM = new SupplierViewModel();
 
             // Définit une date par défaut
             ExpirationDatePicker.Date = DateTime.Today;
@@ -60,6 +64,8 @@ namespace StockApp.Views
         // Affiche / masque le formulaire
         private void OnAddButtonClicked(object sender, EventArgs e)
         {
+            List<String> tmpSuppliersPickerData = [.. SuppliersVM.Suppliers.Select(s => s.Name).Distinct().OrderBy(o => o)];
+            SupplierPicker.ItemsSource = tmpSuppliersPickerData;            ;
             AddProductForm.IsVisible = !AddProductForm.IsVisible;
         }
 
@@ -80,6 +86,7 @@ namespace StockApp.Views
             {
                 Name = NameEntry.Text?.Trim(),
                 Quantity = quantity,
+                Supplier = SupplierPicker.SelectedItem.ToString(),
                 Color = ColorEntry?.Text,
                 Origin = OriginEntry?.Text,
                 ExpirationDate = ExpirationDatePicker.Date
