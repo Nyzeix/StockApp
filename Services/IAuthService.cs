@@ -15,4 +15,7 @@ public interface IAuthService
     Task<bool> LoginAsync(string username, string password);
     void Logout();
     Task<bool> UsernameExistsAsync(string username);
+    public List<User> LoadUsers();
+    Task<bool> AddUser(string username, string password, Boolean isAdmin);
+    Task<bool> DeleteUser(string username);
 }

@@ -14,10 +14,10 @@ namespace StockApp.Views
         // Liste complète pour filtrage
         private ObservableCollection<User> allUsers;
 
-        public UsersPage()
+        public UsersPage(UserViewModel vm)
         {
             InitializeComponent();
-            BindingContext = new UserViewModel();
+            BindingContext = vm;
 
             // Copie complète pour recherche
             if (ViewModel?.ExampleUsers != null)
@@ -64,15 +64,7 @@ namespace StockApp.Views
                 return;
             }
 
-            var newUser = new User
-            {
-                Username = UsernameEntry.Text.Trim(),
-                PasswordHash = PasswordEntry.Text.Trim(), // 🔹 ajout du mot de passe
-                IsAdmin = IsAdminSwitch.IsToggled,
-            };
-
-            ViewModel?.ExampleUsers.Add(newUser);
-            allUsers.Add(newUser); // ajoute aussi à la liste complète
+            string message = await ViewModel.AddUserAsync(UsernameEntry.Text.Trim(), PasswordEntry.Text.Trim(), IsAdminSwitch.IsToggled);
 
             // Réinitialiser le formulaire
             UsernameEntry.Text = string.Empty;
@@ -80,16 +72,7 @@ namespace StockApp.Views
             IsAdminSwitch.IsToggled = false;
             AddUserForm.IsVisible = false;
 
-            await DisplayAlert("Succès", "Utilisateur ajouté avec succès.", "OK");
-        }
-
-        // Annuler l’ajout et réinitialiser le formulaire
-        private void OnCancelUserClicked(object sender, EventArgs e)
-        {
-            UsernameEntry.Text = string.Empty;
-            PasswordEntry.Text = string.Empty; // 🔹 reset aussi le mot de passe
-            IsAdminSwitch.IsToggled = false;
-            AddUserForm.IsVisible = false;
+            await DisplayAlert("Résultat", message, "OK");
         }
 
         // Supprimer un utilisateur
@@ -100,10 +83,19 @@ namespace StockApp.Views
                 bool confirm = await DisplayAlert("Confirmer", $"Supprimer {user.Username} ?", "Oui", "Non");
                 if (confirm)
                 {
-                    ViewModel?.ExampleUsers.Remove(user);
-                    allUsers.Remove(user); // aussi dans la liste complète
+                    string message = await ViewModel.DeleteUserAsync(user.Username);
                 }
             }
+        }
+
+
+        // Annuler l’ajout et réinitialiser le formulaire
+        private void OnCancelUserClicked(object sender, EventArgs e)
+        {
+            UsernameEntry.Text = string.Empty;
+            PasswordEntry.Text = string.Empty;
+            IsAdminSwitch.IsToggled = false;
+            AddUserForm.IsVisible = false;
         }
 
         // Barre de recherche

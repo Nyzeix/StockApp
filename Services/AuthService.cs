@@ -16,7 +16,7 @@ public class AuthService : IAuthService
 
     public User? CurrentUser { get; private set; }
 
-    private List<User> LoadUsers()
+    public List<User> LoadUsers()
     {
         var json = Preferences.Get(PREFS_KEY, "");
         if (string.IsNullOrWhiteSpace(json)) return new List<User>();
@@ -79,4 +79,39 @@ public class AuthService : IAuthService
     }
 
     public void Logout() => CurrentUser = null;
+
+    public async Task<bool> AddUser(string username, string password, Boolean isAdmin)
+    {
+        return await Task.Run(() =>
+        {
+            lock (_lock)
+            {
+                var users = LoadUsers();
+                if (UsernameExistsAsync(username).Result)
+                    return false;
+                var salt = Crypto.NewSalt();
+                var hash = Crypto.HashPassword(password, salt);
+                users.Add(new User { Username = username.Trim(), PasswordHash = hash, Salt = salt });
+                SaveUsers(users);
+                return true;
+            }
+        });
+    }
+
+    public async Task<bool> DeleteUser(string username)
+    {
+        return await Task.Run(() =>
+        {
+            lock (_lock)
+            {
+                var users = LoadUsers();
+                var userToRemove = users.FirstOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
+                if (userToRemove == null)
+                    return false;
+                users.Remove(userToRemove);
+                SaveUsers(users);
+                return true;
+            }
+        });
+    }
 }

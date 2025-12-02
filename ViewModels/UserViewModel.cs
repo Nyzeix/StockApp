@@ -7,32 +7,75 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
+using Microsoft.Maui.ApplicationModel;
 
 namespace StockApp.ViewModels 
 {
 
-    class UserViewModel : BaseViewModel, INotifyPropertyChanged
+    public class UserViewModel : BaseViewModel, INotifyPropertyChanged
     {
+        private readonly IAuthService _auth;
         // Event de notification de changement de propriété
         public event PropertyChangedEventHandler PropertyChanged;
 
 
         public ObservableCollection<User> ExampleUsers { get; set; } = new();
 
-        public UserViewModel()
+        public UserViewModel(IAuthService auth)
         {
             // Chargement des données d'essais, sans passer par une BDD
-            LoadExampleUsers();
+            //LoadExampleUsers();
 
-
+            _auth = auth;
+            // Ajouter les utilisateurs dans la liste ExampleUsers
+            foreach (var user in _auth.LoadUsers())
+            {
+                ExampleUsers.Add(user);
+            }
         }
 
-        private void LoadExampleUsers()
+        public async Task<string> AddUserAsync(string username, string password, Boolean isAdmin)
         {
-            // Exemple de données statiques
-            ExampleUsers.Add(new User { Username = "Roger", PasswordHash = "test", IsAdmin = false });
-            ExampleUsers.Add(new User { Username = "Didier", PasswordHash = "motdepasse", IsAdmin = true });
-            ExampleUsers.Add(new User { Username = "Patoche", PasswordHash = "1234", IsAdmin = true });
+            // Autoremediation: vérifier si l'utilisateur existe déjà (J'ai découvert un mot)
+            var result = await _auth.AddUser(username, password, isAdmin).ConfigureAwait(false);
+            if (result)
+            {
+                // Copilot à la resscousse pour mettre à jour l'UI thread
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    ExampleUsers.Add(new User { Username = username, PasswordHash = password, IsAdmin = isAdmin });
+                    OnPropertyChanged(nameof(ExampleUsers));
+                });
+
+                return "Utilisateur ajouté avec succès.";
+            }
+            else
+            {
+                return "L'utilisateur existe déjà.";
+            }
+        }
+
+        public async Task<string> DeleteUserAsync(string username)
+        {
+            var result = await _auth.DeleteUser(username).ConfigureAwait(false);
+            if (result)
+            {
+                // Met à jour l'UI thread
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    var userToRemove = ExampleUsers.FirstOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
+                    if (userToRemove != null)
+                    {
+                        ExampleUsers.Remove(userToRemove);
+                        OnPropertyChanged(nameof(ExampleUsers));
+                    }
+                });
+                return "Utilisateur supprimé avec succès.";
+            }
+            else
+            {
+                return "Échec de la suppression de l'utilisateur.";
+            }
         }
 
         // Appelle la vue si une propriété évolue
