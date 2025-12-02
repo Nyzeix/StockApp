@@ -17,8 +17,8 @@ public partial class HomePage : ContentPage
         base.OnSizeAllocated(width, height);
 
         // Ajuste la taille des cartes en fonction de la largeur de l’écran
-        double targetWidth = width * 0.7;   // 70% de la largeur de l’écran
-        double targetHeight = height * 0.40; // 40% de la hauteur de l’écran
+        double targetWidth = width * 0.8;   // 80% de la largeur de l’écran
+        double targetHeight = height * 0.30; // 30% de la hauteur de l’écran
 
         // Min et Max
         targetWidth = Math.Clamp(targetWidth, 50, 800);
@@ -29,6 +29,9 @@ public partial class HomePage : ContentPage
 
         StockCard.WidthRequest = targetWidth;
         StockCard.HeightRequest = targetHeight;
+
+        SuppliersCard.WidthRequest = targetWidth;
+        SuppliersCard.HeightRequest = targetHeight;
     }
 
 
