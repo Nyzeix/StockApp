@@ -20,8 +20,8 @@ namespace StockApp.Views
             BindingContext = vm;
 
             // Copie complète pour recherche
-            if (ViewModel?.ExampleUsers != null)
-                allUsers = new ObservableCollection<User>(ViewModel.ExampleUsers);
+            if (ViewModel?.UsersList != null)
+                allUsers = new ObservableCollection<User>(ViewModel.UsersList);
             else
                 allUsers = new ObservableCollection<User>();
         }
@@ -107,9 +107,9 @@ namespace StockApp.Views
                 .Where(u => !string.IsNullOrWhiteSpace(u.Username) && u.Username.ToLower().Contains(filter))
                 .ToList();
 
-            ViewModel.ExampleUsers.Clear();
+            ViewModel.UsersList.Clear();
             foreach (var item in filtered)
-                ViewModel.ExampleUsers.Add(item);
+                ViewModel.UsersList.Add(item);
         }
     }
 }

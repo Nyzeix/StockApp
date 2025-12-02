@@ -19,18 +19,14 @@ namespace StockApp.ViewModels
         public event PropertyChangedEventHandler PropertyChanged;
 
 
-        public ObservableCollection<User> ExampleUsers { get; set; } = new();
+        public ObservableCollection<User> UsersList { get; set; } = new();
 
         public UserViewModel(IAuthService auth)
         {
-            // Chargement des données d'essais, sans passer par une BDD
-            //LoadExampleUsers();
-
             _auth = auth;
-            // Ajouter les utilisateurs dans la liste ExampleUsers
             foreach (var user in _auth.LoadUsers())
             {
-                ExampleUsers.Add(user);
+                UsersList.Add(user);
             }
         }
 
@@ -43,8 +39,8 @@ namespace StockApp.ViewModels
                 // Copilot à la resscousse pour mettre à jour l'UI thread
                 MainThread.BeginInvokeOnMainThread(() =>
                 {
-                    ExampleUsers.Add(new User { Username = username, PasswordHash = password, IsAdmin = isAdmin });
-                    OnPropertyChanged(nameof(ExampleUsers));
+                    UsersList.Add(new User { Username = username, PasswordHash = password, IsAdmin = isAdmin });
+                    OnPropertyChanged(nameof(UsersList));
                 });
 
                 return "Utilisateur ajouté avec succès.";
@@ -63,11 +59,11 @@ namespace StockApp.ViewModels
                 // Met à jour l'UI thread
                 MainThread.BeginInvokeOnMainThread(() =>
                 {
-                    var userToRemove = ExampleUsers.FirstOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
+                    var userToRemove = UsersList.FirstOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
                     if (userToRemove != null)
                     {
-                        ExampleUsers.Remove(userToRemove);
-                        OnPropertyChanged(nameof(ExampleUsers));
+                        UsersList.Remove(userToRemove);
+                        OnPropertyChanged(nameof(UsersList));
                     }
                 });
                 return "Utilisateur supprimé avec succès.";
