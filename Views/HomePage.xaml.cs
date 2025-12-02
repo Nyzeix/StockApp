@@ -10,6 +10,16 @@ public partial class HomePage : ContentPage
     {
         InitializeComponent();
         _auth = auth;
+        // Message de bienvenue avec le nom d'utilisateur authentifié
+        if (_auth.CurrentUser != null)
+        {
+            WelcomeLabel.Text = $"Bienvenue, {_auth.CurrentUser.Username}! IsAdmin : {_auth.CurrentUser.IsAdmin}";
+            // Affiche la carte Utilisateurs si l'utisateur connecté est admin
+            if (_auth.CurrentUser.IsAdmin)
+            {
+                UsersCard.IsVisible = true;
+            }
+        }
     }
 
     protected override void OnSizeAllocated(double width, double height)

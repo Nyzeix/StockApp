@@ -91,7 +91,7 @@ public class AuthService : IAuthService
                     return false;
                 var salt = Crypto.NewSalt();
                 var hash = Crypto.HashPassword(password, salt);
-                users.Add(new User { Username = username.Trim(), PasswordHash = hash, Salt = salt });
+                users.Add(new User { Username = username.Trim(), PasswordHash = hash, Salt = salt, IsAdmin=isAdmin});
                 SaveUsers(users);
                 return true;
             }
