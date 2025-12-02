@@ -27,7 +27,7 @@ namespace StockApp.Views
         }
 
         // Gestion de la sélection d'un utilisateur dans le CollectionView
-        public async void TODO(object sender, SelectionChangedEventArgs e)
+        public async void OnUserClicked(object sender, SelectionChangedEventArgs e)
         {
             var selected = e.CurrentSelection?.FirstOrDefault() as User;
             if (selected != null)
@@ -78,14 +78,16 @@ namespace StockApp.Views
         // Supprimer un utilisateur
         private async void OnDeleteUserClicked(object sender, EventArgs e)
         {
+            string message = "";
             if (sender is Button button && button.BindingContext is User user)
             {
                 bool confirm = await DisplayAlert("Confirmer", $"Supprimer {user.Username} ?", "Oui", "Non");
                 if (confirm)
                 {
-                    string message = await ViewModel.DeleteUserAsync(user.Username);
+                    message = await ViewModel.DeleteUserAsync(user.Username);
                 }
             }
+            await DisplayAlert("Résultat", message, "OK");
         }
 
 
