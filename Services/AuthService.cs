@@ -64,9 +64,15 @@ public class AuthService : IAuthService
 
     public async Task<bool> LoginAsync(string username, string password)
     {
-        return await Task.Run(() =>
+        return await Task.Run(async () =>
         {
             var users = LoadUsers();
+            // Si aucun utilisateur n'existe ou si aucun utilisateur administrateur n'existe, créer un utilisateur administrateur par défaut
+            if (users.Count == 0 || !users.Any(u => u.IsAdmin))
+            {
+                _ = await AddUser("admin", "admin", true);
+                users = LoadUsers();
+            }
             var u = users.FirstOrDefault(x => x.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
             if (u is null) return false;
 
