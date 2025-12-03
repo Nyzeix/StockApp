@@ -73,7 +73,13 @@ public class AuthService : IAuthService
                 _ = await AddUser("admin", "admin", true);
                 users = LoadUsers();
             }
-            var u = users.FirstOrDefault(x => x.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
+            // Si 2 ou plus utlisateurs admin existent, supprime l'utilisateur admin par défaut
+            else if (users.Count(u => u.IsAdmin) > 1)
+            {
+                _ = await DeleteUser("admin");
+                users = LoadUsers();
+            }
+                var u = users.FirstOrDefault(x => x.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
             if (u is null) return false;
 
             var hash = Crypto.HashPassword(password, u.Salt);
