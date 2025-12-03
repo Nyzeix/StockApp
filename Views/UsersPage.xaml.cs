@@ -85,9 +85,9 @@ namespace StockApp.Views
                 if (confirm)
                 {
                     message = await ViewModel.DeleteUserAsync(user.Username);
+                    await DisplayAlert("Résultat", message, "OK");
                 }
             }
-            await DisplayAlert("Résultat", message, "OK");
         }
 
 
