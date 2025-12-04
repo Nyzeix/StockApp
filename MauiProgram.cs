@@ -2,6 +2,7 @@
 using StockApp.Services;
 using StockApp.ViewModels;
 using StockApp.Views;
+using UraniumUI;
 
 namespace StockApp;
 
@@ -12,6 +13,8 @@ public static class MauiProgram
         var builder = MauiApp.CreateBuilder();
         builder
             .UseMauiApp<App>()
+            .UseUraniumUI()
+            .UseUraniumUIMaterial()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
