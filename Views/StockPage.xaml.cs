@@ -65,7 +65,7 @@ namespace StockApp.Views
         private void OnAddButtonClicked(object sender, EventArgs e)
         {
             List<String> tmpSuppliersPickerData = [.. SuppliersVM.Suppliers.Select(s => s.Name).Distinct().OrderBy(o => o)];
-            SupplierPicker.ItemsSource = tmpSuppliersPickerData;            ;
+            SupplierPicker.ItemsSource = tmpSuppliersPickerData;
             AddProductForm.IsVisible = !AddProductForm.IsVisible;
         }
 
@@ -75,6 +75,16 @@ namespace StockApp.Views
             if (string.IsNullOrWhiteSpace(NameEntry?.Text))
             {
                 await DisplayAlert("Erreur", "Le nom du produit est obligatoire.", "OK");
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(QuantityEntry?.Text))
+            {
+                await DisplayAlert("Erreur", "La quantité ne peut pas être nulle.", "OK");
+                return;
+            }
+            else if (!int.TryParse(QuantityEntry.Text, out _))
+            {
+                await DisplayAlert("Erreur", "La quantité doit être un nombre entier.", "OK");
                 return;
             }
 
@@ -119,6 +129,28 @@ namespace StockApp.Views
             ExpirationDatePicker.Date = DateTime.Today;
 
             AddProductForm.IsVisible = false;
+        }
+
+
+        private async void OnDeleteProductClicked(object sender, EventArgs e)
+        {
+            //Remove product clicked
+            string message = "";
+            if (sender is Button button && button.BindingContext is Product product)
+            {
+                bool confirm = await DisplayAlert("Confirmer", $"Supprimer {product.Name} ?", "Oui", "Non");
+                if (confirm)
+                {
+                    //message = await ViewModel.DeleteUserAsync(user.Username);
+                    await DisplayAlert("Résultat", message, "OK");
+                }
+            }
+            await DisplayAlert("Info", "Fonction de suppression non implémentée.", "OK");
+        }
+
+        private async void OnEditProductClicked(object sender, EventArgs e)
+        {
+            await DisplayAlert("Info", "Fonction d'édition non implémentée.", "OK");
         }
 
         // Filtrage combiné : SearchBar + Origine

@@ -192,10 +192,26 @@
                                    HorizontalTextAlignment="End"
                                    TextColor="#D9534F" />
 
-                            <Label Grid.Row="2" Grid.Column="0"
+                            <Label Grid.Row="2" Grid.Column="1"
                                    Text="{Binding Color, StringFormat='Couleur : {0}'}"
                                    FontSize="14"
+                                   HorizontalOptions="End"
                                    TextColor="#666" />
+
+                            <Label Grid.Row="2" Grid.Column="0"
+                                   Text="{Binding Supplier, StringFormat='Fournisseur : {0}'}"
+                                   FontSize="14"
+                                   TextColor="#666" />
+                            
+                            <Button Grid.Row="0" Grid.Column="2"
+                                    Text="❌ Supprimer"
+                                    BackgroundColor="{AppThemeBinding Light={DynamicResource LightBlockBackgroundColor}, Dark={DynamicResource DarkBlockBackgroundColor}}"
+                                    TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
+                                    FontAttributes="Bold"
+                                    CornerRadius="8"
+                                    HeightRequest="40"
+                                    Clicked="OnDeleteProductClicked"
+                                    VerticalOptions="Center"/>
                         </Grid>
                     </Border>
                 </DataTemplate>
