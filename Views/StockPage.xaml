@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="StockApp.Views.StockPage"
              xmlns:models="clr-namespace:StockApp.Models"
-             xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
              Title="📦 Gestion du stock"
              BackgroundColor="{AppThemeBinding Light={DynamicResource LightBackgroundColor}, Dark={DynamicResource DarkBackgroundColor}}">
 
@@ -153,192 +152,71 @@
         </Border>
 
         <!-- Liste des produits -->
-            <!--<CollectionView x:Name="StockCollectionView"
-                        ItemsSource="{Binding StockItems}"
-                        Margin="0,10,0,0"
-                        SelectionMode="Single"
-                        SelectionChanged="OnItemSelected">
+            <CollectionView x:Name="StockCollectionView"
+                            ItemsSource="{Binding StockItems}"
+                            Margin="0,10,0,0"
+                            SelectionMode="Single"
+                            SelectionChanged="OnItemSelected">
 
-            <CollectionView.ItemsLayout>
-                <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
-            </CollectionView.ItemsLayout>
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
+                </CollectionView.ItemsLayout>
 
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="models:Product">
-                    <Border BackgroundColor="{AppThemeBinding Light={DynamicResource LightAccentColor}, Dark={DynamicResource DarkAccentColor}}"
-                            Padding="15">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Product">
+                        <Border BackgroundColor="{AppThemeBinding Light={DynamicResource LightAccentColor}, Dark={DynamicResource DarkAccentColor}}"
+                                Padding="15">
 
-                        <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,Auto">
+                            <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,Auto">
 
-                            <Label Grid.Row="0" Grid.Column="0"
-                                   Text="{Binding Name}"
-                                   FontSize="20"
-                                   FontAttributes="Bold"
-                                   TextColor="{AppThemeBinding Light={DynamicResource BlackBrush}, Dark={DynamicResource WhiteBrush}}"/>
+                                <Label Grid.Row="0" Grid.Column="0"
+                                       Text="{Binding Name}"
+                                       FontSize="20"
+                                       FontAttributes="Bold"
+                                       TextColor="{AppThemeBinding Light={DynamicResource BlackBrush}, Dark={DynamicResource WhiteBrush}}"/>
 
-                            <Label Grid.Row="0" Grid.Column="1"
-                                   Text="{Binding Origin, StringFormat='Origine : {0}'}"
-                                   FontSize="16"
-                                   HorizontalTextAlignment="End"
-                                   TextColor="#555" />
+                                <Label Grid.Row="0" Grid.Column="1"
+                                       Text="{Binding Origin, StringFormat='Origine : {0}'}"
+                                       FontSize="16"
+                                       HorizontalTextAlignment="End"
+                                       TextColor="#555" />
 
-                            <Label Grid.Row="1" Grid.Column="0"
-                                   Text="{Binding Quantity, StringFormat='Quantité : {0}'}"
-                                   FontSize="16"
-                                   TextColor="#0078D7" />
+                                <Label Grid.Row="1" Grid.Column="0"
+                                       Text="{Binding Quantity, StringFormat='Quantité : {0}'}"
+                                       FontSize="16"
+                                       TextColor="#0078D7" />
 
-                            <Label Grid.Row="1" Grid.Column="1"
-                                   Text="{Binding ExpirationDate, StringFormat='Péremption : {0:dd/MM/yyyy}'}"
-                                   FontSize="14"
-                                   HorizontalTextAlignment="End"
-                                   TextColor="#D9534F" />
+                                <Label Grid.Row="1" Grid.Column="1"
+                                       Text="{Binding ExpirationDate, StringFormat='Péremption : {0:dd/MM/yyyy}'}"
+                                       FontSize="14"
+                                       HorizontalTextAlignment="End"
+                                       TextColor="#D9534F" />
 
-                            <Label Grid.Row="2" Grid.Column="1"
-                                   Text="{Binding Color, StringFormat='Couleur : {0}'}"
-                                   FontSize="14"
-                                   HorizontalOptions="End"
-                                   TextColor="#666" />
+                                <Label Grid.Row="2" Grid.Column="1"
+                                       Text="{Binding Color, StringFormat='Couleur : {0}'}"
+                                       FontSize="14"
+                                       HorizontalOptions="End"
+                                       TextColor="#666" />
 
-                            <Label Grid.Row="2" Grid.Column="0"
-                                   Text="{Binding Supplier, StringFormat='Fournisseur : {0}'}"
-                                   FontSize="14"
-                                   TextColor="#666" />
-                            
-                            <Button Grid.Row="0" Grid.Column="2"
-                                    Text="❌ Supprimer"
-                                    BackgroundColor="{AppThemeBinding Light={DynamicResource LightBlockBackgroundColor}, Dark={DynamicResource DarkBlockBackgroundColor}}"
-                                    TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
-                                    FontAttributes="Bold"
-                                    CornerRadius="8"
-                                    HeightRequest="40"
-                                    Clicked="OnDeleteProductClicked"
-                                    VerticalOptions="Center"/>
-                            </Grid>
-                    </Border>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>-->
-         
+                                <Label Grid.Row="2" Grid.Column="0"
+                                       Text="{Binding Supplier, StringFormat='Fournisseur : {0}'}"
+                                       FontSize="14"
+                                       TextColor="#666" />
 
-            <material:DataGrid x:Name="DataGrid" ItemsSource="{Binding StockItems}" HorizontalOptions="Center" Margin="10">
-                <!-- Champ de titre -->
-                <material:DataGrid.TitleTemplate>
-                    <DataTemplate>
-                        <Border BackgroundColor="{AppThemeBinding Light={DynamicResource LightPrimaryColor}, Dark={DynamicResource DarkPrimaryColor}}">
-                            <Label Text="{Binding Title}"
-                                   Margin="10,0"
-                                   FontAttributes="Bold"
-                                   HorizontalOptions="Center"
-                                   VerticalOptions="Center"
-                                   TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}" />
-                        </Border>
-                    </DataTemplate>
-                </material:DataGrid.TitleTemplate>
-
-                <!-- Gestion de vue vide -->
-                <material:DataGrid.EmptyView>
-                    <VerticalStackLayout Margin="80,20">
-                        <!--<Image WidthRequest="40"
-				               HeightRequest="40"
-				               HorizontalOptions="Center"
-				               VerticalOptions="Center"
-				               "{FontImageSource FontFamily=MaterialOutlined, Glyph={x:Static m:MaterialOutlined.Backup_table}, Color={AppThemeBinding Light={StaticResource OnSurface}, Dark={StaticResource OnSurfaceDark}}}"/>-->
-                        <Label Text="No data available..." HorizontalOptions="Center"/>
-                    </VerticalStackLayout>
-                </material:DataGrid.EmptyView>
-                    
-                <!-- Gestion des colonnes -->
-                <material:DataGrid.Columns>
-                    <material:DataGridColumn ValueBinding="{Binding Name}" Title="Nom" Width="Auto">
-                        <material:DataGridColumn.CellItemTemplate>
-                            <DataTemplate>
-                                <Border BackgroundColor="{AppThemeBinding Light={DynamicResource LightBlockBackgroundColor}, Dark={DynamicResource DarkBlockBackgroundColor}}">
-                                    <Label Text="{Binding Name}"
-                                           HorizontalOptions="Center"
-                                           VerticalOptions="Center"/>
-                                </Border>
-                            </DataTemplate>
-                        </material:DataGridColumn.CellItemTemplate>
-                    </material:DataGridColumn>
-
-                    <material:DataGridColumn ValueBinding="{Binding Quantity}" Title="Quantité" Width="Auto"/>
-
-                    <material:DataGridColumn ValueBinding="{Binding BuyingPrice}" Title="Prix d'achat" Width="Auto">
-                        <material:DataGridColumn.CellItemTemplate>
-                            <DataTemplate>
-                                <Border BackgroundColor="{AppThemeBinding Light={DynamicResource LightBlockBackgroundColor}, Dark={DynamicResource DarkBlockBackgroundColor}}">
-                                    <Label Text="{Binding BuyingPrice}"
-                                           HorizontalOptions="Center"
-                                           VerticalOptions="Center"/>
-                                </Border>
-                            </DataTemplate>
-                        </material:DataGridColumn.CellItemTemplate>
-                    </material:DataGridColumn>
-
-                    <material:DataGridColumn ValueBinding="{Binding SellingPrice}" Title="Prix de vente" Width="Auto"/>
-
-                    <material:DataGridColumn ValueBinding="{Binding Supplier}" Title="Fournisseur" Width="Auto">
-                        <material:DataGridColumn.CellItemTemplate>
-                            <DataTemplate>
-                                <Border BackgroundColor="{AppThemeBinding Light={DynamicResource LightBlockBackgroundColor}, Dark={DynamicResource DarkBlockBackgroundColor}}">
-                                    <Label Text="{Binding Supplier}"
-                                           HorizontalOptions="Center"
-                                           VerticalOptions="Center"/>
-                                </Border>
-                            </DataTemplate>
-                        </material:DataGridColumn.CellItemTemplate>
-                    </material:DataGridColumn>
-
-                    <material:DataGridColumn ValueBinding="{Binding Origin}" Title="Origine" Width="Auto"/>
-
-                    <material:DataGridColumn ValueBinding="{Binding ExpirationDate}" Title="Date d'expiration" Width="Auto">
-                        <material:DataGridColumn.CellItemTemplate>
-                            <DataTemplate>
-                                <Border BackgroundColor="{AppThemeBinding Light={DynamicResource LightBlockBackgroundColor}, Dark={DynamicResource DarkBlockBackgroundColor}}">
-                                    <Label Text="{Binding ExpirationDate}"
-                                           HorizontalOptions="Center"
-                                           VerticalOptions="Center"/>
-                                </Border>
-                            </DataTemplate>
-                        </material:DataGridColumn.CellItemTemplate>
-                    </material:DataGridColumn>
-
-                    <!--<material:DataGridColumn ValueBinding="{Binding CreatedAt}" IsVisible="False" Width="Auto"/>-->
-                    
-                    <!-- Action Columns -->
-                    <material:DataGridColumn Title="Edition" >
-                        <material:DataGridColumn.CellItemTemplate>
-                            <DataTemplate>
-                                <Button Text="Editer"
+                                <Button Grid.Row="0" Grid.Column="2"
+                                        Text="❌ Supprimer"
                                         BackgroundColor="{AppThemeBinding Light={DynamicResource LightBlockBackgroundColor}, Dark={DynamicResource DarkBlockBackgroundColor}}"
                                         TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
+                                        FontAttributes="Bold"
                                         CornerRadius="8"
-                                        Clicked="OnEditProductClicked"
-                                        VerticalOptions="Center"
-                                        HorizontalOptions="Center"
-                                        Margin="6"/>
-                            </DataTemplate>
-                        </material:DataGridColumn.CellItemTemplate>
-                    </material:DataGridColumn>
-
-                    <material:DataGridColumn Title="Supression" >
-                        <material:DataGridColumn.CellItemTemplate>
-                            <DataTemplate>
-                                <Button Text="Supprimer"
-					                    BackgroundColor="{AppThemeBinding Light={DynamicResource LightBlockBackgroundColor}, Dark={DynamicResource DarkBlockBackgroundColor}}"
-                                        TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
-                                        CornerRadius="8"
+                                        HeightRequest="40"
                                         Clicked="OnDeleteProductClicked"
-                                        VerticalOptions="Center"
-                                        HorizontalOptions="Center"
-                                        Margin="6"/>
-                            </DataTemplate>
-                        </material:DataGridColumn.CellItemTemplate>
-                    </material:DataGridColumn>
-
-                </material:DataGrid.Columns>
-            </material:DataGrid>
-
+                                        VerticalOptions="Center"/>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

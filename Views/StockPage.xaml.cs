@@ -132,7 +132,6 @@ namespace StockApp.Views
             AddProductForm.IsVisible = false;
         }
 
-
         private async void OnDeleteProductClicked(object sender, EventArgs e)
         {
             //Remove product clicked

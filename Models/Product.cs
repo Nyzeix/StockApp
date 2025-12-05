@@ -10,7 +10,7 @@ namespace StockApp.Models
     {
         public string Name { get; set; } = "";
         public int Quantity { get; set; } = 0;
-        
+
         public decimal BuyingPrice { get; set; }
         public decimal SellingPrice { get; set; }
         public string? Supplier { get; set; } = "Default Supplier";
