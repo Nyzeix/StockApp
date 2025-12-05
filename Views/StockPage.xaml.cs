@@ -103,7 +103,7 @@ namespace StockApp.Views
                 ExpirationDate = ExpirationDatePicker.Date
             };
 
-            ViewModel?.StockItems.Add(newProduct);
+            await ViewModel.AddProductAsync(newProduct);
             allProducts.Add(newProduct); // ajoute également à la liste complète
 
             // Mise à jour du Picker Origine
@@ -197,6 +197,16 @@ namespace StockApp.Views
         private void QuantityPicker_SelectedIndexChanged(object sender, EventArgs e)
         {
             FilterProducts();
+        }
+
+        // appelé depuis XAML via RemainingItemsThresholdReached
+        private async void OnRemainingItemsThresholdReached(object sender, EventArgs e)
+        {
+            if (BindingContext is ViewModels.StockViewModel vm)
+            {
+                // Assurez‑vous que StockViewModel expose une méthode publique Task LoadMoreItemsAsync()
+                await vm.LoadMoreItemsAsync();
+            }
         }
     }
 }
