@@ -84,6 +84,11 @@ namespace StockApp.ViewModels
             OnPropertyChanged(nameof(Suppliers));
         }
 
+        public List<Supplier> GetSuppliers()
+        {
+            return allSuppliers;
+        }
+
 
         // Applique les filtres à la liste "allSuppliers" et corrige la liste "Suppliers"
         private void ApplyFilters()
@@ -121,6 +126,7 @@ namespace StockApp.ViewModels
             allSuppliers.Add(new Supplier { Name = "Fournisseur 1", Type = "Nourritures" });
             allSuppliers.Add(new Supplier { Name = "Fournisseur 2", Type = "Vêtements" });
             allSuppliers.Add(new Supplier { Name = "Fournisseur 3", Type = "Boulangerie" });
+            allSuppliers.Add(new Supplier { Name = "Default Supplier", Type = "Tout" });
         }
     }
 }

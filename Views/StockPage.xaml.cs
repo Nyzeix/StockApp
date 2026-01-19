@@ -33,8 +33,10 @@ namespace StockApp.Views
                 allProducts = new ObservableCollection<Product>();
 
             setupPickers();
-            OriginPicker.SelectedIndex = 0;
-            QuantityPicker.SelectedIndex = 0;
+            // Index par défaut, on sélectionne le premier, soit: "Tous"
+            OriginFilterPicker.SelectedIndex = 0;
+            QuantityFilterPicker.SelectedIndex = 0;
+            SupplierFilterPicker.SelectedIndex = 0;
         }
 
         private void setupPickers()
@@ -42,10 +44,15 @@ namespace StockApp.Views
             // Remplir le Picker Origine
             List<String> tmpOriginPickerData = [.. allProducts.Select(p => p.Origin).Distinct().OrderBy(o => o)];
             tmpOriginPickerData.Insert(0, "Tous");
-            OriginPicker.ItemsSource = tmpOriginPickerData;
+            OriginFilterPicker.ItemsSource = tmpOriginPickerData;
 
             // Remplir le Picker Quantity
-            QuantityPicker.ItemsSource = new List<string> { "Tous", "0-10", "11-50", "51-100", "101+" };
+            QuantityFilterPicker.ItemsSource = new List<string> { "Tous", "0-10", "11-50", "51-100", "101+" };
+
+            // Remplir le Picker Supplier
+            List<String> tmpSuppliersPickerData = [.. SuppliersVM.Suppliers.Select(s => s.Name).Distinct().OrderBy(o => o)];
+            tmpSuppliersPickerData.Insert(0, "Tous");
+            SupplierFilterPicker.ItemsSource = tmpSuppliersPickerData;
         }
 
         // SelectionChanged - signature correcte
@@ -64,8 +71,8 @@ namespace StockApp.Views
         // Affiche / masque le formulaire
         private void OnAddButtonClicked(object sender, EventArgs e)
         {
-            List<String> tmpSuppliersPickerData = [.. SuppliersVM.Suppliers.Select(s => s.Name).Distinct().OrderBy(o => o)];
-            SupplierPicker.ItemsSource = tmpSuppliersPickerData;
+            //List<String> tmpSuppliersPickerData = [.. SuppliersVM.Suppliers.Select(s => s.Name).Distinct().OrderBy(o => o)];
+            //SupplierPicker.ItemsSource = tmpSuppliersPickerData;
             AddProductForm.IsVisible = !AddProductForm.IsVisible;
         }
 
@@ -153,12 +160,13 @@ namespace StockApp.Views
             await DisplayAlert("Info", "Fonction d'édition non implémentée.", "OK");
         }
 
-        // Filtrage combiné : SearchBar + Origine
+        // Filtrage combiné : SearchBar + Origine + Quantité + Supplier
         private void FilterProducts()
         {
             string searchText = ProductSearchBar.Text?.ToLower() ?? string.Empty;
-            string selectedOrigin = OriginPicker.SelectedItem as string;
-            string selectedQuantity = QuantityPicker.SelectedItem as string;
+            string selectedOrigin = OriginFilterPicker.SelectedItem as string;
+            string selectedQuantity = QuantityFilterPicker.SelectedItem as string;
+            string selectedSupplier = SupplierFilterPicker.SelectedItem as string;
 
             var filtered = allProducts.Where(p =>
                 (string.IsNullOrWhiteSpace(searchText)
@@ -175,6 +183,10 @@ namespace StockApp.Views
                     || (selectedQuantity == "51-100" && (p.Quantity >= 51 && p.Quantity <= 100))
                     || (selectedQuantity == "101+" && p.Quantity >= 101)
                     )
+                &&
+                (selectedSupplier == "Tous"
+                    || string.IsNullOrWhiteSpace(selectedSupplier)
+                    || p.Supplier == selectedSupplier)
             ).ToList();
 
             ViewModel.StockItems.Clear();
@@ -195,6 +207,11 @@ namespace StockApp.Views
         }
 
         private void QuantityPicker_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            FilterProducts();
+        }
+
+        private void SupplierPicker_SelectedIndexChanged(object sender, EventArgs e)
         {
             FilterProducts();
         }
