@@ -1,46 +1,62 @@
-﻿using StockApp.Services;
-using StockApp.Views;
-using StockApp.ViewModels;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using Microsoft.Maui.Controls;
+using StockApp.Services;
+using StockApp.Views; // <-- nécessaire pour HomePage
 
-namespace StockApp.ViewModels
+namespace StockApp.ViewModels;
+
+public class LoginViewModel : INotifyPropertyChanged
 {
-    public class LoginViewModel : BaseViewModel
+    private string _username = "";
+    private string _password = "";
+    private string _error = "";
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    public string Username
     {
-        private readonly IAuthService _auth;
+        get => _username;
+        set { _username = value; OnPropertyChanged(); }
+    }
 
-        private string _username = "";
-        public string Username { get => _username; set => Set(ref _username, value); }
+    public string Password
+    {
+        get => _password;
+        set { _password = value; OnPropertyChanged(); }
+    }
 
-        private string _password = "";
-        public string Password { get => _password; set => Set(ref _password, value); }
+    public string Error
+    {
+        get => _error;
+        set { _error = value; OnPropertyChanged(); }
+    }
 
-        private string _error = "";
-        public string Error { get => _error; set => Set(ref _error, value); }
+    public ICommand LoginCommand => new Command(OnLogin);
 
-        public ICommand LoginCommand { get; }
-        public ICommand GoRegisterCommand { get; }
-
-        public LoginViewModel(IAuthService auth)
+    private async void OnLogin()
+    {
+        if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
         {
-            _auth = auth;
-            LoginCommand = new Command(async () => await OnLoginAsync());
-            GoRegisterCommand = new Command(async () => await Shell.Current.GoToAsync(nameof(RegisterPage)));
+            Error = "Veuillez remplir tous les champs.";
+            return;
         }
 
-        private async Task OnLoginAsync()
+        bool success = TestDBService.TestLoginSimple(Username, Password);
+
+        if (success)
         {
-            Error = "";
-            var ok = await _auth.LoginAsync(Username, Password);
-            if (ok)
-            {
-                await Shell.Current.GoToAsync($"//{nameof(HomePage)}"); // nav root vers Home
-                Username = Password = "";
-            }
-            else
-            {
-                Error = "Identifiants invalides.";
-            }
+            await Shell.Current.GoToAsync($"//{nameof(HomePage)}");
         }
+        else
+        {
+            Error = "Nom d'utilisateur ou mot de passe incorrect ❌";
+        }
+    }
+
+    private void OnPropertyChanged([CallerMemberName] string name = "")
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
     }
 }
