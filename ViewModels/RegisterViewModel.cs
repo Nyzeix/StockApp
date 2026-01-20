@@ -8,7 +8,7 @@ namespace StockApp.ViewModels
 
     public class RegisterViewModel : BaseViewModel
     {
-        private readonly IAuthService _auth;
+        private readonly IAuthDbService _auth;
 
         private string _username = "";
         public string Username { get => _username; set => Set(ref _username, value); }
@@ -25,7 +25,7 @@ namespace StockApp.ViewModels
         public ICommand RegisterCommand { get; }
         public ICommand BackToLoginCommand { get; }
 
-        public RegisterViewModel(IAuthService auth)
+        public RegisterViewModel(IAuthDbService auth)
         {
             _auth = auth;
             RegisterCommand = new Command(async () => await OnRegisterAsync());

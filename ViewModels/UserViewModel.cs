@@ -14,14 +14,14 @@ namespace StockApp.ViewModels
 
     public class UserViewModel : BaseViewModel, INotifyPropertyChanged
     {
-        private readonly IAuthService _auth;
+        private readonly IAuthDbService _auth;
         // Event de notification de changement de propriété
         public event PropertyChangedEventHandler PropertyChanged;
 
 
         public ObservableCollection<User> UsersList { get; set; } = new();
 
-        public UserViewModel(IAuthService auth)
+        public UserViewModel(IAuthDbService auth)
         {
             _auth = auth;
             foreach (var user in _auth.LoadUsers())
@@ -53,7 +53,7 @@ namespace StockApp.ViewModels
 
         public async Task<string> DeleteUserAsync(string username)
         {
-            var result = await _auth.DeleteUser(username).ConfigureAwait(false);
+            var result = _auth.DeleteUser(username).Result;
             if (result)
             {
                 // Met à jour l'UI thread

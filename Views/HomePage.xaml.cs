@@ -5,8 +5,8 @@ namespace StockApp.Views;
 
 public partial class HomePage : ContentPage
 {
-    private readonly IAuthService _auth;
-    public HomePage(IAuthService auth)
+    private readonly IAuthDbService _auth;
+    public HomePage(IAuthDbService auth)
     {
         InitializeComponent();
         _auth = auth;

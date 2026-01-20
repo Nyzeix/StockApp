@@ -9,6 +9,7 @@ namespace StockApp.ViewModels;
 
 public class LoginViewModel : INotifyPropertyChanged
 {
+    private readonly IAuthDbService _auth;
     private string _username = "";
     private string _password = "";
     private string _error = "";
@@ -33,9 +34,17 @@ public class LoginViewModel : INotifyPropertyChanged
         set { _error = value; OnPropertyChanged(); }
     }
 
-    public ICommand LoginCommand => new Command(OnLogin);
+    public ICommand LoginCommand { get; } // => new Command(OnLoginAsync);
+    public ICommand GoRegisterCommand { get; } // => new Command(async () => await Shell.Current.GoToAsync(nameof(RegisterPage)));
 
-    private async void OnLogin()
+    public LoginViewModel(IAuthDbService auth)
+    {
+        _auth = auth;
+        LoginCommand = new Command(async () => await OnLoginAsync());
+        GoRegisterCommand = new Command(async () => await Shell.Current.GoToAsync(nameof(RegisterPage)));
+    }
+
+    private async Task OnLoginAsync()
     {
         if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
         {
@@ -43,7 +52,7 @@ public class LoginViewModel : INotifyPropertyChanged
             return;
         }
 
-        bool success = TestDBService.TestLoginSimple(Username, Password);
+        bool success = await _auth.LoginAsync(Username, Password);
 
         if (success)
         {
