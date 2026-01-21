@@ -20,6 +20,7 @@ public static class MauiProgram
 
         // Services
         builder.Services.AddSingleton<IAuthDbService, AuthDbService>();
+        builder.Services.AddSingleton<ILogService, LogService>();
 
         // ViewModels
         builder.Services.AddTransient<LoginViewModel>();
