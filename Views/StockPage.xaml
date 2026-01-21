@@ -1,236 +1,127 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="StockApp.Views.StockPage"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:models="clr-namespace:StockApp.Models"
-             Title="📦 Gestion du stock"
+             x:Class="StockApp.Views.StockPage"
+             x:Name="Stock"
+             Title="📦 Stock"
              BackgroundColor="{AppThemeBinding Light={DynamicResource LightBackgroundColor}, Dark={DynamicResource DarkBackgroundColor}}">
 
-    <Grid>
-        <ScrollView>
-            <VerticalStackLayout Padding="15" Spacing="15">
+    <Grid RowDefinitions="Auto, *" IgnoreSafeArea="False">
 
-                <!-- Bouton Ajouter -->
-                <Button Text="➕ Ajouter un produit"
-                    x:Name="AddButton"
-                    FontAttributes="Bold"
-                    CornerRadius="10"
-                    HeightRequest="50"
-                    BackgroundColor="{AppThemeBinding Light={DynamicResource LightPrimaryButtonColor}, Dark={DynamicResource DarkPrimaryButtonColor}}"
-                    TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
-                    Clicked="OnAddButtonClicked" />
+        <!-- Header -->
+        <VerticalStackLayout Grid.Row="0" Padding="15,10" Spacing="10" 
+                             BackgroundColor="{AppThemeBinding Light={DynamicResource LightBlockBackgroundColor}, Dark={DynamicResource DarkBlockBackgroundColor}}">
 
-                <!-- Barre de recherche -->
-                <SearchBar x:Name="ProductSearchBar"
-                       Placeholder="Rechercher un produit..."
-                       FontSize="16"
-                       HeightRequest="50"
+            <SearchBar x:Name="ProductSearchBar"
+                       Placeholder="Rechercher..."
                        TextChanged="OnSearchBarTextChanged"
-                       Margin="0,5,0,0"
-                       BackgroundColor="{AppThemeBinding Light={DynamicResource LightBlockBackgroundColor}, Dark={DynamicResource DarkBlockBackgroundColor}}"
-                       TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
-                       PlaceholderColor="{AppThemeBinding Light={DynamicResource LightPrimaryColor}, Dark={DynamicResource DarkPrimaryColor}}"/>
+                       BackgroundColor="{AppThemeBinding Light={DynamicResource LightBackgroundColor}, Dark={DynamicResource DarkBackgroundColor}"
+                       TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"/>
 
-                <!-- Ligne des filtres -->
-                <HorizontalStackLayout Spacing="10" HorizontalOptions="FillAndExpand">
-                    <Picker x:Name="QuantityFilterPicker"
-                            Title="Quantité"
-                            FontSize="16"
-                            HorizontalOptions="FillAndExpand"
-                            BackgroundColor="{AppThemeBinding Light={DynamicResource LightBlockBackgroundColor}, Dark={DynamicResource DarkBlockBackgroundColor}}"
-                            TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
-                            HeightRequest="65"
-                            ItemsSource="{Binding Quantity}"
+            <!-- Filtres -->
+            <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
+                <Border StrokeShape="RoundRectangle 8" BackgroundColor="{AppThemeBinding Light={DynamicResource LightBackgroundColor}, Dark={DynamicResource DarkBackgroundColor}}" StrokeThickness="0">
+                    <Picker x:Name="QuantityFilterPicker" Title="Qté" HorizontalTextAlignment="Center"
                             SelectedIndexChanged="QuantityPicker_SelectedIndexChanged"/>
-
-                    <Picker x:Name="OriginFilterPicker"
-                        Title="Origine"
-                        FontSize="16"
-                        HorizontalOptions="FillAndExpand"
-                        BackgroundColor="{AppThemeBinding Light={DynamicResource LightBlockBackgroundColor}, Dark={DynamicResource DarkBlockBackgroundColor}}"
-                        TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
-                        HeightRequest="65"  
-                        ItemsSource="{Binding Origins}"
-                        SelectedIndexChanged="OriginPicker_SelectedIndexChanged" />
-
-                    <Picker x:Name="SupplierFilterPicker"
-                        Title="Fournisseur"
-                        FontSize="16"
-                        HorizontalOptions="FillAndExpand"
-                        BackgroundColor="{AppThemeBinding Light={DynamicResource LightBlockBackgroundColor}, Dark={DynamicResource DarkBlockBackgroundColor}}"
-                        TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
-                        HeightRequest="65"  
-                        ItemsSource="{Binding AvailableSuppliers}"
-                        SelectedIndexChanged="SupplierPicker_SelectedIndexChanged" />
-                </HorizontalStackLayout>
-
-                <!-- Formulaire d’ajout -->
-                <Border x:Name="AddProductForm"
-                   IsVisible="False"
-                   BackgroundColor="{AppThemeBinding Light={DynamicResource LightBackgroundColor}, Dark={DynamicResource DarkBackgroundColor}}"
-                   Padding="15"
-                   Margin="0,10,0,10">
-
-                    <VerticalStackLayout Spacing="10">
-                        <Label Text="Ajouter un produit"
-                           FontSize="20"
-                           FontAttributes="Bold"
-                           TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
-                           HorizontalOptions="Center" />
-
-                        <!-- Nom -->
-                        <Border Padding="10" 
-                            BackgroundColor="{AppThemeBinding Light={DynamicResource LightBlockgroundColor}, Dark={DynamicResource DarkBlockBackgroundColor}}"
-                            Stroke="{AppThemeBinding Light={DynamicResource LightSecondaryColor}, Dark={DynamicResource DarkSecondaryColor}}">
-                            <Entry x:Name="NameEntry"
-                               Placeholder="Nom du produit"
-                               BackgroundColor="Transparent"
-                               TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
-                               PlaceholderColor="{AppThemeBinding Light={DynamicResource LightPrimaryColor}, Dark={DynamicResource DarkPrimaryColor}}"/>
-                        </Border>
-
-                        <Picker
-                            x:Name="SupplierPicker"
-                            Title="Fournisseur"
-                            ItemsSource="{Binding AvailableSuppliers}" 
-                            FontSize="16"
-                            HorizontalOptions="FillAndExpand"
-                            BackgroundColor="{AppThemeBinding Light={DynamicResource LightBlockBackgroundColor}, Dark={DynamicResource DarkBlockBackgroundColor}}"
-                            TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
-                            HeightRequest="65"/>
-
-                        <!-- Quantité -->
-                        <Border Padding="10"
-                            BackgroundColor="{AppThemeBinding Light={DynamicResource LightBlockgroundColor}, Dark={DynamicResource DarkBlockBackgroundColor}}"
-                            Stroke="{AppThemeBinding Light={DynamicResource LightSecondaryColor}, Dark={DynamicResource DarkSecondaryColor}}">
-                            <Entry x:Name="QuantityEntry"
-                               Placeholder="Quantité"
-                               Keyboard="Numeric"
-                               BackgroundColor="Transparent"
-                               TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
-                               PlaceholderColor="{AppThemeBinding Light={DynamicResource LightPrimaryColor}, Dark={DynamicResource DarkPrimaryColor}}" />
-                        </Border>
-
-                        <!-- Couleur -->
-                        <Border Padding="10" 
-                            BackgroundColor="{AppThemeBinding Light={DynamicResource LightBlockgroundColor}, Dark={DynamicResource DarkBlockBackgroundColor}}"
-                            Stroke="{AppThemeBinding Light={DynamicResource LightSecondaryColor}, Dark={DynamicResource DarkSecondaryColor}}">
-                            <Entry x:Name="ColorEntry"
-                               Placeholder="Couleur"
-                               BackgroundColor="Transparent"
-                               TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
-                               PlaceholderColor="{AppThemeBinding Light={DynamicResource LightPrimaryColor}, Dark={DynamicResource DarkPrimaryColor}}" />
-                        </Border>
-
-                        <!-- Origine -->
-                        <Border Padding="10"
-                            BackgroundColor="{AppThemeBinding Light={DynamicResource LightBlockgroundColor}, Dark={DynamicResource DarkBlockBackgroundColor}}"
-                            Stroke="{AppThemeBinding Light={DynamicResource LightSecondaryColor}, Dark={DynamicResource DarkSecondaryColor}}">
-                            <Entry x:Name="OriginEntry"
-                               Placeholder="Origine"
-                               BackgroundColor="Transparent"
-                               TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
-                               PlaceholderColor="{AppThemeBinding Light={DynamicResource LightPrimaryColor}, Dark={DynamicResource DarkPrimaryColor}}"/>
-                        </Border>
-
-                        <!-- Date de péremption -->
-                        <Label Text="Date de péremption :"
-                               FontSize="14"
-                               TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"/>
-                        <DatePicker x:Name="ExpirationDatePicker"
-                                    TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
-                                    BackgroundColor="{AppThemeBinding Light={DynamicResource DarkTextColor}, Dark={DynamicResource LightTextColor}}" />
-
-                        <HorizontalStackLayout HorizontalOptions="Center" Spacing="15">
-                            <Button Text="💾 Enregistrer"
-                                x:Name="SaveButton"
-                                TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
-                                BackgroundColor="{AppThemeBinding Light={DynamicResource LightPrimaryButtonColor}, Dark={DynamicResource DarkPrimaryButtonColor}}"
-                                FontAttributes="Bold"
-                                CornerRadius="10"
-                                HeightRequest="45"
-                                Clicked="OnSaveProductClicked" />
-                            <Button Text="❌ Annuler"
-                                x:Name="CancelButton"
-                                TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
-                                BackgroundColor="{AppThemeBinding Light={DynamicResource LightSecondaryButtonColor}, Dark={DynamicResource DarkSecondaryButtonColor}}"
-                                FontAttributes="Bold"
-                                CornerRadius="10"
-                                HeightRequest="45"
-                                Clicked="OnCancelClicked" />
-                        </HorizontalStackLayout>
-                    </VerticalStackLayout>
                 </Border>
+                <Border Grid.Column="1" StrokeShape="RoundRectangle 8" BackgroundColor="{AppThemeBinding Light={DynamicResource LightBackgroundColor}, Dark={DynamicResource DarkBackgroundColor}}" StrokeThickness="0">
+                    <Picker x:Name="OriginFilterPicker" Title="Origine" HorizontalTextAlignment="Center"
+                            SelectedIndexChanged="OriginPicker_SelectedIndexChanged"/>
+                </Border>
+                <Border Grid.Column="2" StrokeShape="RoundRectangle 8" BackgroundColor="{AppThemeBinding Light={DynamicResource LightBackgroundColor}, Dark={DynamicResource DarkBackgroundColor}}" StrokeThickness="0">
+                    <Picker x:Name="SupplierFilterPicker" Title="Frn." HorizontalTextAlignment="Center"
+                            SelectedIndexChanged="SupplierPicker_SelectedIndexChanged"/>
+                </Border>
+            </Grid>
+        </VerticalStackLayout>
 
-                <!-- Liste des produits -->
-                <CollectionView x:Name="StockCollectionView"
-                                ItemsSource="{Binding StockItems}"
-                                Margin="0,10,0,0"
-                                SelectionMode="Multiple"
-                                SelectionChanged="OnItemSelected"
-                                RemainingItemsThreshold="5"
-                                EmptyView="No Item to display">
+        <!-- Liste des produits -->
+        <CollectionView Grid.Row="1"
+                        x:Name="StockCollectionView"
+                        ItemsSource="{Binding StockItems}"
+                        SelectionMode="None"
+                        RemainingItemsThreshold="5">
 
-                    <CollectionView.ItemsLayout>
-                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
-                    </CollectionView.ItemsLayout>
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical" ItemSpacing="12"/>
+            </CollectionView.ItemsLayout>
 
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="models:Product">
-                            <Border BackgroundColor="{AppThemeBinding Light={DynamicResource LightAccentColor}, Dark={DynamicResource DarkAccentColor}}"
+            <CollectionView.Header>
+                <BoxView HeightRequest="10" Color="Transparent"/>
+            </CollectionView.Header>
+            <CollectionView.Footer>
+                <!-- Espace pour le Floating Button -->
+                <BoxView HeightRequest="80" Color="Transparent"/>
+            </CollectionView.Footer>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Product">
+                    <Grid Padding="15,0">
+                        <Border StrokeShape="RoundRectangle 15"
+                                BackgroundColor="{AppThemeBinding Light={DynamicResource LightBlockBackgroundColor}, Dark={DynamicResource DarkBlockBackgroundColor}}"
+                                StrokeThickness="0"
                                 Padding="15">
 
-                                <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,Auto">
+                            <!-- Gestion de l'appui long -->
+                            <Border.Behaviors>
+                                <toolkit:TouchBehavior 
+                                    LongPressDuration="800"
+                                    LongPressCommand="{Binding Source={x:Reference Stock}, Path=LongPressDeleteCommand}"
+                                    LongPressCommandParameter="{Binding .}"
+                                    DefaultAnimationDuration="100"
+                                    DefaultOpacity="1"
+                                    PressedOpacity="0.8" />
+                            </Border.Behaviors>
 
-                                    <Label Grid.Row="0" Grid.Column="0"
-                                       Text="{Binding Name}"
-                                       FontSize="20"
-                                       FontAttributes="Bold"
-                                       TextColor="{AppThemeBinding Light={DynamicResource BlackBrush}, Dark={DynamicResource WhiteBrush}}"/>
+                            <Border.Shadow>
+                                <Shadow Brush="Black" Offset="0,2" Radius="4" Opacity="0.1"/>
+                            </Border.Shadow>
 
-                                    <Label Grid.Row="0" Grid.Column="1"
-                                       Text="{Binding Origin, StringFormat='Origine : {0}'}"
-                                       FontSize="16"
-                                       HorizontalTextAlignment="End"
-                                       TextColor="#555" />
+                            <Grid RowDefinitions="Auto, Auto, Auto" ColumnDefinitions="*, Auto">
+                                <!-- Nom -->
+                                <Label Text="{Binding Name}" FontSize="18" FontAttributes="Bold" TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"/>
 
-                                    <Label Grid.Row="1" Grid.Column="0"
-                                       Text="{Binding Quantity, StringFormat='Quantité : {0}'}"
-                                       FontSize="16"
-                                       TextColor="#0078D7" />
+                                <!-- Badge Quantité -->
+                                <Border Grid.Column="1" BackgroundColor="{AppThemeBinding Light=#E3F2FD, Dark=#1565C0}" StrokeShape="RoundRectangle 8" Padding="8,4">
+                                    <Label Text="{Binding Quantity, StringFormat='{0} ex.'}" TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}" FontSize="12" FontAttributes="Bold"/>
+                                </Border>
 
-                                    <Label Grid.Row="1" Grid.Column="1"
-                                       Text="{Binding ExpirationDate, StringFormat='Péremption : {0:dd/MM/yyyy}'}"
-                                       FontSize="14"
-                                       HorizontalTextAlignment="End"
-                                       TextColor="#D9534F" />
+                                <!-- Détails -->
+                                <HorizontalStackLayout Grid.Row="1" Grid.ColumnSpan="2" Spacing="10" Margin="0,5">
+                                    <Label Text="{Binding Origin, StringFormat='🌍 {0}'}" FontSize="13" TextColor="#777"/>
+                                    <Label Text="{Binding Supplier, StringFormat='🏢 {0}'}" FontSize="13" TextColor="#777"/>
+                                </HorizontalStackLayout>
 
-                                    <Label Grid.Row="2" Grid.Column="1"
-                                       Text="{Binding Color, StringFormat='Couleur : {0}'}"
-                                       FontSize="14"
-                                       HorizontalOptions="End"
-                                       TextColor="#666" />
+                                <!-- Footer -->
+                                <Label Grid.Row="2" Grid.ColumnSpan="2" 
+                                       Text="{Binding ExpirationDate, StringFormat='Péremption : {0:dd/MM/yyyy}'}" 
+                                       TextColor="#D32F2F" FontSize="12" Margin="0,5,0,0"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
 
-                                    <Label Grid.Row="2" Grid.Column="0"
-                                       Text="{Binding Supplier, StringFormat='Fournisseur : {0}'}"
-                                       FontSize="14"
-                                       TextColor="#666" />
+        <!-- Floating Button Action -->
+        <Button Grid.Row="1"
+                Text="+"
+                FontSize="32"
+                TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
+                BackgroundColor="{AppThemeBinding Light={DynamicResource LightPrimaryButtonColor}, Dark={DynamicResource DarkPrimaryButtonColor}}"
+                CornerRadius="30"
+                HeightRequest="60"
+                WidthRequest="60"
+                HorizontalOptions="End"
+                VerticalOptions="End"
+                Margin="20"
+                Clicked="OnAddButtonClicked">
+            <Button.Shadow>
+                <Shadow Brush="Black" Offset="0,4" Radius="6" Opacity="0.3"/>
+            </Button.Shadow>
+        </Button>
 
-                                    <Button Grid.Row="0" Grid.Column="2"
-                                        Text="❌ Supprimer"
-                                        BackgroundColor="{AppThemeBinding Light={DynamicResource LightBlockBackgroundColor}, Dark={DynamicResource DarkBlockBackgroundColor}}"
-                                        TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
-                                        FontAttributes="Bold"
-                                        CornerRadius="8"
-                                        HeightRequest="40"
-                                        Clicked="OnDeleteProductClicked"
-                                        VerticalOptions="Center"/>
-                                </Grid>
-                            </Border>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-            </VerticalStackLayout>
-        </ScrollView>
     </Grid>
 </ContentPage>
