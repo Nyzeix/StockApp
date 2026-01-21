@@ -10,6 +10,9 @@ namespace StockApp.ViewModels;
 public class LoginViewModel : INotifyPropertyChanged
 {
     private readonly IAuthDbService _auth;
+    private readonly ILogService _log;
+    private string log_tag = "Login";
+
     private string _username = "";
     private string _password = "";
     private string _error = "";
@@ -37,9 +40,10 @@ public class LoginViewModel : INotifyPropertyChanged
     public ICommand LoginCommand { get; } // => new Command(OnLoginAsync);
     public ICommand GoRegisterCommand { get; } // => new Command(async () => await Shell.Current.GoToAsync(nameof(RegisterPage)));
 
-    public LoginViewModel(IAuthDbService auth)
+    public LoginViewModel(IAuthDbService auth, ILogService log)
     {
         _auth = auth;
+        _log = log;
         LoginCommand = new Command(async () => await OnLoginAsync());
         GoRegisterCommand = new Command(async () => await Shell.Current.GoToAsync(nameof(RegisterPage)));
     }
@@ -56,10 +60,12 @@ public class LoginViewModel : INotifyPropertyChanged
 
         if (success)
         {
+            _log.LogInfo(log_tag, "User logged in: " + Username);
             await Shell.Current.GoToAsync($"//{nameof(HomePage)}");
         }
         else
         {
+            _log.LogInfo(log_tag, "Login failed for user: " + Username);
             Error = "Nom d'utilisateur ou mot de passe incorrect ❌";
         }
     }

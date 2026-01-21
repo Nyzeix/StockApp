@@ -9,6 +9,8 @@ namespace StockApp.ViewModels
     public class RegisterViewModel : BaseViewModel
     {
         private readonly IAuthDbService _auth;
+        private readonly ILogService _log;
+        private readonly string log_tag = "Register";
 
         private string _username = "";
         public string Username { get => _username; set => Set(ref _username, value); }
@@ -25,9 +27,10 @@ namespace StockApp.ViewModels
         public ICommand RegisterCommand { get; }
         public ICommand BackToLoginCommand { get; }
 
-        public RegisterViewModel(IAuthDbService auth)
+        public RegisterViewModel(IAuthDbService auth, ILogService log)
         {
             _auth = auth;
+            _log = log;
             RegisterCommand = new Command(async () => await OnRegisterAsync());
             BackToLoginCommand = new Command(async () => await Shell.Current.GoToAsync(".."));
         }
@@ -55,10 +58,11 @@ namespace StockApp.ViewModels
             var ok = await _auth.RegisterAsync(Username, Password);
             if (!ok)
             {
+                _log.LogInfo(log_tag, "Failed to register user: " + Username);
                 Error = "Impossible de créer le compte.";
                 return;
             }
-
+            _log.LogInfo(log_tag, "User registered: " + Username);
             await Shell.Current.DisplayAlert("Succès", "Compte créé, vous pouvez vous connecter.", "OK");
             await Shell.Current.GoToAsync("..");
         }

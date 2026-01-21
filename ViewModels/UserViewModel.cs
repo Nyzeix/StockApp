@@ -15,15 +15,18 @@ namespace StockApp.ViewModels
     public class UserViewModel : BaseViewModel, INotifyPropertyChanged
     {
         private readonly IAuthDbService _auth;
+        private readonly ILogService _log;
+        private readonly string log_tag = "UserManagement";
         // Event de notification de changement de propriété
         public event PropertyChangedEventHandler PropertyChanged;
 
 
         public ObservableCollection<User> UsersList { get; set; } = new();
 
-        public UserViewModel(IAuthDbService auth)
+        public UserViewModel(IAuthDbService auth, ILogService log)
         {
             _auth = auth;
+            _log = log;
             foreach (var user in _auth.LoadUsers())
             {
                 UsersList.Add(user);
@@ -42,7 +45,7 @@ namespace StockApp.ViewModels
                     UsersList.Add(new User { Username = username, PasswordHash = password, IsAdmin = isAdmin });
                     OnPropertyChanged(nameof(UsersList));
                 });
-
+                _log.LogInfo(log_tag, $"User '{username}' added.");
                 return "Utilisateur ajouté avec succès.";
             }
             else
@@ -66,6 +69,7 @@ namespace StockApp.ViewModels
                         OnPropertyChanged(nameof(UsersList));
                     }
                 });
+                _log.LogInfo(log_tag, $"User '{username}' deleted.");
                 return "Utilisateur supprimé avec succès.";
             }
             else
