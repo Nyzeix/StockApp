@@ -17,7 +17,7 @@
             <SearchBar x:Name="ProductSearchBar"
                        Placeholder="Rechercher..."
                        TextChanged="OnSearchBarTextChanged"
-                       BackgroundColor="{AppThemeBinding Light={DynamicResource LightBackgroundColor}, Dark={DynamicResource DarkBackgroundColor}"
+                       BackgroundColor="{AppThemeBinding Light={DynamicResource LightBackgroundColor}, Dark={DynamicResource DarkBackgroundColor}}"
                        TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"/>
 
             <!-- Filtres -->
@@ -67,6 +67,8 @@
                             <!-- Gestion de l'appui long -->
                             <Border.Behaviors>
                                 <toolkit:TouchBehavior 
+                                    Command="{Binding Source={x:Reference Stock}, Path=SimplePressEditCommand}"
+                                    CommandParameter="{Binding .}"
                                     LongPressDuration="800"
                                     LongPressCommand="{Binding Source={x:Reference Stock}, Path=LongPressDeleteCommand}"
                                     LongPressCommandParameter="{Binding .}"

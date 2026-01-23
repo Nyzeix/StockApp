@@ -13,6 +13,7 @@ namespace StockApp.Views
         private ObservableCollection<Product> allProducts;
 
         // Commande pour l'appui long
+        public ICommand SimplePressEditCommand { get; private set; }
         public ICommand LongPressDeleteCommand { get; private set; }
 
         public StockPage()
@@ -21,6 +22,7 @@ namespace StockApp.Views
             BindingContext = new StockViewModel();
             SuppliersVM = new SupplierViewModel();
 
+            SimplePressEditCommand = new Command<Product>(async (product) => await OnEditProduct(product));
             // Initialisation de la commande de suppression (Appui Long)
             LongPressDeleteCommand = new Command<Product>(async (product) => await OnLongPressDelete(product));
 
@@ -63,6 +65,26 @@ namespace StockApp.Views
                 setupPickers();
 
                 await DisplayAlert("Succès", $"Produit {newProduct.Name} ajouté !", "OK");
+            }
+        }
+
+        private async Task OnEditProduct(Product selectedProduct)
+        {
+            if (selectedProduct == null) return;
+
+            var originsList = allProducts.Select(p => p.Origin).Distinct().OrderBy(o => o).ToList();
+            var suppliersList = SuppliersVM.Suppliers.Select(s => s.Name).Distinct().OrderBy(n => n).ToList();
+
+            // Affiche la popup
+            var popup = new EditProductPopup(selectedProduct, originsList, suppliersList);
+
+            // 3. Attendre le résultat
+            var result = await this.ShowPopupAsync(popup);
+
+            if (result is Product modifiedProduct)
+            {
+                // TODO : Logique métier ici (Sauvegarde DB)
+                // L'UI est déjà à jour car c'est le même objet en mémoire
             }
         }
 
