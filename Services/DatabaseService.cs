@@ -50,7 +50,6 @@ public class DatabaseService : IDatabaseService
     // ----------------------------
     public async Task<List<Product>> GetProductsAsync()
     {
-        await InitBusinessDb();
         return await _businessDb.Table<Product>().ToListAsync();
     }
 
