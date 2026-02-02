@@ -8,35 +8,26 @@ namespace StockApp.Views
 {
     public partial class StockPage : ContentPage
     {
-        private StockViewModel ViewModel => BindingContext as StockViewModel;
-        internal SupplierViewModel SuppliersVM { get; }
-        private ObservableCollection<Product> allProducts;
+        private readonly StockViewModel StockVM;
+        private readonly SupplierViewModel SuppliersVM;
+        //private ObservableCollection<Product> allProducts;
 
-        // Commande pour l'appui long
-        public ICommand SimplePressEditCommand { get; private set; }
-        public ICommand LongPressDeleteCommand { get; private set; }
-
-        public StockPage()
+        public StockPage(StockViewModel StockVM, SupplierViewModel SuppliersVM)
         {
+            BindingContext = this.StockVM = StockVM;
             InitializeComponent();
-            BindingContext = new StockViewModel();
-            SuppliersVM = new SupplierViewModel();
 
-            SimplePressEditCommand = new Command<Product>(async (product) => await OnEditProduct(product));
-            // Initialisation de la commande de suppression (Appui Long)
-            LongPressDeleteCommand = new Command<Product>(async (product) => await OnLongPressDelete(product));
-
-            if (ViewModel?.StockItems != null)
-                allProducts = new ObservableCollection<Product>(ViewModel.StockItems);
+            /*if (this.StockVM?.StockItems != null)
+                allProducts = new ObservableCollection<Product>(this.StockVM.StockItems);
             else
-                allProducts = new ObservableCollection<Product>();
+                allProducts = new ObservableCollection<Product>();*/
 
-            setupPickers();
+            //setupPickers();
         }
 
-        private void setupPickers()
+        /*private void setupPickers()
         {
-            List<String> tmpOriginPickerData = [.. allProducts.Select(p => p.Origin).Distinct().OrderBy(o => o)];
+            List<String> tmpOriginPickerData = [.. StockVM.StockItems.Select(p => p.Origin).Distinct().OrderBy(o => o)];
             tmpOriginPickerData.Insert(0, "Tous");
             OriginFilterPicker.ItemsSource = tmpOriginPickerData;
 
@@ -49,30 +40,31 @@ namespace StockApp.Views
             OriginFilterPicker.SelectedIndex = 0;
             QuantityFilterPicker.SelectedIndex = 0;
             SupplierFilterPicker.SelectedIndex = 0;
-        }
+        }*/
 
         private async void OnAddButtonClicked(object sender, EventArgs e)
         {
-            var suppliersList = SuppliersVM.Suppliers.Select(s => s.Name).Distinct().OrderBy(o => o).ToList();
-
-            var popup = new AddProductPopup(suppliersList);
+            var popup = new AddProductPopup(this.StockVM.AvailableSuppliers.ToList());
             var result = await this.ShowPopupAsync(popup);
 
             if (result is Product newProduct)
             {
-                ViewModel?.StockItems.Add(newProduct);
-                allProducts.Add(newProduct);
-                setupPickers();
-
-                await DisplayAlert("Succès", $"Produit {newProduct.Name} ajouté !", "OK");
+                if (await StockVM.AddProductAsync(newProduct))
+                {
+                    await DisplayAlert("Succès", $"Produit {newProduct.Name} ajouté !", "OK");
+                } else
+                {
+                    await DisplayAlert("Erreur", $"Erreur lors de l'ajout du produit.", "OK");
+                }
             }
         }
 
-        private async Task OnEditProduct(Product selectedProduct)
+        /*private async Task OnEditProduct(Product selectedProduct)
         {
             if (selectedProduct == null) return;
 
-            var originsList = allProducts.Select(p => p.Origin).Distinct().OrderBy(o => o).ToList();
+            // Cascadé la liste plutôt que de la recréer ici afin d'optimiser les ressources
+            var originsList = StockVM.StockItems.Select(p => p.Origin).Distinct().OrderBy(o => o).ToList();
             var suppliersList = SuppliersVM.Suppliers.Select(s => s.Name).Distinct().OrderBy(n => n).ToList();
 
             // Affiche la popup
@@ -84,12 +76,15 @@ namespace StockApp.Views
             if (result is Product modifiedProduct)
             {
                 // TODO : Logique métier ici (Sauvegarde DB)
-                // L'UI est déjà à jour car c'est le même objet en mémoire
+
+
+                await DisplayAlert("Succès", $"Le produit à été modifié", "OK");
+
             }
-        }
+        }*/
 
         // Gestion de la supression avec appui long
-        private async Task OnLongPressDelete(Product product)
+        /*private async Task OnLongPressDelete(Product product)
         {
             if (product == null) return;
             bool confirm = await DisplayAlert("Suppression",
@@ -97,47 +92,10 @@ namespace StockApp.Views
                                               "Oui, supprimer", "Annuler");
             if (confirm)
             {
-                ViewModel?.StockItems.Remove(product);
-                allProducts.Remove(product);
+                StockVM.StockItems.Remove(product);
                 setupPickers();
             }
-        }
+        }*/
 
-        // Filtres
-        private void FilterProducts()
-        {
-            string searchText = ProductSearchBar.Text?.ToLower() ?? string.Empty;
-            string selectedOrigin = OriginFilterPicker.SelectedItem as string;
-            string selectedQuantity = QuantityFilterPicker.SelectedItem as string;
-            string selectedSupplier = SupplierFilterPicker.SelectedItem as string;
-
-            var filtered = allProducts.Where(p =>
-                (string.IsNullOrWhiteSpace(searchText) || (p.Name?.ToLower().Contains(searchText) ?? false)) &&
-                (selectedOrigin == "Tous" || selectedOrigin == null || p.Origin == selectedOrigin) &&
-                (selectedSupplier == "Tous" || selectedSupplier == null || p.Supplier == selectedSupplier) &&
-                CheckQuantity(p.Quantity, selectedQuantity)
-            ).ToList();
-
-            ViewModel.StockItems.Clear();
-            foreach (var item in filtered)
-                ViewModel.StockItems.Add(item);
-        }
-
-        // Séparation du filtre quantité pour plus de clarté
-        private bool CheckQuantity(int qty, string filter)
-        {
-            if (filter == "Tous" || string.IsNullOrEmpty(filter)) return true;
-            if (filter == "0-10") return qty <= 10;
-            if (filter == "11-50") return qty > 10 && qty <= 50;
-            if (filter == "51-100") return qty > 50 && qty <= 100;
-            if (filter == "101+") return qty > 100;
-            return true;
-        }
-
-        // Event Handlers
-        private void OnSearchBarTextChanged(object sender, TextChangedEventArgs e) => FilterProducts();
-        private void OriginPicker_SelectedIndexChanged(object sender, EventArgs e) => FilterProducts();
-        private void QuantityPicker_SelectedIndexChanged(object sender, EventArgs e) => FilterProducts();
-        private void SupplierPicker_SelectedIndexChanged(object sender, EventArgs e) => FilterProducts();
     }
 }

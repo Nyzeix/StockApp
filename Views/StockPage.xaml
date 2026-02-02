@@ -16,7 +16,7 @@
 
             <SearchBar x:Name="ProductSearchBar"
                        Placeholder="Rechercher..."
-                       TextChanged="OnSearchBarTextChanged"
+                       Text="{Binding SearchText, Mode=TwoWay}"
                        BackgroundColor="{AppThemeBinding Light={DynamicResource LightBackgroundColor}, Dark={DynamicResource DarkBackgroundColor}}"
                        TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"/>
 
@@ -24,15 +24,18 @@
             <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
                 <Border StrokeShape="RoundRectangle 8" BackgroundColor="{AppThemeBinding Light={DynamicResource LightBackgroundColor}, Dark={DynamicResource DarkBackgroundColor}}" StrokeThickness="0">
                     <Picker x:Name="QuantityFilterPicker" Title="Qté" HorizontalTextAlignment="Center"
-                            SelectedIndexChanged="QuantityPicker_SelectedIndexChanged"/>
+                            ItemsSource="{Binding AvailableQuantities}"
+                            SelectedItem="{Binding SelectedQuantity}"/>
                 </Border>
                 <Border Grid.Column="1" StrokeShape="RoundRectangle 8" BackgroundColor="{AppThemeBinding Light={DynamicResource LightBackgroundColor}, Dark={DynamicResource DarkBackgroundColor}}" StrokeThickness="0">
                     <Picker x:Name="OriginFilterPicker" Title="Origine" HorizontalTextAlignment="Center"
-                            SelectedIndexChanged="OriginPicker_SelectedIndexChanged"/>
+                            ItemsSource="{Binding AvailableOrigins}"
+                            SelectedItem="{Binding SelectedOrigin}"/>
                 </Border>
                 <Border Grid.Column="2" StrokeShape="RoundRectangle 8" BackgroundColor="{AppThemeBinding Light={DynamicResource LightBackgroundColor}, Dark={DynamicResource DarkBackgroundColor}}" StrokeThickness="0">
                     <Picker x:Name="SupplierFilterPicker" Title="Frn." HorizontalTextAlignment="Center"
-                            SelectedIndexChanged="SupplierPicker_SelectedIndexChanged"/>
+                            ItemsSource="{Binding AvailableSuppliers}"
+                            SelectedItem="{Binding SelectedSupplier}"/>
                 </Border>
             </Grid>
         </VerticalStackLayout>
@@ -40,7 +43,7 @@
         <!-- Liste des produits -->
         <CollectionView Grid.Row="1"
                         x:Name="StockCollectionView"
-                        ItemsSource="{Binding StockItems}"
+                        ItemsSource="{Binding Source={x:Reference Stock}, Path=BindingContext.StockItems}"
                         SelectionMode="None"
                         RemainingItemsThreshold="5">
 
@@ -70,7 +73,7 @@
                                     Command="{Binding Source={x:Reference Stock}, Path=SimplePressEditCommand}"
                                     CommandParameter="{Binding .}"
                                     LongPressDuration="800"
-                                    LongPressCommand="{Binding Source={x:Reference Stock}, Path=LongPressDeleteCommand}"
+                                    LongPressCommand="{Binding Source={x:Reference Stock}, Path=BindingContext.LongPressDeleteCommand}"
                                     LongPressCommandParameter="{Binding .}"
                                     DefaultAnimationDuration="100"
                                     DefaultOpacity="1"

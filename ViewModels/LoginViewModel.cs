@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Microsoft.Maui.Controls;
 using StockApp.Services;
-using StockApp.Views; // <-- nécessaire pour HomePage
+using StockApp.Views;
 
 namespace StockApp.ViewModels;
 

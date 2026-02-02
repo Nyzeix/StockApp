@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace StockApp.ViewModels
 {
-    class SupplierViewModel : BaseViewModel, INotifyPropertyChanged
+    public class SupplierViewModel : BaseViewModel, INotifyPropertyChanged
     {
         // Event de notification de changement de propriété
         public event PropertyChangedEventHandler PropertyChanged;

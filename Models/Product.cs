@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SQLite;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,8 +7,11 @@ using System.Threading.Tasks;
 
 namespace StockApp.Models
 {
+    [Table("Products")]
     public class Product
     {
+        [PrimaryKey, AutoIncrement]
+        public int Id { get; set; }
         public string Name { get; set; } = "";
         public int Quantity { get; set; } = 0;
         

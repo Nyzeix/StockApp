@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace StockApp.Models
 {
-    class Supplier
+    public class Supplier
     {
         public string Name { get; set; } = "";
         public string Type { get; set; } = "";
