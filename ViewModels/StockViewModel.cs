@@ -102,6 +102,8 @@ namespace StockApp.ViewModels
         public ICommand SimplePressEditCommand { get; private set; }
         public ICommand LongPressDeleteCommand { get; private set; }
 
+        private bool _itemsLoaded = false;
+
         // Change le type du paramètre ici aussi
         public StockViewModel(IDatabaseService db, SupplierViewModel svm)
         {
@@ -112,19 +114,27 @@ namespace StockApp.ViewModels
             //SimplePressEditCommand = new Command<Product>(async (product) => await OnEditProduct(product));
             // Initialisation de la commande de suppression (Appui Long)
             LongPressDeleteCommand = new Command<Product>(async (product) => await DeleteProductCommandAsync(product));
+
+            // Hotfix pour le chargement des listes de filtres après le chargement des produits.
+            // Sans ça, la liste des origines reste vide car le LoadDataAsync n'est pas terminé.
+            // Ce n'est pas propre et doit être modifié.
+            while (_itemsLoaded == false)
+            {
+                Task.Delay(100).Wait();
+            }
             LoadSuppliersList();
+            LoadOriginsList();
         }
 
         public async Task LoadDataAsync()
         {
             var products = await _db.GetProductsAsync();
-
             _StockItems.Clear();
             foreach (var product in products)
             {
                 _StockItems.Add(product);
             }
-
+            _itemsLoaded = true;
             ApplyFilters(); // Update UI
         }
 
@@ -148,7 +158,8 @@ namespace StockApp.ViewModels
 
             // Données de suppliers ViewModel
             var suppliersData = _supplierViewModel.GetSuppliers();
-                
+
+            AvailableSuppliers.Add("Tous");
             foreach (var supplier in suppliersData)
             {
                 AvailableSuppliers.Add(supplier.Name);
@@ -156,6 +167,19 @@ namespace StockApp.ViewModels
 
             // Notifie l'interface que la liste a potentiellement changé (utile si on réassigne l'objet collection complète)
             OnPropertyChanged(nameof(AvailableSuppliers));
+        }
+
+        // Récupère les données d'origines depuis la liste des produits en stock
+        public void LoadOriginsList()
+        {
+            AvailableOrigins.Clear();
+            var originsData = _StockItems.Select(p => p.Origin).Distinct().OrderBy(o => o);
+            AvailableOrigins.Add("Tous");
+            foreach (var origin in originsData)
+            {
+                AvailableOrigins.Add(origin);
+            }
+            OnPropertyChanged(nameof(AvailableOrigins));
         }
 
 
