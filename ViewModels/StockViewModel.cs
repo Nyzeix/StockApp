@@ -98,8 +98,6 @@ namespace StockApp.ViewModels
         }
 
 
-        // Commandes pour la pression sur un produit
-        public ICommand SimplePressEditCommand { get; private set; }
         public ICommand LongPressDeleteCommand { get; private set; }
 
         private bool _itemsLoaded = false;
@@ -111,7 +109,6 @@ namespace StockApp.ViewModels
             _db = db;
             Task.Run(async () => await LoadDataAsync());
 
-            //SimplePressEditCommand = new Command<Product>(async (product) => await OnEditProduct(product));
             // Initialisation de la commande de suppression (Appui Long)
             LongPressDeleteCommand = new Command<Product>(async (product) => await DeleteProductCommandAsync(product));
 
@@ -137,18 +134,6 @@ namespace StockApp.ViewModels
             _itemsLoaded = true;
             ApplyFilters(); // Update UI
         }
-
-        /*private void LoadStockItems()
-        {
-            // Exemple de données statiques
-            for(int i = 1; i<= 20; i++)
-            {
-                StockItems.Add(new Product { Name = $"Produit {i}", Quantity = i * 10, CreatedAt = (int)DateTimeOffset.Now.ToUnixTimeSeconds() });
-            }
-            StockItems.Add(new Product { Name = "Pommes", Quantity = 50, Origin = "France", Color = "Rouge", CreatedAt = (int)DateTimeOffset.Now.ToUnixTimeSeconds() });
-            StockItems.Add(new Product { Name = "Bananes", Quantity = 30, Origin = "Equateur", Color = "Jaune", CreatedAt = (int)DateTimeOffset.Now.ToUnixTimeSeconds() });
-            StockItems.Add(new Product { Name = "Oranges", Quantity = 20, Origin = "Espagne", Color = "Orange", CreatedAt = (int)DateTimeOffset.Now.ToUnixTimeSeconds() });
-        }*/
 
         // Récupère les données de fournisseurs depuis le VM SupplierViewModel
         public void LoadSuppliersList()
@@ -198,6 +183,22 @@ namespace StockApp.ViewModels
         }
 
 
+        public async Task<bool> UpdateProductAsync(Product modifiedProduct)
+        {
+            try
+            {
+                await _db.UpdateProductAsync(modifiedProduct);
+                await LoadDataAsync();
+                ApplyFilters();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+
         private async Task DeleteProductCommandAsync(Product product)
         {
             if (product == null) return;
@@ -211,6 +212,7 @@ namespace StockApp.ViewModels
             // Rafraichir l'affichage
             ApplyFilters();
         }
+
 
         private void ApplyFilters()
         {
@@ -245,6 +247,7 @@ namespace StockApp.ViewModels
             }
         }
 
+
         private bool CheckQuantity(int qty, string filter)
         {
             return filter switch
@@ -257,10 +260,12 @@ namespace StockApp.ViewModels
             };
         }
 
+
         // Appelle la vue si une propriété évolue
         private void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
     }
 }

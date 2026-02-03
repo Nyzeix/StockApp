@@ -24,9 +24,9 @@
             <Entry x:Name="NameEntry"
                    Placeholder="Nom du produit" />
 
-            <!-- Origine (Picker) -->
-            <Picker x:Name="OriginPicker" HorizontalTextAlignment="Center"
-                    Title="Origine" />
+            <!-- Origine -->
+            <Entry x:Name="OriginEntry" HorizontalTextAlignment="Center"
+                    Placeholder="Pays d'origine" />
 
             <!-- Quantité -->
             <Entry x:Name="QuantityEntry" HorizontalTextAlignment="Center"

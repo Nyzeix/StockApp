@@ -8,36 +8,36 @@ namespace StockApp.Views
         private Product _productToEdit;
 
         // On passe le produit, ainsi que les listes pour remplir les Pickers
-        public EditProductPopup(Product product, List<string> availableOrigins, List<string> availableSuppliers)
+        public EditProductPopup(Product product, List<string> availableSuppliers)
         {
             InitializeComponent();
             _productToEdit = product;
 
             // 1. Configuration des Pickers
-            OriginPicker.ItemsSource = availableOrigins;
             SupplierPicker.ItemsSource = availableSuppliers;
 
             // 2. Pré-remplissage des champs (Mapping)
             NameEntry.Text = product.Name;
+            OriginEntry.Text = product.Origin;
             QuantityEntry.Text = product.Quantity.ToString();
             ExpirationDatePicker.Date = product.ExpirationDate;
 
             // Sélectionner les bonnes valeurs dans les pickers
-            OriginPicker.SelectedItem = product.Origin;
             SupplierPicker.SelectedItem = product.Supplier;
         }
 
         private async void OnSaveClicked(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(NameEntry.Text) ||
-                !int.TryParse(QuantityEntry.Text, out int quantity))
+                !int.TryParse(QuantityEntry.Text, out int quantity) ||
+                string.IsNullOrWhiteSpace(QuantityEntry.Text))
             {
                 return;
             }
 
             _productToEdit.Name = NameEntry.Text;
-            _productToEdit.Origin = OriginPicker.SelectedItem?.ToString() ?? "Inconnu";
             _productToEdit.Quantity = quantity;
+            _productToEdit.Origin = OriginEntry.Text;
             _productToEdit.Supplier = SupplierPicker.SelectedItem?.ToString() ?? "Inconnu";
             _productToEdit.ExpirationDate = ExpirationDatePicker.Date;
 

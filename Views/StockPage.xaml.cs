@@ -10,37 +10,17 @@ namespace StockApp.Views
     {
         private readonly StockViewModel StockVM;
         private readonly SupplierViewModel SuppliersVM;
-        //private ObservableCollection<Product> allProducts;
+
+        public ICommand SimplePressEditCommand { get; private set; }
+
 
         public StockPage(StockViewModel StockVM, SupplierViewModel SuppliersVM)
         {
             BindingContext = this.StockVM = StockVM;
+            SimplePressEditCommand = new Command<Product>(async (product) => await OnEditProductCommandAsync(product));
             InitializeComponent();
-
-            /*if (this.StockVM?.StockItems != null)
-                allProducts = new ObservableCollection<Product>(this.StockVM.StockItems);
-            else
-                allProducts = new ObservableCollection<Product>();*/
-
-            //setupPickers();
         }
 
-        /*private void setupPickers()
-        {
-            List<String> tmpOriginPickerData = [.. StockVM.StockItems.Select(p => p.Origin).Distinct().OrderBy(o => o)];
-            tmpOriginPickerData.Insert(0, "Tous");
-            OriginFilterPicker.ItemsSource = tmpOriginPickerData;
-
-            QuantityFilterPicker.ItemsSource = new List<string> { "Tous", "0-10", "11-50", "51-100", "101+" };
-
-            List<String> tmpSuppliersPickerData = [.. SuppliersVM.Suppliers.Select(s => s.Name).Distinct().OrderBy(o => o)];
-            tmpSuppliersPickerData.Insert(0, "Tous");
-            SupplierFilterPicker.ItemsSource = tmpSuppliersPickerData;
-
-            OriginFilterPicker.SelectedIndex = 0;
-            QuantityFilterPicker.SelectedIndex = 0;
-            SupplierFilterPicker.SelectedIndex = 0;
-        }*/
 
         private async void OnAddButtonClicked(object sender, EventArgs e)
         {
@@ -59,16 +39,14 @@ namespace StockApp.Views
             }
         }
 
-        /*private async Task OnEditProduct(Product selectedProduct)
+        // Commandes pour la pression sur un produit
+
+        private async Task OnEditProductCommandAsync(Product selectedProduct)
         {
             if (selectedProduct == null) return;
 
-            // Cascadé la liste plutôt que de la recréer ici afin d'optimiser les ressources
-            var originsList = StockVM.StockItems.Select(p => p.Origin).Distinct().OrderBy(o => o).ToList();
-            var suppliersList = SuppliersVM.Suppliers.Select(s => s.Name).Distinct().OrderBy(n => n).ToList();
-
             // Affiche la popup
-            var popup = new EditProductPopup(selectedProduct, originsList, suppliersList);
+            var popup = new EditProductPopup(selectedProduct, StockVM.AvailableSuppliers.ToList());
 
             // 3. Attendre le résultat
             var result = await this.ShowPopupAsync(popup);
@@ -76,26 +54,13 @@ namespace StockApp.Views
             if (result is Product modifiedProduct)
             {
                 // TODO : Logique métier ici (Sauvegarde DB)
+                await StockVM.UpdateProductAsync(modifiedProduct);
 
 
-                await DisplayAlert("Succès", $"Le produit à été modifié", "OK");
+                await DisplayAlert("Succès", $"Le produit a bien été modifié.", "OK");
 
             }
-        }*/
-
-        // Gestion de la supression avec appui long
-        /*private async Task OnLongPressDelete(Product product)
-        {
-            if (product == null) return;
-            bool confirm = await DisplayAlert("Suppression",
-                                              $"Voulez-vous supprimer définitivement '{product.Name}' ?",
-                                              "Oui, supprimer", "Annuler");
-            if (confirm)
-            {
-                StockVM.StockItems.Remove(product);
-                setupPickers();
-            }
-        }*/
+        }
 
     }
 }
