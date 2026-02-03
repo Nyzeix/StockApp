@@ -6,13 +6,13 @@ namespace StockApp.Views
 {
     public partial class SuppliersPage : ContentPage
     {
-        private SupplierViewModel ViewModel => BindingContext as SupplierViewModel;
-        
+        private readonly SupplierViewModel SuppliersVM;
 
-        public SuppliersPage()
+
+        public SuppliersPage(SupplierViewModel SuppliersVM)
         {
+            BindingContext = this.SuppliersVM = SuppliersVM;
             InitializeComponent();
-            BindingContext = new SupplierViewModel();
         }
 
         // SelectionChanged - signature correcte
@@ -55,7 +55,7 @@ namespace StockApp.Views
                 Type = typeEntry.Text?.Trim()
             };
 
-            ViewModel.AddSupplier(newSupplier); // Renvoi l'item au ViewModel
+            Task<bool> result = SuppliersVM.AddSupplierAsync(newSupplier); // Renvoi l'item au ViewModel
 
             // Reset formulaire
             NameEntry.Text = string.Empty;
@@ -63,7 +63,8 @@ namespace StockApp.Views
 
             AddSupplierForm.IsVisible = false;
 
-            await DisplayAlert("Succès", "Fournisseur ajouté avec succès.", "OK");
+            if(await result) await DisplayAlert("Succès", "Fournisseur ajouté avec succès.", "OK");
+            else await DisplayAlert("Erreur", "Erreur lors de l'ajout du fournisseur.", "OK");
         }
 
 

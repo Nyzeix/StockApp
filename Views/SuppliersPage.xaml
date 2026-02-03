@@ -23,7 +23,7 @@
             <!-- Barre de recherche -->
             <Entry x:Name="SupplierSearchBar"
                    Placeholder="Rechercher un fournisseur..."
-                   Text="{Binding SearchText}"
+                   Text="{Binding SearchText, Mode=TwoWay}"
                    FontSize="16"
                    HeightRequest="50"
                    Margin="0,5,0,0"

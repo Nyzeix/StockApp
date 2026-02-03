@@ -42,6 +42,7 @@ public class DatabaseService : IDatabaseService
         _logsDb = new SQLiteAsyncConnection(path);
 
         await _logsDb.CreateTableAsync<Log>();
+        //await _logsDb.CreateTableAsync<StockMovementLog>();
         return true;
     }
 
@@ -113,24 +114,51 @@ public class DatabaseService : IDatabaseService
     // --------------------------------
     // --- Gestion des fournisseurs ---
     // --------------------------------
-    public Task<List<Supplier>> GetSuppliersAsync()
+    public async Task<List<Supplier>> GetSuppliersAsync()
     {
-        throw new NotImplementedException();
+        return await _businessDb.Table<Supplier>().ToListAsync();
     }
 
     public Task<bool> AddSupplierAsync(Supplier supplier)
     {
-        throw new NotImplementedException();
+        try
+        {
+            _businessDb.InsertAsync(supplier);
+            return Task.FromResult(true);
+        }
+        catch (Exception ex)
+        {
+            LogError("DatabaseService", "Error when adding supplier to database", ex);
+            return Task.FromResult(false);
+        }
     }
 
     public Task<bool> UpdateSupplierAsync(Supplier supplier)
     {
-        throw new NotImplementedException();
+        try
+        {
+            _businessDb.UpdateAsync(supplier);
+            return Task.FromResult(true);
+        }
+        catch (Exception ex)
+        {
+            LogError("DatabaseService", "Error when updating supplier", ex);
+            return Task.FromResult(false);
+        }
     }
 
     public Task<bool> DeleteSupplierAsync(Supplier supplier)
     {
-        throw new NotImplementedException();
+        try
+        {
+            _businessDb.DeleteAsync(supplier);
+            return Task.FromResult(true);
+        }
+        catch (Exception ex)
+        {
+            LogError("DatabaseService", "Error deleting supplier", ex);
+            return Task.FromResult(false);
+        }
     }
 
 
@@ -157,7 +185,6 @@ public class DatabaseService : IDatabaseService
 
     private async Task AddLogAsync(string tag, string message, int level)
     {
-        await InitLogsDb();
         await _logsDb.InsertAsync(
             new Log {
                 message = $"[{tag}] - {message}",

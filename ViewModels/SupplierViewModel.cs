@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace StockApp.ViewModels
 {
@@ -15,96 +16,155 @@ namespace StockApp.ViewModels
         // Event de notification de changement de propriété
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private string searchText;
-        private string selectedType = "All";
+        private readonly IDatabaseService _db;
 
         // Variable "Suppliers" utilisé pour le View
         public ObservableCollection<Supplier> Suppliers { get; set; } = new();
+        // Liste interne
+        private List<Supplier> _suppliers { get; set; } = new List<Supplier>();
 
-        public List<string> TypeList { get; set; } = new();
+        public ObservableCollection<string> TypeList { get; set; } = new();
 
 
-        // Liste complète pour filtrage
-        private List<Supplier> allSuppliers { get; set; } = new();
-
+        // Propriétés de filtrage
+        // Explication: la variable privée stocke la valeur réelle, et subit les modifications.
+        // La variable publique, est uniquement utilisé pour l'affichage.
+        // Son getter et setter se calquent sur la valeur de la variable privée.
+        // Le Setter applique les modifications, et notifie la vue.
+        // Le Getter renvoi la valeur de la variable privée.
+        private string _searchText;
         public string SearchText
         {
-            get => searchText;
+            get => _searchText;
             set
             {
-                if (searchText != value)
+                if (_searchText != value)
                 {
-                    searchText = value; //1
+                    _searchText = value; //1
                     OnPropertyChanged(); //2
                     ApplyFilters(); //3
                 }
             }
         }
+
+        private string _selectedType = "Tous";
         public string SelectedType
         {
-            get => selectedType;
+            get => _selectedType;
             set
             {
-                if (selectedType != value)
+                if (_selectedType != value)
                 {
-                    selectedType = value;
+                    _selectedType = value;
                     OnPropertyChanged();
                     ApplyFilters();
                 }
             }
         }
 
+        // Edition / Suppression
+        public ICommand SimplePressEditCommand { get; private set; }
+        public ICommand LongPressDeleteCommand { get; private set; }
 
-        public SupplierViewModel()
+        private bool _itemsLoaded = false;
+
+        public SupplierViewModel(IDatabaseService db)
         {
-            // Chargement des données d'essais, sans passer par une BDD
-            LoadTemplateSuppliersItems();
+            _db = db;
+            Task.Run(async () => await LoadSuppliersAsync());
 
             // Initialisation de la liste des types pour le filtre
             TypeList.Add("All");
 
-            //TypeList = allSuppliers.Select(s => s.Type).Distinct().OrderBy(t => t).ToList();
+            LongPressDeleteCommand = new Command<Supplier>(async (supplier) => await DeleteSupplierCommandAsync(supplier));
 
-            foreach (var supplier in allSuppliers)
+
+            while (_itemsLoaded == false)
+            {
+                Task.Delay(100).Wait();
+            }
+            LoadSupplierTypeList();
+
+        }
+
+        private async Task LoadSuppliersAsync()
+        {
+            var suppliers = await _db.GetSuppliersAsync();
+            _suppliers.Clear();
+            foreach (var supplier in suppliers)
+            {
+                _suppliers.Add(supplier);
+            }
+            _itemsLoaded = true;
+            ApplyFilters(); //Update UI
+        }
+
+        public void LoadSupplierTypeList()
+        {
+            TypeList.Clear();
+            TypeList.Add("Tous");
+            foreach (var supplier in Suppliers)
             {
                 if (!TypeList.Contains(supplier.Type))
                 {
                     TypeList.Add(supplier.Type);
                 }
             }
-
-            ApplyFilters();
+            OnPropertyChanged(nameof(TypeList));
         }
 
-
-        public void AddSupplier(Supplier supplier)
+        public async Task<bool> AddSupplierAsync(Supplier supplier)
         {
-            Suppliers.Add(supplier);
-            allSuppliers.Add(supplier);
-            OnPropertyChanged(nameof(Suppliers));
+            try
+            {
+                await _db.AddSupplierAsync(supplier);
+                await LoadSuppliersAsync();
+                OnPropertyChanged(nameof(Suppliers));
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        private async Task<bool> DeleteSupplierCommandAsync(Supplier supplier)
+        {
+            if (supplier == null) return false;
+            try
+            {
+                await _db.DeleteSupplierAsync(supplier);
+                await LoadSuppliersAsync();
+                OnPropertyChanged(nameof(Suppliers));
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
 
         public List<Supplier> GetSuppliers()
         {
-            return allSuppliers;
+            return Suppliers.ToList();
         }
 
 
-        // Applique les filtres à la liste "allSuppliers" et corrige la liste "Suppliers"
+        // Applique les filtres à la liste "Suppliers" et corrige la liste "Suppliers"
         private void ApplyFilters()
         {
-            var filtered = allSuppliers.AsEnumerable();
+            IEnumerable<Supplier> filtered = _suppliers;
 
             // Filtre par nom
             if (!string.IsNullOrWhiteSpace(SearchText))
             {
-                filtered = filtered.Where(s => s.Name != null && s.Name.ToLower().Contains(SearchText.ToLower()));
+                filtered = filtered.Where(s => s.Name != null && s.Name.Contains(SearchText, StringComparison.OrdinalIgnoreCase));
             }
 
             // Filtre par type
-            if (!string.IsNullOrWhiteSpace(selectedType) && selectedType != "All")
+            if (!string.IsNullOrWhiteSpace(SelectedType) && SelectedType != "Tous")
             {
-                filtered = filtered.Where(s => s.Type == selectedType);
+                filtered = filtered.Where(s => s.Type == SelectedType);
             }
 
             Suppliers.Clear();
@@ -117,16 +177,6 @@ namespace StockApp.ViewModels
         private void OnPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-
-        private void LoadTemplateSuppliersItems()
-        {
-            // Exemple de données statiques
-            allSuppliers.Add(new Supplier { Name = "Fournisseur 1", Type = "Nourritures" });
-            allSuppliers.Add(new Supplier { Name = "Fournisseur 2", Type = "Vêtements" });
-            allSuppliers.Add(new Supplier { Name = "Fournisseur 3", Type = "Boulangerie" });
-            allSuppliers.Add(new Supplier { Name = "Default Supplier", Type = "Tout" });
         }
     }
 }
