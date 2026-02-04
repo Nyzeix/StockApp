@@ -20,8 +20,7 @@ namespace StockApp.Services
             if (_connection != null)
                 return _connection;
 
-            var dbName = "stockapp.db";
-            var dbPath = Path.Combine(FileSystem.AppDataDirectory, dbName);
+            var dbPath = Path.Combine(FileSystem.AppDataDirectory, DbList.AppLogs);
 
             _connection = new SQLiteConnection(dbPath);
             return _connection;

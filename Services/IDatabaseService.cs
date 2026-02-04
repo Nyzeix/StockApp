@@ -25,8 +25,4 @@ public interface IDatabaseService
     public Task<bool> UpdateSupplierAsync(Supplier supplier);
     public Task<bool> DeleteSupplierAsync(Supplier supplier);
 
-    // Gestion des logs
-    public void LogInfo(string tag, string message);
-    public void LogWarning(string tag, string message);
-    public void LogError(string tag, string message, Exception ex);
 }

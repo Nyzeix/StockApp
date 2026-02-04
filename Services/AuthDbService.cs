@@ -41,8 +41,7 @@ public class AuthDbService : IAuthDbService
         if (_connection != null)
             return _connection;
 
-        var dbName = "stockapp.db";
-        var dbPath = Path.Combine(FileSystem.AppDataDirectory, dbName);
+        var dbPath = Path.Combine(FileSystem.AppDataDirectory, DbList.Data);
 
         _connection = new SQLiteConnection(dbPath);
         return _connection;

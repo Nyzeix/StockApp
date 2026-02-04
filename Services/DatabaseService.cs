@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Logging.Abstractions;
 using SQLite;
 using StockApp.Models;
+using StockApp.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,38 +13,40 @@ namespace StockApp.Services
 { }
 public class DatabaseService : IDatabaseService
 {
-    private SQLiteAsyncConnection _businessDb; // Produits, Fournisseurs, Users
-    private SQLiteAsyncConnection _logsDb;     // Logs
+    // On ne touche plus jamais à _businessDb directement en dehors de GetConnectionAsync
+    private SQLiteAsyncConnection _businessDb;
+    private readonly ILogService _log;
+    private Task _initTask; // Pour gérer l'initialisation unique
 
-    public DatabaseService()
+    public DatabaseService(ILogService logService)
     {
-        _ = InitBusinessDb();
-        _ = InitLogsDb();
+        _log = logService;
     }
 
-    // Initialisation de la base Métier
-    private async Task<bool> InitBusinessDb()
+    // C'est la CLÉ de la solution : Lazy Initialization
+    private async Task<SQLiteAsyncConnection> GetConnectionAsync()
     {
-        if (_businessDb != null) return false;
-        var path = Path.Combine(FileSystem.AppDataDirectory, "StockData.db");
-        _businessDb = new SQLiteAsyncConnection(path);
+        if (_initTask == null || _initTask.IsFaulted)
+        {
+            _initTask = InitBusinessDb();
+        }
 
-        await _businessDb.CreateTableAsync<Product>();
-        await _businessDb.CreateTableAsync<Supplier>();
-        await _businessDb.CreateTableAsync<User>();
-        return true;
+        await _initTask; // On attend que la DB soit prête
+        return _businessDb;
     }
 
-    // Initialisation de la base Logs
-    private async Task<bool> InitLogsDb()
+    private async Task InitBusinessDb()
     {
-        if (_logsDb != null) return false;
-        var path = Path.Combine(FileSystem.AppDataDirectory, "AppLogs.db");
-        _logsDb = new SQLiteAsyncConnection(path);
+        var path = Path.Combine(FileSystem.AppDataDirectory, DbList.Data);
+        // Flags pour éviter les erreurs "Database Locked"
+        var flags = SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.SharedCache;
 
-        await _logsDb.CreateTableAsync<Log>();
-        //await _logsDb.CreateTableAsync<StockMovementLog>();
-        return true;
+        var connection = new SQLiteAsyncConnection(path, flags);
+
+        await connection.CreateTableAsync<Product>();
+        await connection.CreateTableAsync<Supplier>();
+        await connection.CreateTableAsync<User>();
+        _businessDb = connection;
     }
 
     // ----------------------------
@@ -51,146 +54,126 @@ public class DatabaseService : IDatabaseService
     // ----------------------------
     public async Task<List<Product>> GetProductsAsync()
     {
-        return await _businessDb.Table<Product>().ToListAsync();
+        var db = await GetConnectionAsync();
+        return await db.Table<Product>().ToListAsync();
     }
 
-    public Task<Product> GetProductByIdAsync(int id)
+    public async Task<Product> GetProductByIdAsync(int id)
     {
         try
         {
-            Product foundProduct = _businessDb.GetAsync<Product>(id).Result;
-            return Task.FromResult(foundProduct);
+            var db = await GetConnectionAsync();
+            return await db.GetAsync<Product>(id);
         }
         catch (Exception ex)
         {
-            LogError("DatabaseService", $"Error getting product with ID: {id}", ex);
+            _log.LogError("DatabaseService", $"Error getting product ID: {id}", ex);
             return null;
         }
     }
 
-    public Task<bool> AddProductAsync(Product product)
+    public async Task<bool> AddProductAsync(Product product)
     {
         try
         {
-            _businessDb.InsertAsync(product);
-            return Task.FromResult(true);
+            var db = await GetConnectionAsync();
+            _log.LogInfo("DatabaseService", $"Adding product: {product.Name}");
+            await db.InsertAsync(product);
+            return true;
         }
         catch (Exception ex)
         {
-            LogError("DatabaseService", "Error when adding product to database", ex);
-            return Task.FromResult(false);
+            _log.LogError("DatabaseService", "Error adding product", ex);
+            return false;
         }
     }
 
-    public Task<bool> UpdateProductAsync(Product product)
+    public async Task<bool> UpdateProductAsync(Product product)
     {
         try
         {
-            _businessDb.UpdateAsync(product);
-            return Task.FromResult(true);
+            var db = await GetConnectionAsync();
+            await db.UpdateAsync(product);
+            _log.LogInfo("DatabaseService", $"Updating product: {product.Name}");
+            return true;
         }
         catch (Exception ex)
         {
-            LogError("DatabaseService", "Error when updating product", ex);
-            return Task.FromResult(false);
+            _log.LogError("DatabaseService", "Error updating product", ex);
+            return false;
         }
     }
 
-    public Task<bool> DeleteProductAsync(Product product)
+    public async Task<bool> DeleteProductAsync(Product product)
     {
         try
         {
-            _businessDb.DeleteAsync(product);
-            return Task.FromResult(true);
+            var db = await GetConnectionAsync();
+            await db.DeleteAsync(product);
+            _log.LogInfo("DatabaseService", $"Deleting product: {product.Name}");
+            return true;
         }
         catch (Exception ex)
         {
-            LogError("DatabaseService", "Error deleting product", ex);
-            return Task.FromResult(false);
+            _log.LogError("DatabaseService", "Error deleting product", ex);
+            return false;
         }
     }
-
 
     // --------------------------------
     // --- Gestion des fournisseurs ---
     // --------------------------------
     public async Task<List<Supplier>> GetSuppliersAsync()
     {
-        return await _businessDb.Table<Supplier>().ToListAsync();
+        var db = await GetConnectionAsync();
+        return await db.Table<Supplier>().ToListAsync();
     }
 
-    public Task<bool> AddSupplierAsync(Supplier supplier)
+    public async Task<bool> AddSupplierAsync(Supplier supplier)
     {
         try
         {
-            _businessDb.InsertAsync(supplier);
-            return Task.FromResult(true);
+            var db = await GetConnectionAsync();
+            await db.InsertAsync(supplier);
+            _log.LogInfo("DatabaseService", $"Adding supplier: {supplier.Name}");
+            return true;
         }
         catch (Exception ex)
         {
-            LogError("DatabaseService", "Error when adding supplier to database", ex);
-            return Task.FromResult(false);
+            _log.LogError("DatabaseService", "Error adding supplier", ex);
+            return false;
         }
     }
 
-    public Task<bool> UpdateSupplierAsync(Supplier supplier)
+    public async Task<bool> UpdateSupplierAsync(Supplier supplier)
     {
         try
         {
-            _businessDb.UpdateAsync(supplier);
-            return Task.FromResult(true);
+            var db = await GetConnectionAsync();
+            await db.UpdateAsync(supplier);
+            _log.LogInfo("DatabaseService", $"Updating supplier: {supplier.Name}");
+            return true;
         }
         catch (Exception ex)
         {
-            LogError("DatabaseService", "Error when updating supplier", ex);
-            return Task.FromResult(false);
+            _log.LogError("DatabaseService", "Error updating supplier", ex);
+            return false;
         }
     }
 
-    public Task<bool> DeleteSupplierAsync(Supplier supplier)
+    public async Task<bool> DeleteSupplierAsync(Supplier supplier)
     {
         try
         {
-            _businessDb.DeleteAsync(supplier);
-            return Task.FromResult(true);
+            var db = await GetConnectionAsync();
+            await db.DeleteAsync(supplier);
+            _log.LogInfo("DatabaseService", $"Deleting supplier: {supplier.Name}");
+            return true;
         }
         catch (Exception ex)
         {
-            LogError("DatabaseService", "Error deleting supplier", ex);
-            return Task.FromResult(false);
+            _log.LogError("DatabaseService", "Error deleting supplier", ex);
+            return false;
         }
     }
-
-
-    // -----------------------
-    // --- Méthodes de Log ---
-    // -----------------------
-    public void LogInfo(string tag, string message)
-    {
-        _ = AddLogAsync(tag, message, level: 1);
-    }
-
-    public void LogWarning(string tag, string message)
-    {
-        _ = AddLogAsync(tag, message, level: 2);
-    }
-
-    public void LogError(string tag, string message, Exception ex)
-    {
-        _ = AddLogAsync(tag,
-            $"{message} | Exception: {ex.Message} | StackTrace: {ex.StackTrace}",
-            level: 3
-        );
-    }
-
-    private async Task AddLogAsync(string tag, string message, int level)
-    {
-        await _logsDb.InsertAsync(
-            new Log {
-                message = $"[{tag}] - {message}",
-                level = level,
-                timestamp = (int)DateTimeOffset.UtcNow.ToUnixTimeSeconds()});
-    }
-
-        
 }
