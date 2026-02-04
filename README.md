@@ -1,6 +1,6 @@
 # StockApp
 # Note
-Les commits sont générés automatiquement via l'IA Copilot de Visual Studio.  
+Les message de commits sont générés automatiquement via l'IA Copilot de Visual Studio.  
 
 # TODO  
 ## Ajouter les base de données pour:  
