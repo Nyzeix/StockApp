@@ -14,7 +14,7 @@ namespace StockApp.ViewModels
     public class SupplierViewModel : BaseViewModel, INotifyPropertyChanged
     {
         // Event de notification de changement de propriété
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         private readonly IDatabaseService _db;
 
@@ -32,7 +32,7 @@ namespace StockApp.ViewModels
         // Son getter et setter se calquent sur la valeur de la variable privée.
         // Le Setter applique les modifications, et notifie la vue.
         // Le Getter renvoi la valeur de la variable privée.
-        private string _searchText;
+        private string _searchText = "";
         public string SearchText
         {
             get => _searchText;
@@ -76,6 +76,7 @@ namespace StockApp.ViewModels
             // Initialisation de la liste des types pour le filtre
             TypeList.Add("All");
 
+            // SimplePressEditCommand TODO
             LongPressDeleteCommand = new Command<Supplier>(async (supplier) => await DeleteSupplierCommandAsync(supplier));
 
 
@@ -122,7 +123,7 @@ namespace StockApp.ViewModels
                 OnPropertyChanged(nameof(Suppliers));
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
@@ -138,7 +139,7 @@ namespace StockApp.ViewModels
                 OnPropertyChanged(nameof(Suppliers));
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }

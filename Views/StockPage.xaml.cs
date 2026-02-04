@@ -9,7 +9,6 @@ namespace StockApp.Views
     public partial class StockPage : ContentPage
     {
         private readonly StockViewModel StockVM;
-        private readonly SupplierViewModel SuppliersVM;
 
         public ICommand SimplePressEditCommand { get; private set; }
 

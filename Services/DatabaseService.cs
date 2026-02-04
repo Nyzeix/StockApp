@@ -14,9 +14,9 @@ namespace StockApp.Services
 public class DatabaseService : IDatabaseService
 {
     // On ne touche plus jamais à _businessDb directement en dehors de GetConnectionAsync
-    private SQLiteAsyncConnection _businessDb;
+    private SQLiteAsyncConnection? _businessDb;
     private readonly ILogService _log;
-    private Task _initTask; // Pour gérer l'initialisation unique
+    private Task? _initTask; // Pour gérer l'initialisation unique
 
     public DatabaseService(ILogService logService)
     {
@@ -24,7 +24,7 @@ public class DatabaseService : IDatabaseService
     }
 
     // C'est la CLÉ de la solution : Lazy Initialization
-    private async Task<SQLiteAsyncConnection> GetConnectionAsync()
+    private async Task<SQLiteAsyncConnection?> GetConnectionAsync()
     {
         if (_initTask == null || _initTask.IsFaulted)
         {
@@ -58,7 +58,7 @@ public class DatabaseService : IDatabaseService
         return await db.Table<Product>().ToListAsync();
     }
 
-    public async Task<Product> GetProductByIdAsync(int id)
+    public async Task<Product?> GetProductByIdAsync(int id)
     {
         try
         {

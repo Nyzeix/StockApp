@@ -9,7 +9,7 @@ namespace StockApp.Views
 {
     public partial class UsersPage : ContentPage
     {
-        private UserViewModel ViewModel => BindingContext as UserViewModel;
+        private UserViewModel _viewModel;
 
         // Liste complète pour filtrage
         private ObservableCollection<User> allUsers;
@@ -17,11 +17,12 @@ namespace StockApp.Views
         public UsersPage(UserViewModel vm)
         {
             InitializeComponent();
-            BindingContext = vm;
+            _viewModel = vm;
+            BindingContext = _viewModel;
 
             // Copie complète pour recherche
-            if (ViewModel?.UsersList != null)
-                allUsers = new ObservableCollection<User>(ViewModel.UsersList);
+            if (_viewModel?.UsersList != null)
+                allUsers = new ObservableCollection<User>(_viewModel.UsersList);
             else
                 allUsers = new ObservableCollection<User>();
         }
@@ -64,7 +65,7 @@ namespace StockApp.Views
                 return;
             }
 
-            string message = await ViewModel.AddUserAsync(UsernameEntry.Text.Trim(), PasswordEntry.Text.Trim(), IsAdminSwitch.IsToggled);
+            string message = await _viewModel.AddUserAsync(UsernameEntry.Text.Trim(), PasswordEntry.Text.Trim(), IsAdminSwitch.IsToggled);
 
             // Réinitialiser le formulaire
             UsernameEntry.Text = string.Empty;
@@ -84,7 +85,7 @@ namespace StockApp.Views
                 bool confirm = await DisplayAlert("Confirmer", $"Supprimer {user.Username} ?", "Oui", "Non");
                 if (confirm)
                 {
-                    message = await ViewModel.DeleteUserAsync(user.Username);
+                    message = await _viewModel.DeleteUserAsync(user.Username);
                     await DisplayAlert("Résultat", message, "OK");
                 }
             }
@@ -109,9 +110,9 @@ namespace StockApp.Views
                 .Where(u => !string.IsNullOrWhiteSpace(u.Username) && u.Username.ToLower().Contains(filter))
                 .ToList();
 
-            ViewModel.UsersList.Clear();
+            _viewModel.UsersList.Clear();
             foreach (var item in filtered)
-                ViewModel.UsersList.Add(item);
+                _viewModel.UsersList.Add(item);
         }
     }
 }

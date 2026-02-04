@@ -51,8 +51,8 @@ namespace StockApp.Views
 
             var newSupplier = new Supplier
             {
-                Name = NameEntry.Text?.Trim(),
-                Type = typeEntry.Text?.Trim()
+                Name = NameEntry.Text.Trim(),
+                Type = typeEntry.Text.Trim()
             };
 
             Task<bool> result = SuppliersVM.AddSupplierAsync(newSupplier); // Renvoi l'item au ViewModel

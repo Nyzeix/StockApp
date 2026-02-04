@@ -8,13 +8,9 @@ public interface IDatabaseService
 {
     //Task<bool> InitBusinessDb();
 
-    // Initialisation de la base Logs
-    //Task<bool> InitLogsDb();
-
-
     // Gestion des produits
     public Task<List<Product>> GetProductsAsync();
-    public Task<Product> GetProductByIdAsync(int id);
+    public Task<Product?> GetProductByIdAsync(int id);
     public Task<bool> AddProductAsync(Product product);
     public Task<bool> UpdateProductAsync(Product product);
     public Task<bool> DeleteProductAsync(Product product);

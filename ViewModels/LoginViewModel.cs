@@ -17,7 +17,7 @@ public class LoginViewModel : INotifyPropertyChanged
     private string _password = "";
     private string _error = "";
 
-    public event PropertyChangedEventHandler PropertyChanged;
+    public event PropertyChangedEventHandler? PropertyChanged;
 
     public string Username
     {

@@ -18,7 +18,7 @@ namespace StockApp.ViewModels
         private readonly ILogService _log;
         private readonly string log_tag = "UserManagement";
         // Event de notification de changement de propriété
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
 
         public ObservableCollection<User> UsersList { get; set; } = new();
@@ -60,11 +60,12 @@ namespace StockApp.ViewModels
             if (result)
             {
                 // Met à jour l'UI thread
-                MainThread.BeginInvokeOnMainThread(() =>
+                MainThread.BeginInvokeOnMainThread(async () =>
                 {
                     var userToRemove = UsersList.FirstOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
                     if (userToRemove != null)
                     {
+                        await _auth.DeleteUser(username);
                         UsersList.Remove(userToRemove);
                         OnPropertyChanged(nameof(UsersList));
                     }

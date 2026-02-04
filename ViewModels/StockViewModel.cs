@@ -13,7 +13,7 @@ namespace StockApp.ViewModels
     public class StockViewModel : BaseViewModel, INotifyPropertyChanged
     {
         // Event de notification de changement de propriété
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         private readonly SupplierViewModel _supplierViewModel;
 
@@ -38,7 +38,7 @@ namespace StockApp.ViewModels
 
 
         // Propriétés de filtrage
-        private string _searchText;
+        private string _searchText = "";
         public string SearchText
         {
             get => _searchText;
@@ -176,7 +176,7 @@ namespace StockApp.ViewModels
                 ApplyFilters();
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
@@ -192,7 +192,7 @@ namespace StockApp.ViewModels
                 ApplyFilters();
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
