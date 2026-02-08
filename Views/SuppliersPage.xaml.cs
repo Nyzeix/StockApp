@@ -1,6 +1,9 @@
+using System.Collections.ObjectModel;
+using System.Windows.Input;
+using CommunityToolkit.Maui.Views;
 using StockApp.Models;
 using StockApp.ViewModels;
-using System.Collections.ObjectModel;
+using StockApp.Views.Popups; 
 
 namespace StockApp.Views
 {
@@ -8,72 +11,46 @@ namespace StockApp.Views
     {
         private readonly SupplierViewModel SuppliersVM;
 
-
+        public ICommand SimplePressEditCommand { get; private set; }
+        
         public SuppliersPage(SupplierViewModel SuppliersVM)
         {
             BindingContext = this.SuppliersVM = SuppliersVM;
+            SimplePressEditCommand = new Command<Supplier>(async (supplier) => await OnEditSupplierCommandAsync(supplier));
             InitializeComponent();
-        }
-
-        // SelectionChanged - signature correcte
-        private async void OnItemSelected(object sender, SelectionChangedEventArgs e)
-        {
-            var selected = e.CurrentSelection?.FirstOrDefault() as Supplier;
-            if (selected is null)
-                return;
-
-            await DisplayAlert("Sélection", $"Fournisseur sélectionné : {selected.Name}", "OK");
-
-            if (sender is CollectionView cv)
-                cv.SelectedItem = null;
         }
 
 
         // Affiche / masque le formulaire
-        private void OnAddButtonClicked(object sender, EventArgs e)
+        private async void OnAddButtonClicked(object sender, EventArgs e)
         {
-            AddSupplierForm.IsVisible = !AddSupplierForm.IsVisible;
-        }
-
-
-        // Sauvegarde : ajoute le fournisseur à la collection du ViewModel
-        private async void OnSaveSupplierClicked(object sender, EventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(NameEntry?.Text))
+            var popup = new AddSupplierPopup();
+            var result = await this.ShowPopupAsync(popup);
+            if (result is Supplier newSupplier)
             {
-                await DisplayAlert("Erreur", "Le nom du produit est obligatoire.", "OK");
-                return;
+                if (await SuppliersVM.AddSupplierAsync(newSupplier))
+                {
+                    await DisplayAlert("SuccÃ¨s", $"Fournisseur {newSupplier.Name} ajoutÃ© !", "OK");
+                } else
+                {
+                    await DisplayAlert("Erreur", $"Erreur lors de l'ajout du fournisseur.", "OK");
+                }
             }
-
-            int quantity = 0;
-            if (!string.IsNullOrWhiteSpace(NameEntry?.Text))
-                int.TryParse(typeEntry.Text, out quantity);
-
-            var newSupplier = new Supplier
-            {
-                Name = NameEntry.Text.Trim(),
-                Type = typeEntry.Text.Trim()
-            };
-
-            Task<bool> result = SuppliersVM.AddSupplierAsync(newSupplier); // Renvoi l'item au ViewModel
-
-            // Reset formulaire
-            NameEntry.Text = string.Empty;
-            typeEntry.Text = string.Empty;
-
-            AddSupplierForm.IsVisible = false;
-
-            if(await result) await DisplayAlert("Succès", "Fournisseur ajouté avec succès.", "OK");
-            else await DisplayAlert("Erreur", "Erreur lors de l'ajout du fournisseur.", "OK");
         }
 
-
-        private void OnCancelClicked(object sender, EventArgs e)
+        private async Task OnEditSupplierCommandAsync(Supplier selectedSupplier)
         {
-            NameEntry.Text = string.Empty;
-            typeEntry.Text = string.Empty;
+            if (selectedSupplier == null) return;
 
-            AddSupplierForm.IsVisible = false;
+            var popup = new EditSupplierPopup(selectedSupplier);
+
+            var result = await this.ShowPopupAsync(popup);
+
+            if (result is Supplier modifiedSupplier)
+            {
+                await SuppliersVM.UpdateSupplierAsync(modifiedSupplier);
+                await DisplayAlert("SuccÃ¨s", $"Le fournisseur a bien Ã©tÃ© modifiÃ©.", "OK");
+            }
         }
     }
 }

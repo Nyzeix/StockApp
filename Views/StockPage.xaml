@@ -3,10 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:models="clr-namespace:StockApp.Models"
+             xmlns:vm="clr-namespace:StockApp.ViewModels"
              x:Class="StockApp.Views.StockPage"
              x:Name="Stock"
-             Title="📦 Stock"
-             BackgroundColor="{AppThemeBinding Light={DynamicResource LightBackgroundColor}, Dark={DynamicResource DarkBackgroundColor}}">
+             x:DataType="vm:StockViewModel"
+             Title="📦 Stock">
 
     <Grid RowDefinitions="Auto, *" IgnoreSafeArea="False">
 
@@ -43,20 +44,21 @@
         <!-- Liste des produits -->
         <CollectionView Grid.Row="1"
                         x:Name="StockCollectionView"
-                        ItemsSource="{Binding Source={x:Reference Stock}, Path=BindingContext.StockItems}"
+                        ItemsSource="{Binding StockItems}"
                         SelectionMode="None"
-                        RemainingItemsThreshold="5">
+                        RemainingItemsThreshold="5"
+                        BackgroundColor="{AppThemeBinding Light={DynamicResource LightBackgroundColor}, Dark={DynamicResource DarkBackgroundColor}}">
 
             <CollectionView.ItemsLayout>
                 <LinearItemsLayout Orientation="Vertical" ItemSpacing="12"/>
             </CollectionView.ItemsLayout>
 
             <CollectionView.Header>
-                <BoxView HeightRequest="10" Color="Transparent"/>
+                <BoxView HeightRequest="10" Color="{AppThemeBinding Light={DynamicResource LightBackgroundColor}, Dark={DynamicResource DarkBackgroundColor}}"/>
             </CollectionView.Header>
             <CollectionView.Footer>
                 <!-- Espace pour le Floating Button -->
-                <BoxView HeightRequest="80" Color="Transparent"/>
+                <BoxView HeightRequest="80" Color="{AppThemeBinding Light={DynamicResource LightBackgroundColor}, Dark={DynamicResource DarkBackgroundColor}}"/>
             </CollectionView.Footer>
 
             <CollectionView.ItemTemplate>

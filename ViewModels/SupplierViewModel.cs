@@ -129,6 +129,22 @@ namespace StockApp.ViewModels
             }
         }
 
+        public async Task<bool> UpdateSupplierAsync(Supplier modifiedSupplier)
+        {
+            try
+            {
+                await _db.UpdateSupplierAsync(modifiedSupplier);
+                await LoadSuppliersAsync();
+                ApplyFilters();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+
         private async Task<bool> DeleteSupplierCommandAsync(Supplier supplier)
         {
             if (supplier == null) return false;

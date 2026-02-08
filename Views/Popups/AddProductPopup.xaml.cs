@@ -15,7 +15,7 @@ namespace StockApp.Views.Popups
 
         private void OnCancelClicked(object sender, EventArgs e)
         {
-            Close(null); // Retourne null si annulé
+            Close(null); // Retourne null si annulÃ©
         }
 
         private void OnSaveClicked(object sender, EventArgs e)
@@ -34,7 +34,7 @@ namespace StockApp.Views.Popups
                 ExpirationDate = ExpirationDatePicker.Date
             };
 
-            Close(newProduct); // Retourne l'objet créé à la page principale
+            Close(newProduct); // Retourne l'objet crÃ©Ã© Ã  la page principale
         }
     }
 }

@@ -13,7 +13,7 @@ namespace StockApp.Views
         public ICommand SimplePressEditCommand { get; private set; }
 
 
-        public StockPage(StockViewModel StockVM, SupplierViewModel SuppliersVM)
+        public StockPage(StockViewModel StockVM)
         {
             BindingContext = this.StockVM = StockVM;
             SimplePressEditCommand = new Command<Product>(async (product) => await OnEditProductCommandAsync(product));
@@ -39,27 +39,19 @@ namespace StockApp.Views
         }
 
         // Commandes pour la pression sur un produit
-
         private async Task OnEditProductCommandAsync(Product selectedProduct)
         {
             if (selectedProduct == null) return;
 
-            // Affiche la popup
             var popup = new EditProductPopup(selectedProduct, StockVM.AvailableSuppliers.ToList());
 
-            // 3. Attendre le résultat
             var result = await this.ShowPopupAsync(popup);
 
             if (result is Product modifiedProduct)
             {
-                // TODO : Logique métier ici (Sauvegarde DB)
                 await StockVM.UpdateProductAsync(modifiedProduct);
-
-
                 await DisplayAlert("Succès", $"Le produit a bien été modifié.", "OK");
-
             }
         }
-
     }
 }
