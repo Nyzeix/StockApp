@@ -6,10 +6,11 @@
                Color="Transparent"
                CanBeDismissedByTappingOutsideOfPopup="True">
 
-    <Border StrokeShape="RoundRectangle 20" 
+    <Border x:Name="PopupContainer"
+            StrokeShape="RoundRectangle 20" 
             BackgroundColor="{AppThemeBinding Light={DynamicResource LightBackgroundColor}, Dark={DynamicResource DarkBackgroundColor}}"
             Padding="20"
-            WidthRequest="320">
+            HorizontalOptions="Center">
 
         <VerticalStackLayout Spacing="15">
             <Label Text="Nouveau Fournisseur" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center" TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"/>

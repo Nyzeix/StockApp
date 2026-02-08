@@ -1,5 +1,6 @@
 using CommunityToolkit.Maui.Views;
 using StockApp.Models;
+using CommunityToolkit.Maui.Core;
 
 namespace StockApp.Views
 {
@@ -16,16 +17,31 @@ namespace StockApp.Views
             // 1. Configuration des Pickers
             SupplierPicker.ItemsSource = availableSuppliers;
 
-            // 2. Pr�-remplissage des champs (Mapping)
+            // 2. Pré-remplissage des champs (Mapping)
             NameEntry.Text = product.Name;
             OriginEntry.Text = product.Origin;
             QuantityEntry.Text = product.Quantity.ToString();
             ExpirationDatePicker.Date = product.ExpirationDate;
 
-            // S�lectionner les bonnes valeurs dans les pickers
+            // Sélectionner les bonnes valeurs dans les pickers
             SupplierPicker.SelectedItem = product.Supplier;
+
+            Opened += OnPopupOpened;
+
         }
 
+        
+        // OnOpened pour connaître la taille de la fenêtre parente
+        private void OnPopupOpened(object? sender, PopupOpenedEventArgs e)
+        {
+            if (Shell.Current?.CurrentPage != null)
+            {
+                double targetWidth = Shell.Current.CurrentPage.Width * 0.60;
+                PopupContainer.WidthRequest = targetWidth;
+                var measure = PopupContainer.Measure(targetWidth, double.PositiveInfinity);
+                Size = new Size(targetWidth, measure.Height);
+            }
+        }
         private async void OnSaveClicked(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(NameEntry.Text) ||
