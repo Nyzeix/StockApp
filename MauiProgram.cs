@@ -40,6 +40,16 @@ public static class MauiProgram
         builder.Services.AddTransient<StockPage>();
         builder.Services.AddTransient<SuppliersPage>();
 
+// Correction du bug visuel sur iOS/MacOS pour les SearchBar, en appliquant une image vide.
+        Microsoft.Maui.Handlers.SearchBarHandler.Mapper.AppendToMapping("NoBackground", (handler, view) =>
+        {
+#if IOS || MACCATALYST
+            handler.PlatformView.BackgroundImage = new UIKit.UIImage();
+#elif ANDROID
+            handler.PlatformView.SetBackgroundColor(Android.Graphics.Color.Transparent);
+#endif
+        });
+
 #if DEBUG
         builder.Logging.AddDebug();
 #endif
