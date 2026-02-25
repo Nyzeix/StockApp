@@ -1,83 +1,133 @@
 ﻿using StockApp.Models;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
-using Microsoft.Maui.ApplicationModel;
+using System.Windows.Input;
 
 namespace StockApp.ViewModels 
 {
 
     public class UserViewModel : BaseViewModel, INotifyPropertyChanged
     {
-        private readonly IAuthDbService _auth;
-        private readonly ILogService _log;
-        private readonly string log_tag = "UserManagement";
         // Event de notification de changement de propriété
         public event PropertyChangedEventHandler? PropertyChanged;
 
+        private readonly IAuthDbService _auth;
 
-        public ObservableCollection<User> UsersList { get; set; } = new();
+        // Variable "Users" utilisé pour le View
+        public ObservableCollection<User> Users { get; set; } = new();
+        // Liste interne
+        private List<User> _user { get; set; } = new List<User>();
+
+        private string _searchText = "";
+        public string SearchText
+        {
+            get => _searchText;
+            set
+            {
+                if (_searchText != value)
+                {
+                    _searchText = value; //1
+                    OnPropertyChanged(); //2
+                    ApplyFilters(); //3
+                }
+            }
+        }
+
+        // Edition / Suppression
+        public ICommand SimplePressEditCommand { get; private set; }
+        public ICommand LongPressDeleteCommand { get; private set; }
 
         public UserViewModel(IAuthDbService auth, ILogService log)
         {
             _auth = auth;
-            _log = log;
             foreach (var user in _auth.LoadUsers())
             {
-                UsersList.Add(user);
+                _user.Add(user);
+            }
+
+            LongPressDeleteCommand = new Command<User>(async (user) => await DeleteUserCommandAsync(user));
+
+            ApplyFilters();
+            
+        }
+
+        private async Task LoadUsersAsync()
+        {
+            var users = await _auth.GetUsersAsync();
+            _user.Clear();
+            foreach (var user in users)
+            {
+                _user.Add(user);
+            }
+            ApplyFilters(); //Update UI
+        }
+
+        public async Task<bool> AddUserAsync(User user)
+        {
+            try
+            {
+                await _auth.AddUser(user.Username, user.PasswordHash, user.IsAdmin);
+                await LoadUsersAsync();
+                OnPropertyChanged(nameof(Users));
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
 
-        public async Task<string> AddUserAsync(string username, string password, Boolean isAdmin)
+
+        // Devrait-on pouvoir modifier le nom d'utilisateur ?
+        // Si oui, beaucoup de modification sont à exécuter.
+        public async Task<bool> UpdateUserAsync(User modifiedUser)
         {
-            // Autoremediation: vérifier si l'utilisateur existe déjà (J'ai découvert un mot)
-            var result = await _auth.AddUser(username, password, isAdmin).ConfigureAwait(false);
-            if (result)
+            try
             {
-                // Copilot à la resscousse pour mettre à jour l'UI thread
-                MainThread.BeginInvokeOnMainThread(() =>
-                {
-                    UsersList.Add(new User { Username = username, PasswordHash = password, IsAdmin = isAdmin });
-                    OnPropertyChanged(nameof(UsersList));
-                });
-                _log.LogInfo(log_tag, $"User '{username}' added.");
-                return "Utilisateur ajouté avec succès.";
+                await _auth.UpdateUserAsync(modifiedUser);
+                await LoadUsersAsync();
+                ApplyFilters();
+                return true;
             }
-            else
+            catch (Exception)
             {
-                return "L'utilisateur existe déjà.";
+                return false;
             }
         }
 
-        public async Task<string> DeleteUserAsync(string username)
+
+        private async Task<bool> DeleteUserCommandAsync(User user)
         {
-            var result = _auth.DeleteUser(username).Result;
-            if (result)
+            if (user == null) return false;
+            try
             {
-                // Met à jour l'UI thread
-                MainThread.BeginInvokeOnMainThread(async () =>
-                {
-                    var userToRemove = UsersList.FirstOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
-                    if (userToRemove != null)
-                    {
-                        await _auth.DeleteUser(username);
-                        UsersList.Remove(userToRemove);
-                        OnPropertyChanged(nameof(UsersList));
-                    }
-                });
-                _log.LogInfo(log_tag, $"User '{username}' deleted.");
-                return "Utilisateur supprimé avec succès.";
+                await _auth.DeleteUser(user.Username);
+                await LoadUsersAsync();
+                OnPropertyChanged(nameof(Users));
+                return true;
             }
-            else
+            catch (Exception)
             {
-                return "Échec de la suppression de l'utilisateur.";
+                return false;
             }
         }
+
+        private void ApplyFilters()
+        {
+            IEnumerable<User> filtered = _user;
+
+            // Filtre par nom
+            if (!string.IsNullOrWhiteSpace(SearchText))
+            {
+                filtered = filtered.Where(s => s.Username != null && s.Username.Contains(SearchText, StringComparison.OrdinalIgnoreCase));
+            }
+
+            Users.Clear();
+            foreach (var user in filtered)
+                Users.Add(user);
+        }
+
 
         // Appelle la vue si une propriété évolue
         private void OnPropertyChanged([CallerMemberName] string propertyName = "")

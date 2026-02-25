@@ -171,6 +171,40 @@ public class AuthDbService : IAuthDbService
         });
     }
 
+    public async Task<bool> UpdateUserAsync(User modifiedUser)
+    {
+        return await Task.Run(() =>
+        {
+            lock (_lock)
+            {
+                try
+                {
+                    var conn = GetConnection();
+                    var existingUser = conn.Table<User>()
+                                           .FirstOrDefault(u => u.Username == modifiedUser.Username);
+                    if (existingUser == null)
+                        return false;
+
+                    existingUser.IsAdmin = modifiedUser.IsAdmin;
+                    // Si le mot de passe a été modifié, on le hash à nouveau
+                    if (!string.IsNullOrEmpty(modifiedUser.PasswordHash) && modifiedUser.PasswordHash != existingUser.PasswordHash)
+                    {
+                        var salt = Crypto.NewSalt();
+                        var hash = Crypto.HashPassword(modifiedUser.PasswordHash, salt);
+                        existingUser.PasswordHash = hash;
+                        existingUser.Salt = salt;
+                    }
+                    conn.Update(existingUser);
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+        });
+    }
+
     public Task<bool> DeleteUser(string username)
     {
         return Task.Run(() =>
@@ -191,5 +225,16 @@ public class AuthDbService : IAuthDbService
     public List<User> LoadUsers()
     {
         return GetConnection().Table<User>().ToList();
+    }
+
+    public async Task<List<User>> GetUsersAsync()
+    {
+        return await Task.Run(() =>
+        {
+            lock (_lock)
+            {
+                return GetConnection().Table<User>().ToList();
+            }
+        });
     }
 }

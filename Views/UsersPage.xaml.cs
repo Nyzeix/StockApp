@@ -1,118 +1,56 @@
-using Microsoft.Maui.Controls;
+using CommunityToolkit.Maui.Views;
 using StockApp.Models;
 using StockApp.ViewModels;
-using System;
-using System.Collections.ObjectModel;
-using System.Linq;
+using StockApp.Views.Popups;
+using System.Windows.Input;
 
 namespace StockApp.Views
 {
     public partial class UsersPage : ContentPage
     {
-        private UserViewModel _viewModel;
+        private readonly UserViewModel UsersVM;
 
-        // Liste complète pour filtrage
-        private ObservableCollection<User> allUsers;
+        public ICommand SimplePressEditCommand { get; private set; }
 
         public UsersPage(UserViewModel vm)
         {
+            BindingContext = this.UsersVM = vm;
+            SimplePressEditCommand = new Command<User>(async (user) => await OnEditUserCommandAsync(user));
             InitializeComponent();
-            _viewModel = vm;
-            BindingContext = _viewModel;
-
-            // Copie complète pour recherche
-            if (_viewModel?.UsersList != null)
-                allUsers = new ObservableCollection<User>(_viewModel.UsersList);
-            else
-                allUsers = new ObservableCollection<User>();
         }
 
-        // Gestion de la sélection d'un utilisateur dans le CollectionView
-        public async void OnUserClicked(object sender, SelectionChangedEventArgs e)
+
+        // Affiche / masque le formulaire
+        private async void OnAddButtonClicked(object sender, EventArgs e)
         {
-            var selected = e.CurrentSelection?.FirstOrDefault() as User;
-            if (selected != null)
+            var popup = new AddUserPopup();
+            var result = await this.ShowPopupAsync(popup);
+            if (result is User newUser)
             {
-                // 🔹 Afficher le mot de passe à la place
-                string passwordToShow = string.IsNullOrEmpty(selected.PasswordHash) ? "(aucun mot de passe)" : selected.PasswordHash;
-
-                await DisplayAlert("Utilisateur sélectionné", $"Nom : {selected.Username}\nMot de passe : {passwordToShow}", "OK");
-
-                // Désélection pour pouvoir recliquer
-                if (sender is CollectionView cv)
-                    cv.SelectedItem = null;
-            }
-        }
-
-        // Affiche / masque le formulaire d’ajout
-        private void OnAddButtonClicked(object sender, EventArgs e)
-        {
-            AddUserForm.IsVisible = !AddUserForm.IsVisible;
-        }
-
-        // Sauvegarde un nouvel utilisateur
-        private async void OnSaveUserClicked(object sender, EventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(UsernameEntry.Text))
-            {
-                await DisplayAlert("Erreur", "Le nom d'utilisateur est obligatoire.", "OK");
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(PasswordEntry.Text))
-            {
-                await DisplayAlert("Erreur", "Le mot de passe est obligatoire.", "OK");
-                return;
-            }
-
-            string message = await _viewModel.AddUserAsync(UsernameEntry.Text.Trim(), PasswordEntry.Text.Trim(), IsAdminSwitch.IsToggled);
-
-            // Réinitialiser le formulaire
-            UsernameEntry.Text = string.Empty;
-            PasswordEntry.Text = string.Empty;
-            IsAdminSwitch.IsToggled = false;
-            AddUserForm.IsVisible = false;
-
-            await DisplayAlert("Résultat", message, "OK");
-        }
-
-        // Supprimer un utilisateur
-        private async void OnDeleteUserClicked(object sender, EventArgs e)
-        {
-            string message = "";
-            if (sender is Button button && button.BindingContext is User user)
-            {
-                bool confirm = await DisplayAlert("Confirmer", $"Supprimer {user.Username} ?", "Oui", "Non");
-                if (confirm)
+                //if (await UsersVM.AddUserAsync(newUser.Username, newUser.PasswordHash, newUser.IsAdmin))
+                if (await UsersVM.AddUserAsync(newUser))
                 {
-                    message = await _viewModel.DeleteUserAsync(user.Username);
-                    await DisplayAlert("Résultat", message, "OK");
+                    await DisplayAlert("Succès", $"Utilisateur {newUser.Username} ajouté !", "OK");
+                } else
+                {
+                    await DisplayAlert("Erreur", $"Erreur lors de l'ajout de l'utilisateur.", "OK");
                 }
             }
         }
 
-
-        // Annuler l’ajout et réinitialiser le formulaire
-        private void OnCancelUserClicked(object sender, EventArgs e)
+        private async Task OnEditUserCommandAsync(User selectedUser)
         {
-            UsernameEntry.Text = string.Empty;
-            PasswordEntry.Text = string.Empty;
-            IsAdminSwitch.IsToggled = false;
-            AddUserForm.IsVisible = false;
-        }
+            if (selectedUser == null) return;
 
-        // Barre de recherche
-        private void OnSearchBarTextChanged(object sender, TextChangedEventArgs e)
-        {
-            string filter = e.NewTextValue?.ToLower() ?? string.Empty;
+            var popup = new EditUserPopup(selectedUser);
 
-            var filtered = allUsers
-                .Where(u => !string.IsNullOrWhiteSpace(u.Username) && u.Username.ToLower().Contains(filter))
-                .ToList();
+            var result = await this.ShowPopupAsync(popup);
 
-            _viewModel.UsersList.Clear();
-            foreach (var item in filtered)
-                _viewModel.UsersList.Add(item);
+            if (result is User modifiedUser)
+            {
+                await UsersVM.UpdateUserAsync(modifiedUser);
+                await DisplayAlert("Succès", $"L'utilisateur a bien été modifié.", "OK");
+            }
         }
     }
 }

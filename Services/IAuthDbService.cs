@@ -15,6 +15,8 @@ public interface IAuthDbService
     Task<bool> RegisterAsync(string username, string password);
     Task<bool> UsernameExistsAsync(string username);
     Task<bool> AddUser(string username, string password, Boolean isAdmin);
+    Task<bool> UpdateUserAsync(User modifiedUser);
     Task<bool> DeleteUser(string username);
     List<User> LoadUsers();
+    public Task<List<User>> GetUsersAsync();
 }

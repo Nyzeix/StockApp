@@ -1,148 +1,104 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:models="clr-namespace:StockApp.Models"
-             xmlns:conv="clr-namespace:StockApp.Converters"
+             xmlns:vm="clr-namespace:StockApp.ViewModels"
              x:Class="StockApp.Views.UsersPage"
-             Title="👥 Gestion des utilisateurs"
-             BackgroundColor="{AppThemeBinding Light={DynamicResource LightBackgroundColor}, Dark={DynamicResource DarkBackgroundColor}}">
-    <ScrollView>
-    <VerticalStackLayout Padding="15" Spacing="15">
+             x:Name="Users"
+             x:DataType="vm:UserViewModel"
+             Title="Gestion des utilisateurs">
+    
+    <Grid RowDefinitions="Auto, *" IgnoreSafeArea="False">
 
-        <!-- Bouton Ajouter -->
-        <Button Text="➕ Ajouter un utilisateur"
-                x:Name="AddButton"
-                FontAttributes="Bold"
-                CornerRadius="10"
-                HeightRequest="50"
-                BackgroundColor="{AppThemeBinding Light={DynamicResource LightPrimaryButtonColor}, Dark={DynamicResource DarkPrimaryButtonColor}}"
-                TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
-                Clicked="OnAddButtonClicked" />
+        <!-- Header -->
+        <VerticalStackLayout Grid.Row="0" Padding="15,10" Spacing="10" 
+                             BackgroundColor="{AppThemeBinding Light={DynamicResource LightBlockBackgroundColor}, Dark={DynamicResource DarkBlockBackgroundColor}}">
 
-        <!-- Barre de recherche -->
-        <SearchBar x:Name="UserSearchBar"
-                   Placeholder="Rechercher un utilisateur..."
-                   FontSize="16"
-                   HeightRequest="50"
-                   TextChanged="OnSearchBarTextChanged"
-                   BackgroundColor="{AppThemeBinding Light={DynamicResource LightBlockBackgroundColor}, Dark={DynamicResource DarkBlockBackgroundColor}}"
-                   TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
-                   PlaceholderColor="{AppThemeBinding Light={DynamicResource LightPrimaryColor}, Dark={DynamicResource DarkPrimaryColor}}"
-                   Margin="0,5,0,0" />
-
-        <!-- Formulaire d’ajout utilisateur -->
-        <Border x:Name="AddUserForm"
-               IsVisible="False"
-               BackgroundColor="{AppThemeBinding Light={DynamicResource LightBackgroundColor}, Dark={DynamicResource DarkBackgroundColor}}"
-               Padding="15"
-               Margin="0,10,0,10">
-
-            <VerticalStackLayout Spacing="10">
-                <Label Text="Ajouter un utilisateur"
-                       FontSize="20"
-                       FontAttributes="Bold"
-                       TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
-                       HorizontalOptions="Center" />
-
-                <!-- Nom d'utilisateur -->
-                    <Border  Padding="10"
-                             BackgroundColor="{AppThemeBinding Light={DynamicResource LightBlockgroundColor}, Dark={DynamicResource DarkBlockBackgroundColor}}"
-                             Stroke="{AppThemeBinding Light={DynamicResource LightSecondaryColor}, Dark={DynamicResource DarkSecondaryColor}}">
-                        <Entry x:Name="UsernameEntry"
-                           Placeholder="Nom d'utilisateur"
-                           PlaceholderColor="{AppThemeBinding Light={DynamicResource LightPrimaryColor}, Dark={DynamicResource DarkPrimaryColor}}"
-                           TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
-                           BackgroundColor="Transparent" />
-                </Border>
-
-                <!-- Mot de passe -->
-                    <Border Padding="10" 
-                            BackgroundColor="{AppThemeBinding Light={DynamicResource LightBlockgroundColor}, Dark={DynamicResource DarkBlockBackgroundColor}}"
-                            Stroke="{AppThemeBinding Light={DynamicResource LightSecondaryColor}, Dark={DynamicResource DarkSecondaryColor}}">
-                        <Entry x:Name="PasswordEntry"
-                           Placeholder="Mot de passe"
-                           TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
-                           PlaceholderColor="{AppThemeBinding Light={DynamicResource LightPrimaryColor}, Dark={DynamicResource DarkPrimaryColor}}"
-                           IsPassword="True"
-                           BackgroundColor="Transparent" />
-                </Border>
-
-                <!-- Admin switch -->
-                <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
-                    <Label Text="Admin ?"
-                           FontSize="14"
-                           TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
-                           VerticalOptions="Center"/>
-                    <Switch x:Name="IsAdminSwitch"/>
-                </HorizontalStackLayout>
-
-                <!-- Boutons -->
-                <HorizontalStackLayout HorizontalOptions="Center" Spacing="15">
-                    <Button Text="💾 Enregistrer"
-                            TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
-                            BackgroundColor="{AppThemeBinding Light={DynamicResource LightPrimaryButtonColor}, Dark={DynamicResource DarkPrimaryButtonColor}}"
-                            FontAttributes="Bold"
-                            CornerRadius="10"
-                            HeightRequest="45"
-                            Clicked="OnSaveUserClicked" />
-
-                        <Button Text="❌ Annuler"
-                                TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
-                                BackgroundColor="{AppThemeBinding Light={DynamicResource LightSecondaryButtonColor}, Dark={DynamicResource DarkSecondaryButtonColor}}"
-                            FontAttributes="Bold"
-                            CornerRadius="10"
-                            HeightRequest="45"
-                            Clicked="OnCancelUserClicked" />
-                </HorizontalStackLayout>
-            </VerticalStackLayout>
-        </Border>
+            <SearchBar x:Name="UserSearchBar"
+                       Placeholder="Rechercher..."
+                       Text="{Binding SearchText, Mode=TwoWay}"
+                       BackgroundColor="{AppThemeBinding Light={DynamicResource LightBackgroundColor}, Dark={DynamicResource DarkBackgroundColor}}"
+                       TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"/>
+        </VerticalStackLayout>
 
         <!-- Liste des utilisateurs -->
-        <CollectionView x:Name="UserCollectionView"
-                        ItemsSource="{Binding UsersList}"
-                        Margin="0,10,0,0"
-                        SelectionMode="Single"
-                        SelectionChanged="OnUserClicked">
+        <CollectionView Grid.Row="1"
+                        x:Name="UserCollectionView"
+                        ItemsSource="{Binding Users}"
+                        SelectionMode="None"
+                        RemainingItemsThreshold="5"
+                        BackgroundColor="{AppThemeBinding Light={DynamicResource LightBackgroundColor}, Dark={DynamicResource DarkBackgroundColor}}">
 
             <CollectionView.ItemsLayout>
-                <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
+                <LinearItemsLayout Orientation="Vertical" ItemSpacing="12"/>
             </CollectionView.ItemsLayout>
+
+            <CollectionView.Header>
+                <BoxView HeightRequest="10" Color="{AppThemeBinding Light={DynamicResource LightBackgroundColor}, Dark={DynamicResource DarkBackgroundColor}}"/>
+            </CollectionView.Header>
+            <CollectionView.Footer>
+                <!-- Espace pour le Floating Button -->
+                <BoxView HeightRequest="80" Color="{AppThemeBinding Light={DynamicResource LightBackgroundColor}, Dark={DynamicResource DarkBackgroundColor}}"/>
+            </CollectionView.Footer>
 
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:User">
-                        <Border BackgroundColor="{AppThemeBinding Light={DynamicResource LightAccentColor}, Dark={DynamicResource DarkAccentColor}}"
+                    <Grid Padding="15,0">
+                        <Border StrokeShape="RoundRectangle 15"
+                                BackgroundColor="{AppThemeBinding Light={DynamicResource LightBlockBackgroundColor}, Dark={DynamicResource DarkBlockBackgroundColor}}"
+                                StrokeThickness="0"
                                 Padding="15">
 
-                        <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto">
-                            <!-- Nom d'utilisateur -->
-                            <Label Grid.Row="0" Grid.Column="0"
-                                   Text="{Binding Username}"
-                                   FontSize="20"
-                                   FontAttributes="Bold"
-                                   TextColor="{AppThemeBinding Light={DynamicResource BlackBrush}, Dark={DynamicResource WhiteBrush}}"/>
+                            <!-- Gestion de l'appui long -->
+                            <Border.Behaviors>
+                                <toolkit:TouchBehavior 
+                                    Command="{Binding Source={x:Reference Users}, Path=SimplePressEditCommand}"
+                                    CommandParameter="{Binding .}"
+                                    LongPressDuration="800"
+                                    LongPressCommand="{Binding Source={x:Reference Users}, Path=BindingContext.LongPressDeleteCommand}"
+                                    LongPressCommandParameter="{Binding .}"
+                                    DefaultAnimationDuration="100"
+                                    DefaultOpacity="1"
+                                    PressedOpacity="0.8" />
+                            </Border.Behaviors>
 
-                            <!-- Type d'utilisateur -->
-                                <Label Grid.Row="1" Grid.Column="0"
-                                   Text="{Binding IsAdmin, Converter={StaticResource BooleanToTextConverter}, ConverterParameter='Admin;Standard'}"
-                                   FontSize="16"
-                                   TextColor="{AppThemeBinding Light={DynamicResource BlackBrush}, Dark={DynamicResource WhiteBrush}}"/>
+                            <Border.Shadow>
+                                <Shadow Brush="Black" Offset="0,2" Radius="4" Opacity="0.1"/>
+                            </Border.Shadow>
 
-                                <!-- Bouton Supprimer -->
-                            <Button Grid.Row="0" Grid.Column="1"
-                                    Text="❌ Supprimer"
-                                    BackgroundColor="{AppThemeBinding Light={DynamicResource LightBlockBackgroundColor}, Dark={DynamicResource DarkBlockBackgroundColor}}"
-                                    TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
-                                    FontAttributes="Bold"
-                                    CornerRadius="8"
-                                    HeightRequest="40"
-                                    Clicked="OnDeleteUserClicked"
-                                    VerticalOptions="Center"/>
-                        </Grid>
-                    </Border>
+                            <Grid RowDefinitions="Auto, Auto, Auto" ColumnDefinitions="*, Auto">
+                                <!-- Nom -->
+                                <Label Text="{Binding Username}" FontSize="18" FontAttributes="Bold" TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"/>
+                                <!-- Status -->
+                                <HorizontalStackLayout Grid.Row="1" Grid.ColumnSpan="2" Spacing="10" Margin="0,5">
+                                    <Label Text="{Binding IsAdmin, Converter={StaticResource BooleanToTextConverter}, ConverterParameter='Admin;Standard'}"
+                                        FontSize="13"
+                                        TextColor="#777"/>
+                                </HorizontalStackLayout>
+                            </Grid>
+                        </Border>
+                    </Grid>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
 
-    </VerticalStackLayout>
-    </ScrollView>
+        <!-- Floating Button Action -->
+        <Button Grid.Row="1"
+                Text="+"
+                FontSize="32"
+                TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
+                BackgroundColor="{AppThemeBinding Light={DynamicResource LightPrimaryButtonColor}, Dark={DynamicResource DarkPrimaryButtonColor}}"
+                CornerRadius="30"
+                HeightRequest="60"
+                WidthRequest="60"
+                HorizontalOptions="End"
+                VerticalOptions="End"
+                Margin="20"
+                Clicked="OnAddButtonClicked">
+            <Button.Shadow>
+                <Shadow Brush="Black" Offset="0,4" Radius="6" Opacity="0.3"/>
+            </Button.Shadow>
+        </Button>
+    </Grid>
 </ContentPage>

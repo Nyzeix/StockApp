@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               x:Class="StockApp.Views.Popups.AddUserPopup"
+               Color="Transparent"
+               CanBeDismissedByTappingOutsideOfPopup="True">
+
+    <Border x:Name="PopupContainer"
+            StrokeShape="RoundRectangle 20" 
+            BackgroundColor="{AppThemeBinding Light={DynamicResource LightBackgroundColor}, Dark={DynamicResource DarkBackgroundColor}}"
+            Padding="20"
+            HorizontalOptions="Center">
+
+        <VerticalStackLayout Spacing="15">
+            <Label Text="Nouvel Utilisateur" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center" TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"/>
+
+            <Entry x:Name="UsernameEntry" Placeholder="Nom d'utilisateur" />
+            <Entry x:Name="PasswordEntry" Placeholder="Mot de passe" IsPassword="True"/>
+            <Label Text="Admin" FontSize="13" TextColor="#777" HorizontalOptions="Start" />
+            <Switch x:Name="IsAdminSwitch" HorizontalOptions="Start" />
+
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="10" Margin="0,10,0,0">
+                <Button Text="Annuler"
+                        BackgroundColor="{AppThemeBinding Light={DynamicResource LightSecondaryButtonColor}, Dark={DynamicResource DarkSecondaryButtonColor}}"
+                        TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
+                        Clicked="OnCancelClicked"
+                        Grid.Column="0"/>
+
+                <Button Text="Valider"
+                        BackgroundColor="{AppThemeBinding Light={DynamicResource LightPrimaryButtonColor}, Dark={DynamicResource DarkPrimaryButtonColor}}"
+                        TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"
+                        Clicked="OnSaveClicked"
+                        Grid.Column="1"/>
+            </Grid>
+        </VerticalStackLayout>
+    </Border>
+</toolkit:Popup>
