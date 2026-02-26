@@ -10,6 +10,9 @@ using System.Windows.Input;
 namespace StockApp.ViewModels
 {
 
+    /// <summary>
+    /// ViewModel pour la gestion du stock de produits, incluant le filtrage, l'ajout, la modification et la suppression.
+    /// </summary>
     public class StockViewModel : BaseViewModel
     {
         private readonly SupplierViewModel _supplierViewModel;
@@ -99,6 +102,13 @@ namespace StockApp.ViewModels
 
         private bool _itemsLoaded = false;
 
+
+        /// <summary>
+        /// Initialise une nouvelle instance de <see cref="StockViewModel"/>.
+        /// Charge les données de stock et initialise les listes de filtres.
+        /// </summary>
+        /// <param name="db">Service de base de données.</param>
+        /// <param name="svm">ViewModel des fournisseurs.</param>
         // Change le type du paramètre ici aussi
         public StockViewModel(IDatabaseService db, SupplierViewModel svm)
         {
@@ -120,6 +130,11 @@ namespace StockApp.ViewModels
             LoadOriginsList();
         }
 
+
+        /// <summary>
+        /// Charge les produits depuis la base de données de manière asynchrone.
+        /// </summary>
+        /// <returns>Une tâche représentant l'opération asynchrone.</returns>
         public async Task LoadDataAsync()
         {
             var products = await _db.GetProductsAsync();
@@ -132,6 +147,10 @@ namespace StockApp.ViewModels
             ApplyFilters(); // Update UI
         }
 
+
+        /// <summary>
+        /// Charge la liste des fournisseurs disponibles depuis le SupplierViewModel pour le filtre.
+        /// </summary>
         // Récupère les données de fournisseurs depuis le VM SupplierViewModel
         public void LoadSuppliersList()
         {
@@ -151,6 +170,10 @@ namespace StockApp.ViewModels
             OnPropertyChanged(nameof(AvailableSuppliers));
         }
 
+
+        /// <summary>
+        /// Charge la liste des origines distinctes depuis les produits en stock pour le filtre.
+        /// </summary>
         // Récupère les données d'origines depuis la liste des produits en stock
         public void LoadOriginsList()
         {
@@ -165,6 +188,12 @@ namespace StockApp.ViewModels
         }
 
 
+
+        /// <summary>
+        /// Ajoute un produit en base de données et rafraîchit la liste.
+        /// </summary>
+        /// <param name="product">Le produit à ajouter.</param>
+        /// <returns><c>true</c> si l'ajout a réussi ; sinon <c>false</c>.</returns>
         public async Task<bool> AddProductAsync(Product product)
         {
             try {
@@ -180,6 +209,11 @@ namespace StockApp.ViewModels
         }
 
 
+        /// <summary>
+        /// Met à jour un produit existant en base de données et rafraîchit la liste.
+        /// </summary>
+        /// <param name="modifiedProduct">Le produit modifié.</param>
+        /// <returns><c>true</c> si la mise à jour a réussi ; sinon <c>false</c>.</returns>
         public async Task<bool> UpdateProductAsync(Product modifiedProduct)
         {
             try
@@ -196,6 +230,11 @@ namespace StockApp.ViewModels
         }
 
 
+        /// <summary>
+        /// Supprime un produit de la base de données et de la liste en mémoire.
+        /// </summary>
+        /// <param name="product">Le produit à supprimer.</param>
+        /// <returns>Une tâche représentant l'opération asynchrone.</returns>
         private async Task DeleteProductCommandAsync(Product product)
         {
             if (product == null) return;
@@ -211,6 +250,9 @@ namespace StockApp.ViewModels
         }
 
 
+        /// <summary>
+        /// Applique les filtres de recherche, d'origine, de fournisseur et de quantité sur la liste des produits.
+        /// </summary>
         private void ApplyFilters()
         {
             IEnumerable<Product> filtered = _StockItems;
@@ -245,6 +287,12 @@ namespace StockApp.ViewModels
         }
 
 
+        /// <summary>
+        /// Vérifie si une quantité correspond au filtre sélectionné.
+        /// </summary>
+        /// <param name="qty">La quantité du produit.</param>
+        /// <param name="filter">Le filtre de quantité (ex: "0-10", "11-50").</param>
+        /// <returns><c>true</c> si la quantité correspond au filtre ; sinon <c>false</c>.</returns>
         private bool CheckQuantity(int qty, string filter)
         {
             return filter switch

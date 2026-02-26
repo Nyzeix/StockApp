@@ -6,6 +6,9 @@ using StockApp.Services;
 namespace StockApp.ViewModels
 {
 
+    /// <summary>
+    /// ViewModel pour la page d'inscription, gère la création de nouveaux comptes utilisateurs.
+    /// </summary>
     public class RegisterViewModel : BaseViewModel
     {
         private readonly IAuthDbService _auth;
@@ -27,6 +30,12 @@ namespace StockApp.ViewModels
         public ICommand RegisterCommand { get; }
         public ICommand BackToLoginCommand { get; }
 
+
+        /// <summary>
+        /// Initialise une nouvelle instance de <see cref="RegisterViewModel"/>.
+        /// </summary>
+        /// <param name="auth">Service d'authentification.</param>
+        /// <param name="log">Service de journalisation.</param>
         public RegisterViewModel(IAuthDbService auth, ILogService log)
         {
             _auth = auth;
@@ -35,6 +44,12 @@ namespace StockApp.ViewModels
             BackToLoginCommand = new Command(async () => await Shell.Current.GoToAsync(".."));
         }
 
+
+        /// <summary>
+        /// Effectue l'inscription d'un nouvel utilisateur.
+        /// Valide les champs, vérifie l'unicité du pseudo et crée le compte.
+        /// </summary>
+        /// <returns>Une tâche représentant l'opération asynchrone.</returns>
         private async Task OnRegisterAsync()
         {
             Error = "";

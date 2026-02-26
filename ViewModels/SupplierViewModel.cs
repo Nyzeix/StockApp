@@ -6,6 +6,9 @@ using System.Windows.Input;
 
 namespace StockApp.ViewModels
 {
+    /// <summary>
+    /// ViewModel pour la gestion des fournisseurs, incluant le filtrage, l'ajout, la modification et la suppression.
+    /// </summary>
     public class SupplierViewModel : BaseViewModel
     {
         private readonly IDatabaseService _db;
@@ -59,6 +62,12 @@ namespace StockApp.ViewModels
 
         private bool _itemsLoaded = false;
 
+
+        /// <summary>
+        /// Initialise une nouvelle instance de <see cref="SupplierViewModel"/>.
+        /// Charge les fournisseurs et initialise les filtres.
+        /// </summary>
+        /// <param name="db">Service de base de données.</param>
         public SupplierViewModel(IDatabaseService db)
         {
             _db = db;
@@ -79,6 +88,11 @@ namespace StockApp.ViewModels
 
         }
 
+
+        /// <summary>
+        /// Charge les fournisseurs depuis la base de données de manière asynchrone.
+        /// </summary>
+        /// <returns>Une tâche représentant l'opération asynchrone.</returns>
         private async Task LoadSuppliersAsync()
         {
             var suppliers = await _db.GetSuppliersAsync();
@@ -91,10 +105,15 @@ namespace StockApp.ViewModels
             ApplyFilters(); //Update UI
         }
 
+
+        /// <summary>
+        /// Charge la liste des types de fournisseurs distincts pour le filtre.
+        /// </summary>
         public void LoadSupplierTypeList()
         {
             TypeList.Clear();
             TypeList.Add("Tous");
+
             foreach (var supplier in Suppliers)
             {
                 if (!TypeList.Contains(supplier.Type))
@@ -105,6 +124,12 @@ namespace StockApp.ViewModels
             OnPropertyChanged(nameof(TypeList));
         }
 
+
+        /// <summary>
+        /// Ajoute un fournisseur en base de données et rafraîchit la liste.
+        /// </summary>
+        /// <param name="supplier">Le fournisseur à ajouter.</param>
+        /// <returns><c>true</c> si l'ajout a réussi ; sinon <c>false</c>.</returns>
         public async Task<bool> AddSupplierAsync(Supplier supplier)
         {
             try
@@ -120,6 +145,12 @@ namespace StockApp.ViewModels
             }
         }
 
+
+        /// <summary>
+        /// Met à jour un fournisseur existant en base de données et rafraîchit la liste.
+        /// </summary>
+        /// <param name="modifiedSupplier">Le fournisseur modifié.</param>
+        /// <returns><c>true</c> si la mise à jour a réussi ; sinon <c>false</c>.</returns>
         public async Task<bool> UpdateSupplierAsync(Supplier modifiedSupplier)
         {
             try
@@ -136,6 +167,11 @@ namespace StockApp.ViewModels
         }
 
 
+        /// <summary>
+        /// Supprime un fournisseur de la base de données et rafraîchit la liste.
+        /// </summary>
+        /// <param name="supplier">Le fournisseur à supprimer.</param>
+        /// <returns><c>true</c> si la suppression a réussi ; sinon <c>false</c>.</returns>
         private async Task<bool> DeleteSupplierCommandAsync(Supplier supplier)
         {
             if (supplier == null) return false;
@@ -152,12 +188,20 @@ namespace StockApp.ViewModels
             }
         }
 
+
+        /// <summary>
+        /// Retourne la liste complète des fournisseurs.
+        /// </summary>
+        /// <returns>Une liste de <see cref="Supplier"/>.</returns>
         public List<Supplier> GetSuppliers()
         {
             return Suppliers.ToList();
         }
 
 
+        /// <summary>
+        /// Applique les filtres de recherche et de type sur la liste des fournisseurs.
+        /// </summary>
         // Applique les filtres à la liste "Suppliers" et corrige la liste "Suppliers"
         private void ApplyFilters()
         {

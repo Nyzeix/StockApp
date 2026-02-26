@@ -6,7 +6,9 @@ using System.Windows.Input;
 
 namespace StockApp.ViewModels 
 {
-
+    /// <summary>
+    /// ViewModel pour la gestion des utilisateurs, incluant le filtrage, l'ajout, la modification et la suppression.
+    /// </summary>
     public class UserViewModel : BaseViewModel
     {
         private readonly IAuthDbService _auth;
@@ -34,6 +36,13 @@ namespace StockApp.ViewModels
         // Edition / Suppression
         public ICommand LongPressDeleteCommand { get; private set; }
 
+
+        /// <summary>
+        /// Initialise une nouvelle instance de <see cref="UserViewModel"/>.
+        /// Charge les utilisateurs depuis le service d'authentification.
+        /// </summary>
+        /// <param name="auth">Service d'authentification.</param>
+        /// <param name="log">Service de journalisation.</param>
         public UserViewModel(IAuthDbService auth, ILogService log)
         {
             _auth = auth;
@@ -48,6 +57,11 @@ namespace StockApp.ViewModels
             
         }
 
+
+        /// <summary>
+        /// Charge les utilisateurs depuis la base de données de manière asynchrone.
+        /// </summary>
+        /// <returns>Une tâche représentant l'opération asynchrone.</returns>
         private async Task LoadUsersAsync()
         {
             var users = await _auth.GetUsersAsync();
@@ -59,6 +73,12 @@ namespace StockApp.ViewModels
             ApplyFilters(); //Update UI
         }
 
+
+        /// <summary>
+        /// Ajoute un utilisateur en base de données et rafraîchit la liste.
+        /// </summary>
+        /// <param name="user">L'utilisateur à ajouter.</param>
+        /// <returns><c>true</c> si l'ajout a réussi ; sinon <c>false</c>.</returns>
         public async Task<bool> AddUserAsync(User user)
         {
             try
@@ -75,6 +95,11 @@ namespace StockApp.ViewModels
         }
 
 
+        /// <summary>
+        /// Met à jour un utilisateur existant en base de données et rafraîchit la liste.
+        /// </summary>
+        /// <param name="modifiedUser">L'utilisateur modifié.</param>
+        /// <returns><c>true</c> si la mise à jour a réussi ; sinon <c>false</c>.</returns>
         // Devrait-on pouvoir modifier le nom d'utilisateur ?
         // Si oui, beaucoup de modification sont à exécuter.
         public async Task<bool> UpdateUserAsync(User modifiedUser)
@@ -93,6 +118,11 @@ namespace StockApp.ViewModels
         }
 
 
+        /// <summary>
+        /// Supprime un utilisateur de la base de données et rafraîchit la liste.
+        /// </summary>
+        /// <param name="user">L'utilisateur à supprimer.</param>
+        /// <returns><c>true</c> si la suppression a réussi ; sinon <c>false</c>.</returns>
         private async Task<bool> DeleteUserCommandAsync(User user)
         {
             if (user == null) return false;
@@ -109,6 +139,10 @@ namespace StockApp.ViewModels
             }
         }
 
+
+        /// <summary>
+        /// Applique les filtres de recherche sur la liste des utilisateurs.
+        /// </summary>
         private void ApplyFilters()
         {
             IEnumerable<User> filtered = _user;
