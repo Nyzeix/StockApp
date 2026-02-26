@@ -9,6 +9,5 @@ Certains des messages de commits sont générés automatiquement via l'IA Copilo
 
 
 # TODO:
-- Documentations de fonctions par commentaires
 - Harmonisation visuelle et jolification sur différentes plateformes
 - Ajouter une page d'historique des modifications de produits avec un graph pour visualiser les variations.
