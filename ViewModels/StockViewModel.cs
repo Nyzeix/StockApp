@@ -10,11 +10,8 @@ using System.Windows.Input;
 namespace StockApp.ViewModels
 {
 
-    public class StockViewModel : BaseViewModel, INotifyPropertyChanged
+    public class StockViewModel : BaseViewModel
     {
-        // Event de notification de changement de propriété
-        public event PropertyChangedEventHandler? PropertyChanged;
-
         private readonly SupplierViewModel _supplierViewModel;
 
         // Change le type ici pour l'interface
@@ -158,11 +155,11 @@ namespace StockApp.ViewModels
         public void LoadOriginsList()
         {
             AvailableOrigins.Clear();
-            var originsData = _StockItems.Select(p => p.Origin).Distinct().OrderBy(o => o);
+            var originsData = _StockItems.Select(p => p.Origin).Where(o => o != null).Distinct().OrderBy(o => o);
             AvailableOrigins.Add("Tous");
             foreach (var origin in originsData)
             {
-                AvailableOrigins.Add(origin);
+                AvailableOrigins.Add(origin!);
             }
             OnPropertyChanged(nameof(AvailableOrigins));
         }
@@ -258,13 +255,6 @@ namespace StockApp.ViewModels
                 "101+" => qty > 100,
                 _ => true
             };
-        }
-
-
-        // Appelle la vue si une propriété évolue
-        private void OnPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
     }

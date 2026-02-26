@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:behaviors="clr-namespace:CommunityToolkit.Maui.Behaviors;assembly=CommunityToolkit.Maui"
              xmlns:models="clr-namespace:StockApp.Models"
              xmlns:vm="clr-namespace:StockApp.ViewModels"
              x:Class="StockApp.Views.SuppliersPage"
@@ -61,7 +62,7 @@
 
                             <!-- Gestion de l'appui long -->
                             <Border.Behaviors>
-                                <toolkit:TouchBehavior 
+                                <behaviors:TouchBehavior 
                                     Command="{Binding Source={x:Reference Suppliers}, Path=SimplePressEditCommand}"
                                     CommandParameter="{Binding .}"
                                     LongPressDuration="800"

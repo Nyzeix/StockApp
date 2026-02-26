@@ -6,11 +6,8 @@ using System.Windows.Input;
 
 namespace StockApp.ViewModels
 {
-    public class SupplierViewModel : BaseViewModel, INotifyPropertyChanged
+    public class SupplierViewModel : BaseViewModel
     {
-        // Event de notification de changement de propriété
-        public event PropertyChangedEventHandler? PropertyChanged;
-
         private readonly IDatabaseService _db;
 
         // Variable "Suppliers" utilisé pour le View
@@ -58,7 +55,6 @@ namespace StockApp.ViewModels
         }
 
         // Edition / Suppression
-        public ICommand SimplePressEditCommand { get; private set; }
         public ICommand LongPressDeleteCommand { get; private set; }
 
         private bool _itemsLoaded = false;
@@ -182,13 +178,6 @@ namespace StockApp.ViewModels
             Suppliers.Clear();
             foreach (var supplier in filtered)
                 Suppliers.Add(supplier);
-        }
-
-
-        // Appelle la vue si une propriété évolue
-        private void OnPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

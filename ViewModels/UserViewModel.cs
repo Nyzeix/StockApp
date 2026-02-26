@@ -7,11 +7,8 @@ using System.Windows.Input;
 namespace StockApp.ViewModels 
 {
 
-    public class UserViewModel : BaseViewModel, INotifyPropertyChanged
+    public class UserViewModel : BaseViewModel
     {
-        // Event de notification de changement de propriété
-        public event PropertyChangedEventHandler? PropertyChanged;
-
         private readonly IAuthDbService _auth;
 
         // Variable "Users" utilisé pour le View
@@ -35,7 +32,6 @@ namespace StockApp.ViewModels
         }
 
         // Edition / Suppression
-        public ICommand SimplePressEditCommand { get; private set; }
         public ICommand LongPressDeleteCommand { get; private set; }
 
         public UserViewModel(IAuthDbService auth, ILogService log)
@@ -126,13 +122,6 @@ namespace StockApp.ViewModels
             Users.Clear();
             foreach (var user in filtered)
                 Users.Add(user);
-        }
-
-
-        // Appelle la vue si une propriété évolue
-        private void OnPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
