@@ -18,13 +18,29 @@ namespace StockApp.Services
         private readonly ILogService _log;
         private Task? _initTask; // Pour gérer l'initialisation unique
 
+
+        /// <summary>
+        /// Constructeur de la classe DatabaseService. 
+        /// Il prend en paramètre un service de log pour enregistrer les opérations effectuées sur la base de données.
+        /// L'initialisation de la base de données est différée jusqu'à ce qu'une opération nécessitant une connexion soit effectuée,
+        /// grâce à l'utilisation d'une tâche d'initialisation (_initTask) qui garantit que la base de données est initialisée une seule 
+        /// fois et que toutes les opérations attendent que l'initialisation soit terminée avant d'accéder à la base de données.
+        /// </summary>
+        /// <param name="logService"></param>
         public DatabaseService(ILogService logService)
         {
             _log = logService;
         }
 
-        // TODO: ajouter un mécanisme de retry pour les opérations en cas de "Database Locked"
-        // S'assurer que ce qui est retourné n'est absolument pas null.
+        
+        /// <summary>
+        /// Méthode pour obtenir une connexion à la base de données.
+        /// Si la base de données n'est pas encore initialisée, elle l'initialise en appelant InitBusinessDb().
+        /// Toutes les opérations qui nécessitent une connexion à la base de données doivent passer par cette méthode
+        /// pour garantir que la base de données est prête avant d'être utilisée.
+        /// </summary>
+        /// <returns>SQLiteAsyncConnection</returns>
+        /// <exception cref="Exception"></exception>
         private async Task<SQLiteAsyncConnection> GetConnectionAsync()
         {
             if (_initTask == null || _initTask.IsFaulted)
@@ -36,6 +52,13 @@ namespace StockApp.Services
             return _businessDb ?? throw new Exception("Database initialization failed.");
         }
 
+
+        /// <summary>
+        /// Méthode pour initialiser la base de données.
+        /// Elle crée une connexion à la base de données SQLite, crée les tables nécessaires (Product, Supplier, User)
+        /// si elles n'existent pas déjà, et stocke la connexion dans la variable _businessDb.
+        /// </summary>
+        /// <returns></returns>
         private async Task InitBusinessDb()
         {
             var path = Path.Combine(FileSystem.AppDataDirectory, DbList.Data);
@@ -50,15 +73,31 @@ namespace StockApp.Services
             _businessDb = connection;
         }
 
+
+
         // ----------------------------
         // --- Gestion des produits ---
         // ----------------------------
+
+
+        /// <summary>
+        /// Méthode pour récupérer la liste des produits depuis la base de données.
+        /// Elle retourne une liste de produits.
+        /// </summary>
+        /// <returns>Liste de produits</returns>
         public async Task<List<Product>> GetProductsAsync()
         {
             var db = await GetConnectionAsync();
             return await db.Table<Product>().ToListAsync();
         }
 
+
+        /// <summary>
+        /// Méthode pour récupérer un produit spécifique par son ID depuis la base de données.
+        /// Elle retourne le produit correspondant à l'ID fourni, ou null si aucun produit n'est trouvé.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Un produit ou null si non trouvé</returns>
         public async Task<Product?> GetProductByIdAsync(int id)
         {
             try
@@ -73,6 +112,13 @@ namespace StockApp.Services
             }
         }
 
+
+        /// <summary>
+        /// Méthode pour ajouter un nouveau produit à la base de données. 
+        /// Elle prend en paramètre un objet Product, l'insère dans la base de données.
+        /// </summary>
+        /// <param name="product">Nouveau produit à ajouter</param>
+        /// <returns>Booléen indiquant si l'ajout a réussi</returns>
         public async Task<bool> AddProductAsync(Product product)
         {
             try
@@ -89,6 +135,14 @@ namespace StockApp.Services
             }
         }
 
+
+        /// <summary>
+        /// Méthode pour mettre à jour un produit existant dans la base de données.
+        /// Elle prend en paramètre un objet Product modifié,
+        /// met à jour les informations du produit dans la base de données.
+        /// </summary>
+        /// <param name="product">Produit modifié à mettre à jour</param>
+        /// <returns>Booléen indiquant si la mise à jour a réussi</returns>
         public async Task<bool> UpdateProductAsync(Product product)
         {
             try
@@ -105,6 +159,13 @@ namespace StockApp.Services
             }
         }
 
+        /// <summary>
+        /// Méthode pour supprimer un produit de la base de données.
+        /// Elle prend en paramètre un objet Product à supprimer,
+        /// le supprime de la base de données.
+        /// </summary>
+        /// <param name="product"></param>
+        /// <returns>Booléen indiquant si la suppression a réussi</returns>
         public async Task<bool> DeleteProductAsync(Product product)
         {
             try
@@ -121,15 +182,30 @@ namespace StockApp.Services
             }
         }
 
+
+
         // --------------------------------
         // --- Gestion des fournisseurs ---
         // --------------------------------
+
+
+        /// <summary>
+        /// Méthode pour récupérer la liste des fournisseurs depuis la base de données.
+        /// </summary>
+        /// <returns>Liste des fournisseurs</returns>
         public async Task<List<Supplier>> GetSuppliersAsync()
         {
             var db = await GetConnectionAsync();
             return await db.Table<Supplier>().ToListAsync();
         }
 
+
+        /// <summary>
+        /// Méthode pour ajouter un nouveau fournisseur à la base de données.
+        /// Elle prend en paramètre un objet Supplier, l'insère dans la base de données.
+        /// </summary>
+        /// <param name="supplier"></param>
+        /// <returns>Booléen indiquant si l'ajout a réussi</returns>
         public async Task<bool> AddSupplierAsync(Supplier supplier)
         {
             try
@@ -146,6 +222,14 @@ namespace StockApp.Services
             }
         }
 
+
+        /// <summary>
+        /// Méthode pour mettre à jour un fournisseur existant dans la base de données.
+        /// Elle prend en paramètre un objet Supplier modifié,
+        /// met à jour les informations du fournisseur dans la base de données.
+        /// </summary>
+        /// <param name="supplier"></param>
+        /// <returns>Booléen indiquant si la mise à jour a réussi</returns>
         public async Task<bool> UpdateSupplierAsync(Supplier supplier)
         {
             try
@@ -162,6 +246,14 @@ namespace StockApp.Services
             }
         }
 
+
+        /// <summary>
+        /// Méthode pour supprimer un fournisseur de la base de données.
+        /// Elle prend en paramètre un objet Supplier à supprimer,
+        /// le supprime de la base de données.
+        /// </summary>
+        /// <param name="supplier"></param>
+        /// <returns>Booléen indiquant si la suppression a réussi</returns>
         public async Task<bool> DeleteSupplierAsync(Supplier supplier)
         {
             try
