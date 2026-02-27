@@ -92,7 +92,36 @@
                     <TapGestureRecognizer Tapped="OnTapSuppliersPage" />
                 </Border.GestureRecognizers>
             </Border>
-            
+
+            <!-- Carte Variations du stock -->
+            <Border
+                BackgroundColor="{AppThemeBinding Light={DynamicResource LightPrimaryColor}, Dark={DynamicResource DarkPrimaryColor}}"
+                Stroke="{AppThemeBinding Light={DynamicResource LightSecondaryColor}, Dark={DynamicResource DarkSecondaryColor}}"
+                x:Name="MovementsCard"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 16"
+                Padding="20"
+                WidthRequest="200"
+                HeightRequest="150"
+                HorizontalOptions="Center"
+                VerticalOptions="Center">
+                <VerticalStackLayout Spacing="8"
+                                     HorizontalOptions="Center"
+                                     VerticalOptions="CenterAndExpand">
+                    <Image Source="movements_icon.png"
+                           WidthRequest="48"
+                           HeightRequest="48"
+                           HorizontalOptions="Center"/>
+                    <Label Text="Variations du stock"
+                           FontAttributes="Bold"
+                           FontSize="Medium"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"/>
+                </VerticalStackLayout>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnTapMovementsPage" />
+                </Border.GestureRecognizers>
+            </Border>
 
             <!-- Carte Utilisateurs -->
             <Border

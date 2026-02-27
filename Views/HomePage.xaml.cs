@@ -10,11 +10,11 @@ public partial class HomePage : ContentPage
     {
         InitializeComponent();
         _auth = auth;
-        // Message de bienvenue avec le nom d'utilisateur authentifié
+        // Message de bienvenue avec le nom d'utilisateur authentifiï¿½
         if (_auth.CurrentUser != null)
         {
-            WelcomeLabel.Text = $"Bienvenue, {_auth.CurrentUser.Username}! IsAdmin : {_auth.CurrentUser.IsAdmin}";
-            // Affiche la carte Utilisateurs si l'utisateur connecté est admin
+            WelcomeLabel.Text = $"Bienvenue, {_auth.CurrentUser.Username}!";
+            // Affiche la carte Utilisateurs si l'utisateur connectï¿½ est admin
             if (_auth.CurrentUser.IsAdmin)
             {
                 UsersCard.IsVisible = true;
@@ -26,9 +26,9 @@ public partial class HomePage : ContentPage
     {
         base.OnSizeAllocated(width, height);
 
-        // Ajuste la taille des cartes en fonction de la largeur de l’écran
-        double targetWidth = width * 0.8;   // 80% de la largeur de l’écran
-        double targetHeight = height * 0.30; // 30% de la hauteur de l’écran
+        // Ajuste la taille des cartes en fonction de la largeur de lï¿½ï¿½cran
+        double targetWidth = width * 0.8;   // 80% de la largeur de lï¿½ï¿½cran
+        double targetHeight = height * 0.30; // 30% de la hauteur de lï¿½ï¿½cran
 
         // Min et Max
         targetWidth = Math.Clamp(targetWidth, 50, 800);
@@ -59,5 +59,8 @@ public partial class HomePage : ContentPage
 
     private async void OnTapStockPage(object sender, TappedEventArgs e)
         => await Shell.Current.GoToAsync(nameof(StockPage));
+
+    private async void OnTapMovementsPage(object sender, TappedEventArgs e)
+        => await Shell.Current.GoToAsync(nameof(MovementsPage));
 
 }

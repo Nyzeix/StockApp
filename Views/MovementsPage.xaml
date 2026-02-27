@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:models="clr-namespace:StockApp.Models"
+             xmlns:vm="clr-namespace:StockApp.ViewModels"
+             x:Class="StockApp.Views.MovementsPage"
+             x:Name="Movements"
+             Title="📦 Mouvements">
+
+    <Grid RowDefinitions="Auto, *" IgnoreSafeArea="False">
+
+        <!-- Header -->
+        <VerticalStackLayout Grid.Row="0" Padding="15,10" Spacing="10" 
+                             BackgroundColor="{AppThemeBinding Light={DynamicResource LightBlockBackgroundColor}, Dark={DynamicResource DarkBlockBackgroundColor}}">
+
+            <SearchBar x:Name="ProductSearchBar"
+                       Placeholder="Rechercher..."
+                       Text="{Binding SearchText, Mode=TwoWay}"
+                       BackgroundColor="{AppThemeBinding Light={DynamicResource LightBackgroundColor}, Dark={DynamicResource DarkBackgroundColor}}"
+                       TextColor="{AppThemeBinding Light={DynamicResource LightTextColor}, Dark={DynamicResource DarkTextColor}}"/>
+
+        </VerticalStackLayout>
+
+        <!-- Graphique des mouvements pour le produit sélectionné -->
+        <ScrollView Grid.Row="1" BackgroundColor="{AppThemeBinding Light={DynamicResource LightBackgroundColor}, Dark={DynamicResource DarkBackgroundColor}}">
+            <VerticalStackLayout Padding="15" Spacing="20">
+                <Label Text="Graphique des mouvements pour le produit sélectionné"
+                       FontAttributes="Bold"
+                       FontSize="Medium"
+                       HorizontalOptions="Center"/>
+
+                <!-- Placeholder pour le graphique -->
+                <Border BackgroundColor="{AppThemeBinding Light={DynamicResource LightBlockBackgroundColor}, Dark={DynamicResource DarkBlockBackgroundColor}}"
+                        Stroke="{AppThemeBinding Light={DynamicResource LightSecondaryColor}, Dark={DynamicResource DarkSecondaryColor}}"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 16"
+                        HeightRequest="300"
+                        HorizontalOptions="FillAndExpand">
+                    <Label Text="(Graphique à implémenter)"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"/>
+                </Border>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

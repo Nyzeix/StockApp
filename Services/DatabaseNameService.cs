@@ -7,5 +7,6 @@
     {
         public const string Data = "Data.db";
         public const string AppLogs = "AppLogs.db";
+        public const string Movements = "Movements.db";
     }
 }

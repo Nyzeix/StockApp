@@ -39,6 +39,7 @@ public static class MauiProgram
         builder.Services.AddTransient<UsersPage>();
         builder.Services.AddTransient<StockPage>();
         builder.Services.AddTransient<SuppliersPage>();
+        builder.Services.AddTransient<MovementsPage>();
 
 // Correction du bug visuel sur iOS/MacOS pour les SearchBar, en appliquant une image vide.
         Microsoft.Maui.Handlers.SearchBarHandler.Mapper.AppendToMapping("NoBackground", (handler, view) =>
