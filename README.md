@@ -11,3 +11,5 @@ Certains des messages de commits sont générés automatiquement via l'IA Copilo
 # TODO:
 - Harmonisation visuelle et jolification sur différentes plateformes
 - Ajouter une page d'historique des modifications de produits avec un graph pour visualiser les variations.
+- Définir l'implémentation de la base de données des mouvements de produits (Autre fichier de Bdd ou dans la Bdd de base ?)
+- Logique d'implémentation
